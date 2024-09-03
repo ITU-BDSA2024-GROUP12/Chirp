@@ -1,14 +1,19 @@
 ﻿using System.Text.RegularExpressions;
 try
-{
+{	bool IsWindows = System.OperatingSystem.IsWindows();
     if (args[0] == "cheep")
-    {
+    {	string path;
         var message = args[1];
         var user = Environment.UserName;
         DateTime currentTime = DateTime.UtcNow;
         long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
         
-        string path = "C:\\Users\\cmolu\\Chirp.CLI\\chirp_cli_db.csv";
+        if (IsWindows){
+			path = new(@".\chirp_cli_db.csv");
+		} else {
+			path = new(@"./chirp_cli_db.csv");
+		}
+		Console.WriteLine(path);
         using (StreamWriter sw = File.AppendText(path))
         {
             sw.WriteLine(user + ",\"" + message + "\"," + unixTime);
@@ -18,8 +23,14 @@ try
     } else if (args[0] == "read")
     {
         List<string[]> cheeps = new List<string[]>();
+		string filepath;
         // Open the text file using a stream reader.
-        using StreamReader reader = new("C:\\Users\\cmolu\\Chirp.CLI\\chirp_cli_db.csv");
+        if (IsWindows){
+			filepath = new(@".\chirp_cli_db.csv");
+		} else {
+			filepath = new(@"./chirp_cli_db.csv");
+		}
+		using StreamReader reader = new(filepath);
         {
             string line; 
             while ((line = reader.ReadLine()) != null)
