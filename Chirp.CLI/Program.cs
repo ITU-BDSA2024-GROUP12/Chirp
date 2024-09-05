@@ -1,9 +1,17 @@
 ﻿using System.Text.RegularExpressions;
+using DocoptNet;
 try
 {	bool IsWindows = System.OperatingSystem.IsWindows();
-    if (args[0] == "cheep")
+    const string Mode = @"Chirp CLI.
+
+    Usage:
+    chirp cheep <message>
+    chirp read
+    ";
+    var arguments = new Docopt().Apply(Mode, args, exit: true);
+    if (arguments["cheep"].IsTrue)
     {	string path;
-        var message = args[1];
+        var message = arguments["<message>"].ToString();
         var user = Environment.UserName;
         DateTime currentTime = DateTime.UtcNow;
         long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
@@ -13,14 +21,14 @@ try
 		} else {
 			path = new(@"./chirp_cli_db.csv");
 		}
-		Console.WriteLine(path);
+		
         using (StreamWriter sw = File.AppendText(path))
         {
-            sw.WriteLine(user + ",\"" + message + "\"," + unixTime);
+            sw.WriteLine($"{user},\"{message}\",{unixTime}");
             sw.Close();
         }	
 
-    } else if (args[0] == "read")
+    } else if (arguments["read"].IsTrue)
     {
         List<string[]> cheeps = new List<string[]>();
 		string filepath;
@@ -49,7 +57,7 @@ try
             string message = lines[1];
             string author = lines[0];
             DateTime time = UnixTimeStampToDateTime(Double.Parse(lines[2]));
-            Console.WriteLine(author + " @ " + time + ": " + message);
+            Console.WriteLine($"{author} @ {time}: {message}");
         }
     }
 }
