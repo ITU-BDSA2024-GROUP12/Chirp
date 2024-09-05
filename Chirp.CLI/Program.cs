@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using DocoptNet;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 try
 {
@@ -29,13 +30,23 @@ try
         {
             path = new(@"./chirp_cli_db.csv");
         }
-
-        using (StreamWriter sw = File.AppendText(path))
+        
+        var records = new List<Cheep>
         {
-            sw.WriteLine($"{user},\"{message}\",{unixTime}");
-            sw.Close();
+            new Cheep() { Author = user, Message = message, Timestamp = unixTime},
+        };
+        
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            // Don't write the header again.
+            HasHeaderRecord = false,
+        };
+        using (var stream = File.Open(path, FileMode.Append))
+        using (var writer = new StreamWriter(stream))
+        using (var csv = new CsvWriter(writer, config))
+        {
+            csv.WriteRecords(records);
         }
-
     }
     else if (arguments["read"].IsTrue)
     {
