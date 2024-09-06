@@ -3,10 +3,29 @@ using System.Text.RegularExpressions;
 using DocoptNet;
 using CsvHelper;
 using CsvHelper.Configuration;
+using SimpleDB;
+
 
 try
 {
+    
+    
     bool IsWindows = System.OperatingSystem.IsWindows();
+    
+    string path;
+    if (IsWindows)
+    {
+        path = new(@".\chirp_cli_db.csv");
+    }
+    else
+    {
+        path = new(@"./chirp_cli_db.csv");
+    }
+    
+    //Initialize the cheep CSVDatabase interface
+    //IDatabaseRepository<T> database = CSVDatabase<T>();
+    IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>(path);
+    
     const string Mode = @"Chirp CLI.
 
     Usage:
@@ -16,37 +35,23 @@ try
     var arguments = new Docopt().Apply(Mode, args, exit: true);
     if (arguments["cheep"].IsTrue)
     {
-        string path;
+
         var message = arguments["<message>"].ToString();
         var user = Environment.UserName;
         DateTime currentTime = DateTime.UtcNow;
         long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
-
-        if (IsWindows)
-        {
-            path = new(@".\chirp_cli_db.csv");
-        }
-        else
-        {
-            path = new(@"./chirp_cli_db.csv");
-        }
         
         var records = new List<Cheep>
         {
             new Cheep() { Author = user, Message = message, Timestamp = unixTime},
         };
-        
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+
+        foreach (Cheep record in records)
         {
-            // Don't write the header again.
-            HasHeaderRecord = false,
-        };
-        using (var stream = File.Open(path, FileMode.Append))
-        using (var writer = new StreamWriter(stream))
-        using (var csv = new CsvWriter(writer, config))
-        {
-            csv.WriteRecords(records);
+            database.Store(record);
         }
+        
+        
     }
     else if (arguments["read"].IsTrue)
     {
