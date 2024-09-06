@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using Chirp.CLI;
 using DocoptNet;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -64,13 +65,7 @@ try
         using (var reader = new StreamReader(filepath))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            var records = csv.GetRecords<Cheep>();
-
-            foreach (var lines in records)
-            {
-                DateTime time = UnixTimeStampToDateTime(lines.Timestamp);
-                Console.WriteLine($"{lines.Author} @ {time}: {lines.Message}");
-            }
+            UserInterface.PrintCheeps(csv.GetRecords<Cheep>()); //Prints cheeps using static Userinterface
         }
     }
 }
@@ -79,12 +74,6 @@ catch (Exception e)
     Console.WriteLine(e.Message);
 } 
 
-DateTime UnixTimeStampToDateTime( double unixTimeStamp ) // Taken from stackoverflow https://stackoverflow.com/questions/249760/how-can-i-convert-a-unix-timestamp-to-datetime-and-vice-versa
-{
-    DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-    dateTime = dateTime.AddSeconds( unixTimeStamp ).ToLocalTime();
-    return dateTime;
-}
 
 public class Cheep
 {
