@@ -46,12 +46,9 @@ try
             new Cheep() { Author = user, Message = message, Timestamp = unixTime},
         };
 
-        foreach (Cheep record in records)
-        {
-            database.Store(record);
-        }
-        
-        
+        database.Store(records);
+
+
     }
     else if (arguments["read"].IsTrue)
     {
@@ -66,17 +63,14 @@ try
             filepath = new(@"./chirp_cli_db.csv");
         }
 
-        using (var reader = new StreamReader(filepath))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        IEnumerable<Cheep> records = database.Read();
+        
+        foreach (var lines in records)
         {
-            var records = csv.GetRecords<Cheep>();
-
-            foreach (var lines in records)
-            {
-                DateTime time = UnixTimeStampToDateTime(lines.Timestamp);
-                Console.WriteLine($"{lines.Author} @ {time}: {lines.Message}");
-            }
+            DateTime time = UnixTimeStampToDateTime(lines.Timestamp);
+            Console.WriteLine($"{lines.Author} @ {time}: {lines.Message}");
         }
+        
     }
 }
 catch (Exception e)

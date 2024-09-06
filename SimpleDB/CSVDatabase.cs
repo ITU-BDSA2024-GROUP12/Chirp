@@ -15,10 +15,17 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
     
     public IEnumerable<T> Read (int? limit = null)
     {
-        return null;
+        var records = new List<T>();
+        using (var reader = new StreamReader(path))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            records = csv.GetRecords<T>().ToList();
+
+            return records;
+        }
     }
     
-    public void Store(T record){
+    public void Store(IEnumerable<T> records){
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             // Don't write the header again.
@@ -28,7 +35,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
         using (var writer = new StreamWriter(stream))
         using (var csv = new CsvWriter(writer, config))
         {
-            csv.WriteRecord(record);
+            csv.WriteRecords(records);
         }
     }
     
