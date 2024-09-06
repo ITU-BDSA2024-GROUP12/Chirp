@@ -1,6 +1,6 @@
 using SimpleDB;
 
-public class CSVDatabase<T> : IDatabaseRepository<T>
+sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
     
     public IEnumerable<T> Read (int? limit = null)
