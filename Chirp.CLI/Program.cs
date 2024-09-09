@@ -15,22 +15,26 @@ try
     chirp read
     ";
     var arguments = new Docopt().Apply(Mode, args, exit: true);
+    
+    
+    // check if os is windows
+    string filepath;
+    if (IsWindows)
+    {
+        filepath = new(@".\chirp_cli_db.csv");
+    }
+    else
+    {
+        filepath = new(@"./chirp_cli_db.csv");
+    }
+    
     if (arguments["cheep"].IsTrue)
     {
-        string path;
         var message = arguments["<message>"].ToString();
         var user = Environment.UserName;
         DateTime currentTime = DateTime.UtcNow;
         long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
 
-        if (IsWindows)
-        {
-            path = new(@".\chirp_cli_db.csv");
-        }
-        else
-        {
-            path = new(@"./chirp_cli_db.csv");
-        }
         
         var records = new List<Cheep>
         {
@@ -42,7 +46,7 @@ try
             // Don't write the header again.
             HasHeaderRecord = false,
         };
-        using (var stream = File.Open(path, FileMode.Append))
+        using (var stream = File.Open(filepath, FileMode.Append))
         using (var writer = new StreamWriter(stream))
         using (var csv = new CsvWriter(writer, config))
         {
@@ -51,17 +55,7 @@ try
     }
     else if (arguments["read"].IsTrue)
     {
-        string filepath;
         // Open the text file using a stream reader.
-        if (IsWindows)
-        {
-            filepath = new(@".\chirp_cli_db.csv");
-        }
-        else
-        {
-            filepath = new(@"./chirp_cli_db.csv");
-        }
-
         using (var reader = new StreamReader(filepath))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
