@@ -15,6 +15,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
     
     public IEnumerable<T> Read (int? limit = null)
     {
+        //CSV code by Christian Klingenberg Molusson <cmol@itu.dk>
         var records = new List<T>();
         using (var reader = new StreamReader(path))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -26,6 +27,8 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
     }
     
     public void Store(IEnumerable<T> records){
+        
+        //CSV code by Christian Klingenberg Molusson <cmol@itu.dk>
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             // Don't write the header again.

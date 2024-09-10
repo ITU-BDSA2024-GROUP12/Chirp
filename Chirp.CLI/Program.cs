@@ -30,7 +30,6 @@ try
     }
     
     //Initialize the cheep CSVDatabase interface
-    //IDatabaseRepository<T> database = CSVDatabase<T>();
     IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>(filepath);
 
     
@@ -41,41 +40,22 @@ try
         DateTime currentTime = DateTime.UtcNow;
         long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
 
-        
+
         var records = new List<Cheep>
         {
-            new Cheep() { Author = user, Message = message, Timestamp = unixTime},
+            new Cheep() { Author = user, Message = message, Timestamp = unixTime },
         };
-        
-        /*var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            // Don't write the header again.
-            HasHeaderRecord = false,
-        };
-        using (var stream = File.Open(filepath, FileMode.Append))
-        using (var writer = new StreamWriter(stream))
-        using (var csv = new CsvWriter(writer, config))
-        {
-            csv.WriteRecords(records);
-        }*/
         
         database.Store(records);
     }
     else if (arguments["read"].IsTrue)
     {
-        /*// Open the text file using a stream reader.
+        // Open the text file using a stream reader.
         using (var reader = new StreamReader(filepath))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            UserInterface.PrintCheeps(csv.GetRecords<Cheep>()); //Prints cheeps using static Userinterface
-        }*/
-        
-        IEnumerable<Cheep> records = database.Read();
-        
-        foreach (var lines in records)
-        {
-            DateTime time = UnixTimeStampToDateTime(lines.Timestamp);
-            Console.WriteLine($"{lines.Author} @ {time}: {lines.Message}");
+            IEnumerable<Cheep> records = database.Read();
+            UserInterface.PrintCheeps(records); //Prints cheeps using static Userinterface
         }
     }
 }
