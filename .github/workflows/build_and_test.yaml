@@ -8,6 +8,10 @@ on:
     branches:
       -main
 
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: false
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
