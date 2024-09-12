@@ -1,4 +1,6 @@
-namespace Chirp.CLI
+using Chirp.CLI;
+
+namespace Chirp.Interface
 {
     
     /*
