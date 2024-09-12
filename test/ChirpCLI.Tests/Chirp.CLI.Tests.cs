@@ -5,16 +5,16 @@ using Chirp.CLI;
 
 namespace ChirpCLITests;
 
-public class ChirpCLITests
+public class ChirpInterfaceTests
 {
     [Fact]
-    public void InterfaceTest()
+    public void InterfaceTest1() //testing the bare minimum of the PrintCheeps method
     {
         //Arrange--
         //as it is a static class it doesn't need to be instantiated
         List<Cheep> records = new List<Cheep>{
-		new Cheep() { Author = "person", Message = "This is a message", Timestamp = 1726056651 }
-		};//("person", "This is a message", 1726056651); //Wed Sep 11 14:10:51 2024 CEST
+		new Cheep() { Author = "person", Message = "This is a message", Timestamp = 1726056651 }//Wed Sep 11 14:10:51 2024 CEST
+		}; 
         var stringWriter = new StringWriter();
         Console.SetOut(stringWriter); //to capture the printed message
         
@@ -23,7 +23,29 @@ public class ChirpCLITests
 		
         //Assert
         var output = stringWriter.ToString();
-        Assert.Equal("person @ 09/11/2024 14:10:51: This is a message\n", output);
+        Assert.Equal("person @ 09/11/2024 14:10:51: This is a message\n", output); //compares commandline output
+    }
 
+[Fact]
+    public void InterfaceTest2() //testing printing multiple cheep prints
+    {
+		//reason for not using theory with multiple testcases, is that here is tested a single case with multiple Cheeps.
+
+        //Arrange--
+        List<Cheep> records = new List<Cheep>{
+		new Cheep() { Author = "person1", Message = "This is the first message", Timestamp = 1726167611 },//Thu Sep 12 21:00:11 2024 CEST
+		new Cheep() { Author = "person2", Message = "This is the second message", Timestamp = 1726167639 },//Thu Sep 12 21:00:39 2024 CEST
+		new Cheep() { Author = "person3", Message = "This is a multiline message \n second line", Timestamp = 1726168068 }//Thu Sep 12 21:07:48 2024 CEST
+		}; 
+		var expectedOutput = "person1 @ 09/12/2024 21:00:11: This is the first message\nperson2 @ 09/12/2024 21:00:39: This is the second message\nperson3 @ 09/12/2024 21:07:48: This is a multiline message \n second line\n";
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter); //to capture the printed message
+        
+        //Act--
+        UserInterface.PrintCheeps(records);
+		
+        //Assert
+        var output = stringWriter.ToString();
+        Assert.Equal(expectedOutput, output); //compares commandline output
     }
 }
