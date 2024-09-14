@@ -24,7 +24,7 @@ public class ChirpInterfaceTests
 		
         //Assert
         var output = stringWriter.ToString();
-        Assert.Equal("person @ 09/11/2024 14:10:51: This is a message\n", output); //compares commandline output
+        Assert.Equal("person @ " + new DateTime(2024, 09, 11, 14, 10 ,51) + ": This is a message\n", output); //compares commandline output
     }
 
 [Fact]
@@ -38,7 +38,8 @@ public class ChirpInterfaceTests
 		new Cheep() { Author = "person2", Message = "This is the second message", Timestamp = 1726167639 },//Thu Sep 12 21:00:39 2024 CEST
 		new Cheep() { Author = "person3", Message = "This is a multiline message \n second line", Timestamp = 1726168068 }//Thu Sep 12 21:07:48 2024 CEST
 		}; 
-		var expectedOutput = "person1 @ 09/12/2024 21:00:11: This is the first message\nperson2 @ 09/12/2024 21:00:39: This is the second message\nperson3 @ 09/12/2024 21:07:48: This is a multiline message \n second line\n";
+        DateTime time1 = new DateTime(2024, 09, 12, 21, 00, 11), time2 = new DateTime(2024, 09, 12, 21, 00, 39), time3 = new DateTime(2024, 09, 12, 21, 07, 48);
+		var expectedOutput = String.Format("person1 @ "+ time1 +": This is the first message\nperson2 @ "+ time2 +": This is the second message\nperson3 @ "+ time3 +": This is a multiline message \n second line\n");
         var stringWriter = new StringWriter();
         Console.SetOut(stringWriter); //to capture the printed message
         
