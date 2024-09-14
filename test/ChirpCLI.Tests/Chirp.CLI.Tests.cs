@@ -1,4 +1,5 @@
 using System.IO;
+using System.Reflection;
 using Xunit;
 using Chirp.Interface;
 using Chirp.CLI;
@@ -48,4 +49,30 @@ public class ChirpInterfaceTests
         var output = stringWriter.ToString();
         Assert.Equal(expectedOutput, output); //compares commandline output
     }
+
+	//Testing the UnixtTime conversion of UnixTimeStampToDateTime in UserInterface.
+	[Theory]
+	[MemberData(nameof(DateTimeTestData))] //MemberData is used instead of inline due to use of DateTime object
+	public void UnixTimeStampToDateTimeTest(int unixTime, DateTime expected)
+	{
+		//arrange
+		//Reflection is used as desired method is private and therefore inaccesaible.
+		Type type = typeof(UserInterface); 
+		MethodInfo method = type.GetMethod("UnixTimeStampToDateTime", BindingFlags.NonPublic | BindingFlags.Static);
+
+		//act
+		DateTime output = (DateTime)method.Invoke(null, new object[] {unixTime});
+
+		//Assert
+		Assert.Equal(expected, output);
+	}
+
+	public static IEnumerable<object[]> DateTimeTestData() //data generator.
+	{
+		yield return new object[] {1726309240, new DateTime(2024, 09, 14, 12, 20, 40)};
+		yield return new object[] {1654669098, new DateTime(2022, 06, 08, 08, 18, 18)};
+		yield return new object[] {325067400, new DateTime(1980, 04, 20, 10, 30, 00)};
+	
+
+	}
 }
