@@ -24,7 +24,7 @@ public class ChirpInterfaceTests
 		
         //Assert
         var output = stringWriter.ToString();
-        Assert.Equal("person @ " + new DateTime(2024, 09, 11, 14, 10 ,51) + ": This is a message\n", output); //compares commandline output
+        Assert.Equal("person @ " + new DateTime(2024, 09, 11, 14, 10 ,51) + ": This is a message\n", output, ignoreLineEndingDifferences: true); //compares commandline output
     }
 
 [Fact]
@@ -48,7 +48,7 @@ public class ChirpInterfaceTests
 		
         //Assert
         var output = stringWriter.ToString();
-        Assert.Equal(expectedOutput, output); //compares commandline output
+        Assert.Equal(expectedOutput, output, ignoreLineEndingDifferences: true); //compares commandline output
     }
 
 	//Testing the UnixtTime conversion of UnixTimeStampToDateTime in UserInterface.
