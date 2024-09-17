@@ -3,8 +3,6 @@ name: .NET Build and Test
 on:
   workflow_dispatch:
   push:
-    branches: 
-      -main
   pull_request:
     branches:
       -main
@@ -30,4 +28,4 @@ jobs:
       working-directory: src/Chirp.CLI
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      working-directory: test/Test
+      working-directory: test/ChirpCLI.Tests
