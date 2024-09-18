@@ -7,10 +7,21 @@ namespace SimpleDB;
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
     private string path;
+    private static CSVDatabase<T> instance; 
     
-    public CSVDatabase(string filename)
+    private CSVDatabase(string filename)
     {
         path = filename;
+    }
+
+    public static CSVDatabase<T> GetInstance(string filename)
+    {
+        if (instance == null)
+        {
+            instance = new CSVDatabase<T>(filename);
+        }
+
+        return instance;
     }
     
     public IEnumerable<T> Read (int? limit = null)

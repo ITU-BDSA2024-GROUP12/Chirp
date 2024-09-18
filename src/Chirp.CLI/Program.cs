@@ -32,7 +32,7 @@ try
     }
     
     //Initialize the cheep CSVDatabase interface
-    IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>(filepath);
+    IDatabaseRepository<Cheep> database = CSVDatabase<Cheep>.GetInstance(filepath);
 
     
     if (arguments["cheep"].IsTrue)
