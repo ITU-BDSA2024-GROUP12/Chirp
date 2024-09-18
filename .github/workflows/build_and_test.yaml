@@ -26,6 +26,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: src/Chirp.CLI
-    - name: Test
+    - name: Test CLI
       run: dotnet test --no-build --verbosity normal
       working-directory: test/ChirpCLI.Tests
+    - name: Test DB
+      run: dotnet test --no-build --verbosity normal
+      working-directory: test/Chirp.CSVDB.Tests
