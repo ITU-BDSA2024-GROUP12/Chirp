@@ -6,6 +6,9 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using SimpleDB;
 using Chirp.CLI;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 
 try
@@ -19,6 +22,7 @@ try
     ";
     var arguments = new Docopt().Apply(Mode, args, exit: true);
     
+	
     
     // check if os is windows
     string filepath;
@@ -47,18 +51,23 @@ try
         {
             new Cheep() { Author = user, Message = message, Timestamp = unixTime },
         };
-        
+	    
         database.Store(records);
     }
     else if (arguments["read"].IsTrue)
     {
-        // Open the text file using a stream reader.
-        using (var reader = new StreamReader(filepath))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-        {
-            IEnumerable<Cheep> records = database.Read();
-            UserInterface.PrintCheeps(records); //Prints cheeps using static Userinterface
-        }
+		/* Code Taken from session 4 slides*/
+        var baseURL = "http://localhost:5143";
+		using HttpClient client = new();
+		client.DefaultRequestHeaders.Accept.Clear();
+		client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+		client.BaseAddress = new Uri(baseURL);
+
+
+		IEnumerable<Cheep> records = await client.GetFromJsonAsync<IEnumerable<Cheep>>("cheeps");
+		UserInterface.PrintCheeps(records);
+		
+		
     }
 }
 catch (Exception e)
