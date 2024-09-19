@@ -25,22 +25,6 @@ try
     chirp read
     ";
     var arguments = new Docopt().Apply(Mode, args, exit: true);
-    
-	
-    
-    // check if os is windows
-    string filepath;
-    if (IsWindows)
-    {
-        filepath = new(@".\chirp_cli_db.csv");
-    }
-    else
-    {
-        filepath = new(@"./chirp_cli_db.csv");
-    }
-    
-    //Initialize the cheep CSVDatabase interface
-    // IDatabaseRepository<Cheep> database = CSVDatabase<Cheep>.GetInstance(filepath);
 
     /* Code Taken from session 4 slides*/
     var baseURL = "http://localhost:5143";
@@ -56,9 +40,6 @@ try
         DateTime currentTime = DateTime.UtcNow;
         long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
 
-
-        
-        
         Cheep cheep = new Cheep() 
         {
             Author = user, 
@@ -66,9 +47,7 @@ try
             Timestamp = unixTime
         };
         
-	    
         string jsonString = JsonSerializer.Serialize(cheep);
-        //Console.WriteLine(jsonString);
 
         //Line taken from Stackoverflow ** https://stackoverflow.com/a/39414248/17816920 ** 
         HttpContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
