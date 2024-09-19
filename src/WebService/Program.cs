@@ -41,6 +41,7 @@ app.MapPost("/cheep", (Cheep cheep) =>
     using (var writer = new StreamWriter(stream))
     using (var csv = new CsvWriter(writer, config))
     {
+        writer.Write("\n");
         csv.WriteRecord(cheep);
     }
 });
