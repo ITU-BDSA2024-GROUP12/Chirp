@@ -14,7 +14,6 @@ env:
 jobs:
   test:
     strategy:
-      max-parallel: 1
       matrix:
         kind: ['WebService', 'CLI']
         include:
