@@ -1,4 +1,4 @@
-name: .NET Build and Test
+name: .NET Test
 
 on:
   workflow_dispatch:
@@ -12,7 +12,15 @@ env:
 
 
 jobs:
-  build:
+  test:
+    strategy:
+      matrix:
+        kind: ['WebService', 'CLI']
+        include:
+          - kind: WebService
+            dir: test/ChirpCLI.Tests
+          - kind: CLI
+            dir: test/Chirp.CSVDB.Tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -22,13 +30,10 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: src/Chirp.CLI
+      working-directory: ${{ matrix.dir }}
     - name: Build
       run: dotnet build --no-restore
-      working-directory: src/Chirp.CLI
-    - name: Test CLI
+      working-directory: ${{ matrix.dir }}
+    - name: Test
       run: dotnet test --no-build --verbosity normal
-      working-directory: test/ChirpCLI.Tests
-    - name: Test DB
-      run: dotnet test --no-build --verbosity normal
-      working-directory: test/Chirp.CSVDB.Tests
+      working-directory: ${{ matrix.dir }}
