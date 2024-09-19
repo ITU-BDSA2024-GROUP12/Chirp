@@ -9,6 +9,10 @@ using Chirp.CLI;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 
 
 try
@@ -36,8 +40,14 @@ try
     }
     
     //Initialize the cheep CSVDatabase interface
-    IDatabaseRepository<Cheep> database = CSVDatabase<Cheep>.GetInstance(filepath);
+    // IDatabaseRepository<Cheep> database = CSVDatabase<Cheep>.GetInstance(filepath);
 
+    /* Code Taken from session 4 slides*/
+    var baseURL = "http://localhost:5143";
+	using HttpClient client = new();
+	client.DefaultRequestHeaders.Accept.Clear();
+	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+	client.BaseAddress = new Uri(baseURL);
     
     if (arguments["cheep"].IsTrue)
     {
@@ -47,27 +57,28 @@ try
         long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
 
 
-        var records = new List<Cheep>
+        
+        
+        Cheep cheep = new Cheep() 
         {
-            new Cheep() { Author = user, Message = message, Timestamp = unixTime },
+            Author = user, 
+            Message = message, 
+            Timestamp = unixTime
         };
+        
 	    
-        database.Store(records);
+        string jsonString = JsonSerializer.Serialize(cheep);
+        //Console.WriteLine(jsonString);
+
+        //Line taken from Stackoverflow ** https://stackoverflow.com/a/39414248/17816920 ** 
+        HttpContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        var result = await client.PostAsync("cheep", content);
     }
     else if (arguments["read"].IsTrue)
     {
-		/* Code Taken from session 4 slides*/
-        var baseURL = "http://localhost:5143";
-		using HttpClient client = new();
-		client.DefaultRequestHeaders.Accept.Clear();
-		client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-		client.BaseAddress = new Uri(baseURL);
-
-
+	
 		IEnumerable<Cheep> records = await client.GetFromJsonAsync<IEnumerable<Cheep>>("cheeps");
-		UserInterface.PrintCheeps(records);
-		
-		
+		UserInterface.PrintCheeps(records);	
     }
 }
 catch (Exception e)

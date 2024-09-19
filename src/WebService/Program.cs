@@ -32,7 +32,17 @@ app.MapGet("/cheeps", () =>
 
 app.MapPost("/cheep", (Cheep cheep) =>
 {
-    
+    var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+    {
+        // Don't write the header again.
+        HasHeaderRecord = false,
+    };
+    using (var stream = File.Open(path, FileMode.Append))
+    using (var writer = new StreamWriter(stream))
+    using (var csv = new CsvWriter(writer, config))
+    {
+        csv.WriteRecord(cheep);
+    }
 });
 
 app.Run();
