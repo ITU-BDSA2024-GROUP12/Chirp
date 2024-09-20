@@ -8,27 +8,12 @@ using Chirp.CLI;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
-public class CSVDatabaseIntegrationTests : IDisposable
+public class CSVDatabaseIntegrationTests
 {
-    private readonly string _originalFilePath = @"../../../../../src/Chirp.CLI/chirp_cli_db.csv";
-
-
-
-
-
-    private readonly string _testFilePath;
-
-    public CSVDatabaseIntegrationTests()
-    {
-        // Creates a copy of the csv for testing purposes
-        _testFilePath = Path.Combine(Path.GetTempPath(), $"chirp_cli_db_{Guid.NewGuid()}.csv");
-        File.Copy(_originalFilePath, _testFilePath);
-    }
     //testing the read function of CSVDatabase
     [Fact]
     public async void CSVDatabaseReadRecords()
@@ -83,16 +68,7 @@ public class CSVDatabaseIntegrationTests : IDisposable
         HttpContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
         var response = await client.PostAsync("cheep", content);
 
-
         //Assert
         Assert.True((int)response.StatusCode == 200);
-    }
-    // Cleanup: This deletes the temporary csv file*/
-    public void Dispose()
-    {
-        if (File.Exists(_testFilePath))
-        {
-            File.Delete(_testFilePath);
-        }
     }
 }

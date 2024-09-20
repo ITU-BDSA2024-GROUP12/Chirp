@@ -27,7 +27,7 @@ try
     var arguments = new Docopt().Apply(Mode, args, exit: true);
 
     /* Code Taken from session 4 slides*/
-    var baseURL = "http://bdsagroup12chirpremotedb.azurewebsites.net";
+    var baseURL = "http://localhost:5143";
 	using HttpClient client = new();
 	client.DefaultRequestHeaders.Accept.Clear();
 	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
