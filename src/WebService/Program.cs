@@ -32,8 +32,6 @@ app.MapGet("/cheeps", () =>
 
 app.MapPost("/cheep", (Cheep cheep) =>
 {
-    
-    
     var config = new CsvConfiguration(CultureInfo.InvariantCulture)
     {
         // Don't write the header again.
@@ -45,6 +43,7 @@ app.MapPost("/cheep", (Cheep cheep) =>
     {
         writer.Write("\n");
         csv.WriteRecord(cheep);
+        
     }
 });
 
