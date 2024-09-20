@@ -34,6 +34,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: ${{ matrix.dir }}
+    - name: Start Localhost
+      run: dotnet run
+      working-directory: src/WebService  
     - name: Test
       run: dotnet test --no-build --verbosity normal
       working-directory: ${{ matrix.dir }}
