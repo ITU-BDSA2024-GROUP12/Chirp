@@ -5,39 +5,41 @@ using CsvHelper.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
+app.UseDeveloperExceptionPage();
+app.UseStaticFiles();
+app.UseRouting();
 
-string path;
-bool IsWindows = System.OperatingSystem.IsWindows();
-if (IsWindows)
-{
-    path = new(@"..\Chirp.CLI\chirp_cli_db.csv");
-}
-else
-{
-    path = new(@"../Chirp.CLI/chirp_cli_db.csv");
-}
+var filePath = Path.Combine(AppContext.BaseDirectory, "staticfiles/chirp_cli_db.csv");
+
 
 app.MapGet("/cheeps", () =>
 {
+
     //READ
+    if (!File.Exists(filePath))
+    {
+        return null;
+    }
+
     var records = new List<Cheep>();
-    using (var reader = new StreamReader(path))
+    using (var reader = new StreamReader(filePath))
     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
     {
         records = csv.GetRecords<Cheep>().ToList();
-
         return records;
     }
 });
 
 app.MapPost("/cheep", (Cheep cheep) =>
 {
+    
+    
     var config = new CsvConfiguration(CultureInfo.InvariantCulture)
     {
         // Don't write the header again.
         HasHeaderRecord = false,
     };
-    using (var stream = File.Open(path, FileMode.Append))
+    using (var stream = File.Open(filePath, FileMode.Append))
     using (var writer = new StreamWriter(stream))
     using (var csv = new CsvWriter(writer, config))
     {

@@ -27,7 +27,7 @@ try
     var arguments = new Docopt().Apply(Mode, args, exit: true);
 
     /* Code Taken from session 4 slides*/
-    var baseURL = "http://localhost:5143";
+    var baseURL = "http://bdsagroup12chirpremotedb.azurewebsites.net";
 	using HttpClient client = new();
 	client.DefaultRequestHeaders.Accept.Clear();
 	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -52,6 +52,7 @@ try
         //Line taken from Stackoverflow ** https://stackoverflow.com/a/39414248/17816920 ** 
         HttpContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
         var response = await client.PostAsync("cheep", content);
+        Console.Write(response);
         
     }
     else if (arguments["read"].IsTrue)
@@ -60,12 +61,7 @@ try
         HttpResponseMessage response = await client.GetAsync("cheeps");
 		IEnumerable<Cheep> records = await response.Content.ReadFromJsonAsync<IEnumerable<Cheep>>();
         
-        foreach(var cheep in records) {
-            Console.WriteLine(cheep.Message);
-            break;
-        }
-
-        Console.Write((int)response.StatusCode);
+        //Console.Write((int)response.StatusCode);
 		UserInterface.PrintCheeps(records);	
     }
 }
