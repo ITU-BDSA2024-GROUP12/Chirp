@@ -8,6 +8,7 @@ var app = builder.Build();
 app.UseDeveloperExceptionPage();
 app.UseStaticFiles();
 app.UseRouting();
+app.MapControllers();
 
 var filePath = Path.Combine(AppContext.BaseDirectory, "staticfiles/chirp_cli_db.csv");
 
