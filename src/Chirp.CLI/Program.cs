@@ -6,6 +6,13 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using SimpleDB;
 using Chirp.CLI;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 
 
 try
@@ -18,22 +25,13 @@ try
     chirp read
     ";
     var arguments = new Docopt().Apply(Mode, args, exit: true);
-    
-    
-    // check if os is windows
-    string filepath;
-    if (IsWindows)
-    {
-        filepath = new(@".\chirp_cli_db.csv");
-    }
-    else
-    {
-        filepath = new(@"./chirp_cli_db.csv");
-    }
-    
-    //Initialize the cheep CSVDatabase interface
-    IDatabaseRepository<Cheep> database = CSVDatabase<Cheep>.GetInstance(filepath);
 
+    /* Code Taken from session 4 slides*/
+    var baseURL = "http://localhost:5143";
+	using HttpClient client = new();
+	client.DefaultRequestHeaders.Accept.Clear();
+	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+	client.BaseAddress = new Uri(baseURL);
     
     if (arguments["cheep"].IsTrue)
     {
@@ -42,25 +40,33 @@ try
         DateTime currentTime = DateTime.UtcNow;
         long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
 
-
-        var records = new List<Cheep>
+        Cheep cheep = new Cheep() 
         {
-            new Cheep() { Author = user, Message = message, Timestamp = unixTime },
+            Author = user, 
+            Message = message, 
+            Timestamp = unixTime
         };
         
-        database.Store(records);
+        string jsonString = JsonSerializer.Serialize(cheep);
+
+        //Line taken from Stackoverflow ** https://stackoverflow.com/a/39414248/17816920 ** 
+        HttpContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        var response = await client.PostAsync("cheep", content);
+        Console.Write(response);
+        
     }
     else if (arguments["read"].IsTrue)
     {
-        // Open the text file using a stream reader.
-        using (var reader = new StreamReader(filepath))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-        {
-            IEnumerable<Cheep> records = database.Read();
-            UserInterface.PrintCheeps(records); //Prints cheeps using static Userinterface
-        }
+
+        HttpResponseMessage response = await client.GetAsync("cheeps");
+		IEnumerable<Cheep> records = await response.Content.ReadFromJsonAsync<IEnumerable<Cheep>>();
+        
+        //Console.Write((int)response.StatusCode);
+		UserInterface.PrintCheeps(records);	
     }
 }
+
+
 catch (Exception e)
 {
     Console.WriteLine(e.Message);

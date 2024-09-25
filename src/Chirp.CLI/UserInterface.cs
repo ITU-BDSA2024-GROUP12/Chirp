@@ -8,6 +8,9 @@ namespace Chirp.Interface
      */
     public static class UserInterface
     {
+        
+        static TimeZoneInfo targetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+        
         //takes and prints collection of cheep object
         public static void PrintCheeps(IEnumerable<Cheep> cheeps){ 
             foreach (var cheep in cheeps)
@@ -25,8 +28,8 @@ namespace Chirp.Interface
         private static DateTime UnixTimeStampToDateTime(long unixTimeStamp )
         {
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddSeconds( unixTimeStamp ).ToLocalTime();
-            return dateTime;
+            dateTime = dateTime.AddSeconds( unixTimeStamp );
+            return TimeZoneInfo.ConvertTimeFromUtc(dateTime, targetTimeZone);
         }
     }
   

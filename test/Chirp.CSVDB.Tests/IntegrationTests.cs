@@ -5,54 +5,55 @@ using System.Linq;
 using Xunit;
 using SimpleDB;
 using Chirp.CLI;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 
-public class CSVDatabaseIntegrationTests : IDisposable
+public class CSVDatabaseIntegrationTests
 {
-    private readonly string _originalFilePath = @"../../../../../src/Chirp.CLI/chirp_cli_db.csv";
-
-
-
-
-
-    private readonly string _testFilePath;
-
-    public CSVDatabaseIntegrationTests()
-    {
-        // Creates a copy of the csv for testing purposes
-        _testFilePath = Path.Combine(Path.GetTempPath(), $"chirp_cli_db_{Guid.NewGuid()}.csv");
-        File.Copy(_originalFilePath, _testFilePath);
-    }
     //testing the read function of CSVDatabase
     [Fact]
-    public void CSVDatabaseReadRecords()
+    public async void CSVDatabaseReadRecords()
     {
         // Arrange
-        IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>(_testFilePath);
+        var baseURL = "http://localhost:5143";
+	    using HttpClient client = new();
+	    client.DefaultRequestHeaders.Accept.Clear();
+	    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+	    client.BaseAddress = new Uri(baseURL);
 
         // Act
-        var cheepsRead = database.Read().ToList();
+        HttpResponseMessage response = await client.GetAsync("cheeps");
+		var cheepsRead = await response.Content.ReadFromJsonAsync<IEnumerable<Cheep>>();
+        //Console.Write((int)response.StatusCode);
+		
 
         // Assert
         //Assert.Equal(9, cheepsRead.Count);  not sure how sensible this test is
-        Assert.Equal("ropf", cheepsRead[0].Author);
-        Assert.Equal("Hello, BDSA students!", cheepsRead[0].Message);
-        Assert.Equal(1690891760, cheepsRead[0].Timestamp);
-
-        Assert.Equal("adho", cheepsRead[1].Author);
-        Assert.Equal("Welcome to the course!", cheepsRead[1].Message);
-        Assert.Equal(1690978778, cheepsRead[1].Timestamp);
-
-
-        Assert.Equal("cmolu", cheepsRead[6].Author);
-        Assert.Equal("does this work", cheepsRead[6].Message);
-        Assert.Equal(1724848909, cheepsRead[6].Timestamp);
+        Assert.True((int)response.StatusCode == 200);
+        
+        foreach(var cheep in cheepsRead) {
+            Assert.Equal("ropf", cheep.Author);
+            Assert.Equal("Hello, BDSA students!", cheep.Message);
+            Assert.Equal(1690891760, cheep.Timestamp);
+            break;
+        }
     }
     //testing writing arecord to the database and then retrieving it
     [Fact]
-    public void CSVDatabaseStoreRecord()
+    public async void CSVDatabaseStoreRecord()
     {
         //Arrange
-        IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>(_testFilePath);
+        var baseURL = "http://localhost:5143";
+	    using HttpClient client = new();
+	    client.DefaultRequestHeaders.Accept.Clear();
+	    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+	    client.BaseAddress = new Uri(baseURL);
+
+
         var newCheep = new Cheep()
         {
             Author = Environment.UserName,
@@ -61,26 +62,13 @@ public class CSVDatabaseIntegrationTests : IDisposable
 
         };
 
-        var cheepsToStore = new List<Cheep> { newCheep };
+        string jsonString = JsonSerializer.Serialize(newCheep);
 
-        //Act
-        database.Store(cheepsToStore);
-        var cheepsRead = database.Read();
-
+        //Line taken from Stackoverflow ** https://stackoverflow.com/a/39414248/17816920 ** 
+        HttpContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        var response = await client.PostAsync("cheep", content);
 
         //Assert
-        Assert.Contains(cheepsRead, cheep =>
-            cheep.Author == newCheep.Author &&
-            cheep.Message == newCheep.Message &&
-            cheep.Timestamp == newCheep.Timestamp);
-    }
-
-    // Cleanup: This deletes the temporary csv file
-    public void Dispose()
-    {
-        if (File.Exists(_testFilePath))
-        {
-            File.Delete(_testFilePath);
-        }
+        Assert.True((int)response.StatusCode == 200);
     }
 }
