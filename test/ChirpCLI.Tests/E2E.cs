@@ -7,7 +7,7 @@ using Xunit;
 public class ChirpEndToEndTestsUsingProcessStartInfo
 {
     private readonly string _chirpExecutablePath = "../../../../../src/Chirp.CLI/bin/Debug/net7.0/Chirp.CLI.exe";
-    private readonly string _chirpBaseURL = "http://localhost:5143"; 
+     
 
     [Fact]
     public async Task TestCheepCommand()
