@@ -7,7 +7,7 @@ using Xunit;
 public class ChirpEndToEndTestsUsingProcessStartInfo
 {
     //private readonly string _chirpExecutablePath = "../../../../../src/Chirp.CLI/bin/Debug/net7.0/Chirp.CLI.exe";
-    private readonly string _chirpExecutablePath = Path.Combine(AppContext.BaseDirectory, "Chirp.CLI.exe");
+    private readonly string _chirpDllPath = Path.Combine(AppContext.BaseDirectory, "Chirp.CLI.dll");
 
     [Fact]
     public async Task TestCheepCommand()
@@ -31,21 +31,21 @@ public class ChirpEndToEndTestsUsingProcessStartInfo
         Assert.Contains(expectedCheepMessage, output);
     }
 
-    
+
     private async Task<string> RunChirpCommand(string arguments)
     {
         
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
-            FileName = _chirpExecutablePath, 
-            Arguments = arguments,           
+            FileName = "dotnet", 
+            Arguments = $"{_chirpDllPath} {arguments}", 
             RedirectStandardOutput = true,   
             RedirectStandardError = true,    
             UseShellExecute = false,         
             CreateNoWindow = true            
         };
 
-        
+
         using (Process process = new Process { StartInfo = startInfo })
         {
             process.Start(); 
