@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.FileProviders;
 
@@ -6,8 +6,6 @@ namespace Chirp.SQLite;
 
 public class DBFacade<T> : IDatabaseRepository<T>
 {
-    
-    
     private SqliteConnection conn;
     
     public DBFacade()
@@ -30,7 +28,6 @@ public class DBFacade<T> : IDatabaseRepository<T>
         using var reader = command.ExecuteReader();
         while (reader.Read())
         {
-            
         }
     }
 
@@ -38,8 +35,4 @@ public class DBFacade<T> : IDatabaseRepository<T>
     {
         conn.Close();
     }
-
-            
-            
-
 }
