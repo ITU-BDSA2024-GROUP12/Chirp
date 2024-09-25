@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -12,18 +12,15 @@ public class ChirpEndToEndTestsUsingProcessStartInfo
     [Fact]
     public async Task TestCheepCommand()
     {
-        
         var cheepMessage = "e2e test successful!";
         await RunChirpCommand($"cheep \"{cheepMessage}\"");
 
         // Success is verified by not receiving an error message.
-        
     }
 
     [Fact]
     public async Task TestReadCommand()
     {
-        
         var output = await RunChirpCommand("read");
 
         
@@ -34,7 +31,6 @@ public class ChirpEndToEndTestsUsingProcessStartInfo
 
     private async Task<string> RunChirpCommand(string arguments)
     {
-        
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
             FileName = "dotnet", 
