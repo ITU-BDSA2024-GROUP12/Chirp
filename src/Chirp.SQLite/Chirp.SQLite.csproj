@@ -11,5 +11,9 @@
     <EmbeddedResource Include="data/**/*" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.8" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="data\makedb\" />
+  </ItemGroup>
   
 </Project>

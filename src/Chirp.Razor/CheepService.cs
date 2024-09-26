@@ -21,7 +21,6 @@ public class CheepService : ICheepService
 
     public List<CheepViewModel> GetCheeps()
     {
-        Console.Write("hello\n");
         IDatabaseRepository<CheepViewModel> databaseRepository = DBFacade<CheepViewModel>.getInstance();
         databaseRepository.Read();
         return _cheeps;

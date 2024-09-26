@@ -1,4 +1,3 @@
-using System.Reflection;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.FileProviders; 
 
@@ -7,28 +6,54 @@ namespace Chirp.SQLite;
 public class DBFacade<T> : IDatabaseRepository<T>
 {
     private SqliteConnection conn;
+    private static DBFacade<T> instance;
     
-    public DBFacade()
+    private DBFacade()
     {
         //Create connection to the SQLite3 DB file
         //Using embbeded ressources
-        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
-        string sqlDBFilePath = embeddedProvider.GetFileInfo("./data/chirp.db").PhysicalPath;
-        //TODO: If no chirp.db is set via environment variables, then default to ./tmp
-        conn = new SqliteConnection($"Data Source={sqlDBFilePath}");
+        
+        string envFilePath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
 
-        conn.Open();
+        // If no environment variable is defined, default to the user's temp directory with chirp.db
+        string defaultPath = Path.Combine(Path.GetTempPath(), "chirp.db");
+
+        if (envFilePath == null)
+        {
+            envFilePath = defaultPath;
+        }
+        Console.WriteLine(envFilePath);
+        conn = new SqliteConnection($"Data Source={envFilePath}");
+
+
     }
 
-    public IEnumerable<T> read()
+
+    public static DBFacade<T> getInstance()
     {
-        var command = conn.CreateCommand();
+        if (true/*instance != null*/) //TESTING, CHANGE BACK TO == WHEN DONE
+        {
+            instance = new DBFacade<T>();
+        }
+        return instance;
+    }
+
+    public void Store(IEnumerable<T> record)
+    {
+        return;
+    }
+
+    public IEnumerable<T> Read(int? limit = null)
+    {
+        /*var command = conn.CreateCommand();
         command.CommandText = sqlQuery;
 
         using var reader = command.ExecuteReader();
         while (reader.Read())
         {
-        }
+        }*/
+        //Console.Write(this.ToString() + "HELOO!: D!");
+        return null;
     }
 
     public void closeConnection()
