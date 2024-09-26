@@ -28,8 +28,6 @@ public class DBFacade<T> : IDatabaseRepository<T>
         Console.WriteLine(envFilePath);
         conn = new SqliteConnection($"Data Source={envFilePath}");
         conn.Open();
-
-
     }
 
 
