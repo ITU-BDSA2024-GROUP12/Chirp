@@ -10,19 +10,18 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
+    private readonly IDatabaseRepository<CheepViewModel> DatabaseRepository = DBFacade<CheepViewModel>.getInstance();
+    
     // These would normally be loaded from a database for example
     private static readonly List<CheepViewModel> _cheeps = new()
         {
             new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
             new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
-    
-    
 
     public List<CheepViewModel> GetCheeps()
     {
-        IDatabaseRepository<CheepViewModel> databaseRepository = DBFacade<CheepViewModel>.getInstance();
-        databaseRepository.Read();
+        DatabaseRepository.Read();
         return _cheeps;
     }
 
@@ -40,3 +39,4 @@ public class CheepService : ICheepService
         return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
 }
+

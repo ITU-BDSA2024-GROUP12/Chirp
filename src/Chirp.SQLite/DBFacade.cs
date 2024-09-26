@@ -1,4 +1,5 @@
 using Microsoft.Data.Sqlite;
+using SQLitePCL;
 using Microsoft.Extensions.FileProviders; 
 
 namespace Chirp.SQLite;
@@ -12,11 +13,13 @@ public class DBFacade<T> : IDatabaseRepository<T>
     {
         //Create connection to the SQLite3 DB file
         //Using embbeded ressources
+        //string envFilePath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
         
-        string envFilePath = Environment.GetEnvironmentVariable("CHIRPDBPATH");
+        string envFilePath = Path.GetRelativePath(Directory.GetCurrentDirectory(), @"..\Chirp.SQLite\data\chirp.db");
 
         // If no environment variable is defined, default to the user's temp directory with chirp.db
         string defaultPath = Path.Combine(Path.GetTempPath(), "chirp.db");
+        
 
         if (envFilePath == null)
         {
@@ -24,6 +27,7 @@ public class DBFacade<T> : IDatabaseRepository<T>
         }
         Console.WriteLine(envFilePath);
         conn = new SqliteConnection($"Data Source={envFilePath}");
+        conn.Open();
 
 
     }
@@ -45,14 +49,14 @@ public class DBFacade<T> : IDatabaseRepository<T>
 
     public IEnumerable<T> Read(int? limit = null)
     {
-        /*var command = conn.CreateCommand();
-        command.CommandText = sqlQuery;
+        var command = conn.CreateCommand();
+        command.CommandText = "SELECT * FROM message";
 
         using var reader = command.ExecuteReader();
         while (reader.Read())
         {
-        }*/
-        //Console.Write(this.ToString() + "HELOO!: D!");
+            Console.WriteLine(reader.GetString(0));
+        }
         return null;
     }
 
