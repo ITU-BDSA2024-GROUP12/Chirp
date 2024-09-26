@@ -2,12 +2,15 @@ public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps();
+    public List<CheepViewModel> GetCheeps(int page = 1);
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
+    private int NO_OF_CHEEPS_ON_PAGE = 32;
+    
+    
     // These would normally be loaded from a database for example
     private static readonly List<CheepViewModel> _cheeps = new()
         {
@@ -15,9 +18,22 @@ public class CheepService : ICheepService
             new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
 
-    public List<CheepViewModel> GetCheeps()
+    public List<CheepViewModel> GetCheeps(int page)
     {
-        return _cheeps;
+        int indexStart = 0;
+        int indexEnd = page * NO_OF_CHEEPS_ON_PAGE;
+
+        if (page > 1)
+        {
+            indexStart = indexEnd - NO_OF_CHEEPS_ON_PAGE;
+        }
+        
+        if (indexEnd > _cheeps.Count)
+        {
+            indexEnd = _cheeps.Count;
+        }
+        
+        return _cheeps.GetRange(indexStart,indexEnd);
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
