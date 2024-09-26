@@ -1,3 +1,5 @@
+using Chirp.SQLite;
+
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
@@ -14,9 +16,14 @@ public class CheepService : ICheepService
             new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
             new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
+    
+    
 
     public List<CheepViewModel> GetCheeps()
     {
+        Console.Write("hello\n");
+        IDatabaseRepository<CheepViewModel> databaseRepository = DBFacade<CheepViewModel>.getInstance();
+        databaseRepository.Read();
         return _cheeps;
     }
 
