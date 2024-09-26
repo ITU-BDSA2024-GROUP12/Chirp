@@ -1,13 +1,30 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.WebUtilities
 @model Chirp.Razor.Pages.PublicModel
+@inject NavigationManager navManager
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    
+}
+
+@code
+{
+    string Navigate()
+    {
+        var uri = navManager.ToAbsoluteUri(navManager.Uri);
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("page", out var param))
+        {
+            return param.First();
+        }
+    }
 }
 
 <div>
     <h2> Public Timeline </h2>
-
+    
+    <h3>@Navigate();</h3>
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
@@ -29,4 +46,5 @@
     {
         <em>There are no cheeps so far.</em>
     }
+
 </div>
