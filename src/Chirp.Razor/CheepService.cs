@@ -1,13 +1,17 @@
+using Chirp.SQLite;
+
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps(int page = 1);
+    public List<CheepViewModel> GetCheeps();
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
+    private readonly IDatabaseRepository<CheepViewModel> DatabaseRepository = DBFacade<CheepViewModel>.getInstance();
+    
     private int NO_OF_CHEEPS_ON_PAGE = 32;
     
     
@@ -18,7 +22,7 @@ public class CheepService : ICheepService
             new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
 
-    public List<CheepViewModel> GetCheeps(int page)
+    public List<CheepViewModel> GetCheeps()
     {
         int indexStart = 0;
         int indexEnd = page * NO_OF_CHEEPS_ON_PAGE;
@@ -34,6 +38,8 @@ public class CheepService : ICheepService
         }
         
         return _cheeps.GetRange(indexStart,indexEnd);
+        DatabaseRepository.Read();
+        return _cheeps;
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
