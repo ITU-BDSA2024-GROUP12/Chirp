@@ -1,3 +1,5 @@
+using Chirp.SQLite;
+
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
@@ -8,6 +10,8 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
+    private readonly IDatabaseRepository<CheepViewModel> DatabaseRepository = DBFacade<CheepViewModel>.getInstance();
+    
     // These would normally be loaded from a database for example
     private static readonly List<CheepViewModel> _cheeps = new()
         {
@@ -17,6 +21,7 @@ public class CheepService : ICheepService
 
     public List<CheepViewModel> GetCheeps()
     {
+        DatabaseRepository.Read();
         return _cheeps;
     }
 
@@ -34,3 +39,4 @@ public class CheepService : ICheepService
         return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
 }
+
