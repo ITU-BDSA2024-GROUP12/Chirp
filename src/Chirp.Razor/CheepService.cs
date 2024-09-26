@@ -4,7 +4,7 @@ public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps();
+    public List<CheepViewModel> GetCheeps(int page = 0);
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
@@ -22,7 +22,7 @@ public class CheepService : ICheepService
             new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
 
-    public List<CheepViewModel> GetCheeps()
+    public List<CheepViewModel> GetCheeps(int page)
     {
         int indexStart = 0;
         int indexEnd = page * NO_OF_CHEEPS_ON_PAGE;
@@ -37,9 +37,9 @@ public class CheepService : ICheepService
             indexEnd = _cheeps.Count;
         }
         
-        return _cheeps.GetRange(indexStart,indexEnd);
+        
         DatabaseRepository.Read();
-        return _cheeps;
+        return _cheeps.GetRange(indexStart,indexEnd);
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)

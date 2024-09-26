@@ -14,9 +14,9 @@ public class PublicModel : PageModel
         _service = service;
     }
     
-    public ActionResult OnGet(int pageNo = 1)
+    public ActionResult OnGet(int pageNumber = 1)
     {
-        Cheeps = _service.GetCheeps(pageNo);
+        Cheeps = _service.GetCheeps(pageNumber);
         return Page();
     }
 }
