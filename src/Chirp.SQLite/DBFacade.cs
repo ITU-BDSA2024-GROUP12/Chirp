@@ -51,7 +51,18 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
     {
         conn.Open();
         var command = conn.CreateCommand();
-        command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id;";
+
+        if (limit.HasValue)
+        {
+            command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id LIMIT @limit;";
+            command.Parameters.AddWithValue("@limit", limit.Value);
+        }
+        else
+        {
+            command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id;";
+        }
+        
+        
 
         using var reader = command.ExecuteReader();
         List<T> cheeps = new List<T>();
