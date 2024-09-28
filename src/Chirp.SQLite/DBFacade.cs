@@ -33,7 +33,7 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
 
     public static DBFacade<T> getInstance()
     {
-        if (true/*instance != null*/) //TESTING, CHANGE BACK TO == WHEN DONE
+        if (instance == null) //TESTING, CHANGE BACK TO == WHEN DONE
         {
             instance = new DBFacade<T>();
         }
