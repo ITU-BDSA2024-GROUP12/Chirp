@@ -54,12 +54,12 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
 
         if (limit.HasValue)
         {
-            command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id LIMIT @limit;";
+            command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id ORDER BY pub_date DESC LIMIT @limit;";
             command.Parameters.AddWithValue("@limit", limit.Value);
         }
         else
         {
-            command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id;";
+            command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id ORDER BY pub_date DESC;";
         }
         
         
@@ -74,7 +74,6 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
             var cheep = (T)new CheepViewModel.CheepViewModel(author, text, date);
             cheeps.Add(cheep);
         }
-        conn.Close();
         return cheeps;
     }
     
