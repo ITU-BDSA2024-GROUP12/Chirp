@@ -1,10 +1,10 @@
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using Microsoft.Extensions.FileProviders; 
-
+using CheepViewModel;
 namespace Chirp.SQLite;
 
-public class DBFacade<T> : IDatabaseRepository<T>
+public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.CheepViewModel
 {
     private SqliteConnection conn;
     private static DBFacade<T> instance;
@@ -27,7 +27,7 @@ public class DBFacade<T> : IDatabaseRepository<T>
         }
         Console.WriteLine(envFilePath);
         conn = new SqliteConnection($"Data Source={envFilePath}");
-        conn.Open();
+        
     }
 
 
@@ -45,21 +45,22 @@ public class DBFacade<T> : IDatabaseRepository<T>
         return;
     }
 
+    
+
     public IEnumerable<T> Read(int? limit = null)
     {
+        conn.Open();
         var command = conn.CreateCommand();
-        command.CommandText = "SELECT * FROM message";
+        command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id;";
 
         using var reader = command.ExecuteReader();
+        List<T> cheeps = new List<T>();
         while (reader.Read())
         {
-            Console.WriteLine(reader.GetString(0));
+            var cheep = (T)new CheepViewModel.CheepViewModel(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+            cheeps.Add(cheep);
         }
-        return null;
-    }
-
-    public void closeConnection()
-    {
         conn.Close();
+        return cheeps;
     }
 }
