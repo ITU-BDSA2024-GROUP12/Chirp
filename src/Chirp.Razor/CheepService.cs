@@ -29,7 +29,6 @@ public class CheepService : ICheepService
     public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        Console.WriteLine("GetCheepsFromAuthor " + author);
         return _DatabaseRepository.ReadFromAuthor(author).ToList();
         return _cheeps.Where(x => x.Author == author).ToList();
     }

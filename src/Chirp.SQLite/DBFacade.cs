@@ -52,12 +52,12 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
 
         if (limit.HasValue)
         {
-            command.CommandText = @"SELECT text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id WHERE u.username = @author ORDER BY pub_date LIMIT @limit;";
+            command.CommandText = @"SELECT text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id WHERE u.username = @author ORDER BY pub_date DESC LIMIT @limit;";
             command.Parameters.AddWithValue("@limit", limit.Value);
         }
         else
         {
-            command.CommandText = @"SELECT text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id WHERE u.username = @author ORDER BY pub_date";
+            command.CommandText = @"SELECT text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id WHERE u.username = @author ORDER BY pub_date DESC";
         }
         command.Parameters.AddWithValue("@author", author);
         
