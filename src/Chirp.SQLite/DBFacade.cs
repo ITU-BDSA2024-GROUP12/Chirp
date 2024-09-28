@@ -57,10 +57,21 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
         List<T> cheeps = new List<T>();
         while (reader.Read())
         {
-            var cheep = (T)new CheepViewModel.CheepViewModel(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+            string author = reader.GetString(0);
+            string text = reader.GetString(1);
+            string date = UnixTimeStampToDateTimeString(reader.GetInt64(2));
+            var cheep = (T)new CheepViewModel.CheepViewModel(author, text, date);
             cheeps.Add(cheep);
         }
         conn.Close();
         return cheeps;
+    }
+    
+    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
 }
