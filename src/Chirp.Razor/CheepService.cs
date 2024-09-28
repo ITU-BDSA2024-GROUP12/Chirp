@@ -10,7 +10,8 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
-    private readonly IDatabaseRepository<CheepViewModel.CheepViewModel> _DatabaseRepository;
+    private readonly IDatabaseRepository<CheepViewModel.CheepViewModel> _DatabaseRepository =
+        DBFacade<CheepViewModel.CheepViewModel>.getInstance();
     
     // These would normally be loaded from a database for example
     private static readonly List<CheepViewModel.CheepViewModel> _cheeps = new()
@@ -18,11 +19,6 @@ public class CheepService : ICheepService
             new CheepViewModel.CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
             new CheepViewModel.CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
-
-    public CheepService(IDatabaseRepository<CheepViewModel.CheepViewModel> databaseRepository)
-    {
-        this._DatabaseRepository = databaseRepository;
-    }
 
     public List<CheepViewModel.CheepViewModel> GetCheeps()
     {

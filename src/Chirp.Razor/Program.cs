@@ -3,7 +3,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ICheepService>(provider =>
+builder.Services.AddSingleton<ICheepService, CheepService>();
+/*builder.Services.AddSingleton<ICheepService>(provider =>
 {
     // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-8.0
     // Also some Rider autofinish, until it worked.
@@ -13,7 +14,7 @@ builder.Services.AddSingleton<ICheepService>(provider =>
         DBFacade<CheepViewModel.CheepViewModel>.getInstance();
     
     return new CheepService(database);
-});
+});*/
 
 var app = builder.Build();
 
