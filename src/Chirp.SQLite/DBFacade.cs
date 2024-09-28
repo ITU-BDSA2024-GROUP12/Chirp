@@ -45,6 +45,35 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
         return;
     }
 
+    public IEnumerable<T> ReadFromAuthor(string author, int? limit = null)
+    {
+        conn.Open();
+        var command = conn.CreateCommand();
+
+        if (limit.HasValue)
+        {
+            command.CommandText = @"SELECT text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id WHERE u.username = @author ORDER BY pub_date LIMIT @limit;";
+            command.Parameters.AddWithValue("@limit", limit.Value);
+        }
+        else
+        {
+            command.CommandText = @"SELECT text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id WHERE u.username = @author ORDER BY pub_date";
+        }
+        command.Parameters.AddWithValue("@author", author);
+        
+        using var reader = command.ExecuteReader();
+        List<T> cheeps = new List<T>();
+        while (reader.Read())
+        {
+            string text = reader.GetString(0);
+            string date = UnixTimeStampToDateTimeString(reader.GetInt64(1));
+            var cheep = (T)new CheepViewModel.CheepViewModel(author, text, date);
+            cheeps.Add(cheep);
+        }
+        conn.Close();
+        return cheeps;
+    }
+
     
 
     public IEnumerable<T> Read(int? limit = null)
@@ -74,6 +103,7 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
             var cheep = (T)new CheepViewModel.CheepViewModel(author, text, date);
             cheeps.Add(cheep);
         }
+        conn.Close();
         return cheeps;
     }
     
