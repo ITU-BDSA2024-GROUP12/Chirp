@@ -4,13 +4,11 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-    var pageNumber = HttpContext.GetRouteValue("pageNumber");
 }
 
 <div>
     <h2> Public Timeline </h2>
-    
-    <h3>@pageNumber</h3>
+    <p>Showing @Model.Cheeps.Count() cheeps!</p>
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">

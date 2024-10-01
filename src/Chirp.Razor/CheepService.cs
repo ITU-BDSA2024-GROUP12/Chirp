@@ -5,7 +5,7 @@ using CheepViewModel;
 
 public interface ICheepService
 {
-    public List<CheepViewModel.CheepViewModel> GetCheeps();
+    public List<CheepViewModel.CheepViewModel> GetCheeps(int pageNumber);
     public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
@@ -24,10 +24,10 @@ public class CheepService : ICheepService
             new CheepViewModel.CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
 
-    public List<CheepViewModel.CheepViewModel> GetCheeps()
+    public List<CheepViewModel.CheepViewModel> GetCheeps(int page)
     {
-        int page = 1;
         int indexStart = 0;
+        //No. of cheeps
         int indexEnd = page * NO_OF_CHEEPS_ON_PAGE;
 
         if (page > 1)
@@ -35,11 +35,23 @@ public class CheepService : ICheepService
             indexStart = indexEnd - NO_OF_CHEEPS_ON_PAGE;
         }
         
-        if (indexEnd > _cheeps.Count)
+        List<CheepViewModel.CheepViewModel> cheeps = _DatabaseRepository.Read(indexEnd).ToList();
+
+        int count = cheeps.Count;
+        int finalCheeps = count - indexStart;
+        
+        Console.WriteLine(cheeps.Count + "|" + indexStart + "|" + finalCheeps);
+        
+        if (NO_OF_CHEEPS_ON_PAGE > finalCheeps)
         {
-            indexEnd = _cheeps.Count;
+            return cheeps.GetRange(indexStart,finalCheeps);
         }
-        return _DatabaseRepository.Read().ToList();
+        else
+        {
+            return cheeps.GetRange(indexStart,NO_OF_CHEEPS_ON_PAGE);
+        }
+        
+        
         //DatabaseRepository.Read();
         return _cheeps.GetRange(indexStart,indexEnd);
     }
