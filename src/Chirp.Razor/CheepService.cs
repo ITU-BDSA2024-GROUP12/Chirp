@@ -1,33 +1,35 @@
 using Chirp.SQLite;
+using CheepViewModel;
 
-public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps();
-    public List<CheepViewModel> GetCheepsFromAuthor(string author);
+    public List<CheepViewModel.CheepViewModel> GetCheeps();
+    public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
-    private readonly IDatabaseRepository<CheepViewModel> DatabaseRepository = DBFacade<CheepViewModel>.getInstance();
+    private readonly IDatabaseRepository<CheepViewModel.CheepViewModel> _DatabaseRepository =
+        DBFacade<CheepViewModel.CheepViewModel>.getInstance();
     
     // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel> _cheeps = new()
+    private static readonly List<CheepViewModel.CheepViewModel> _cheeps = new()
         {
-            new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
+            new CheepViewModel.CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
+            new CheepViewModel.CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
 
-    public List<CheepViewModel> GetCheeps()
+    public List<CheepViewModel.CheepViewModel> GetCheeps()
     {
-        DatabaseRepository.Read();
+        return _DatabaseRepository.Read().ToList();
         return _cheeps;
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(string author)
+    public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
+        return _DatabaseRepository.ReadFromAuthor(author).ToList();
         return _cheeps.Where(x => x.Author == author).ToList();
     }
 
