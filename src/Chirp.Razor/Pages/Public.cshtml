@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿@page "/{pageNumber:int?}"
+@using Microsoft.AspNetCore.WebUtilities
 @model Chirp.Razor.Pages.PublicModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -7,9 +8,10 @@
 
 <div>
     <h2> Public Timeline </h2>
-
+    
     @if (Model.Cheeps.Any())
     {
+        <p>Showing @Model.Cheeps.Count() cheeps!</p>
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
@@ -19,7 +21,7 @@
                             <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
                         @cheep.Message
-                        <small>&mdash; @cheep.Timestamp</small>
+                        <small>- @cheep.Timestamp</small>
                     </p>
                 </li>
             }
@@ -29,4 +31,5 @@
     {
         <em>There are no cheeps so far.</em>
     }
+
 </div>
