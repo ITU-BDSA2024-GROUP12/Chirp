@@ -38,7 +38,7 @@ public class CheepService : ICheepService
         }
         
         
-        DatabaseRepository.Read();
+        //DatabaseRepository.Read();
         return _cheeps.GetRange(indexStart,indexEnd);
     }
 
