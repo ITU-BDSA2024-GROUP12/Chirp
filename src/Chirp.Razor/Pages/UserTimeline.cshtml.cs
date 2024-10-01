@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using CheepViewModel;
+using Microsoft.Extensions.Primitives;
 
 namespace Chirp.Razor.Pages;
 
@@ -16,7 +17,14 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnGet(string author)
     {
-        Cheeps = _service.GetCheepsFromAuthor(author);
+        int pageNumber = 1;
+        StringValues pageQuery = Request.Query["page"];
+        if (!pageQuery.ToString().Equals(""))
+        {
+            pageNumber = int.Parse(pageQuery);
+        }
+        Console.WriteLine($"pageQuery: {pageQuery} | pageNumber: {pageNumber}");
+        Cheeps = _service.GetCheepsFromAuthor(author, pageNumber);
         return Page();
     }
 }

@@ -11,6 +11,7 @@
 
     @if (Model.Cheeps.Any())
     {
+        <p>Showing @Model.Cheeps.Count() cheeps!</p>
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {

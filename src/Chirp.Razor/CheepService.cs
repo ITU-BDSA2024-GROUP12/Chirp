@@ -6,7 +6,7 @@ using CheepViewModel;
 public interface ICheepService
 {
     public List<CheepViewModel.CheepViewModel> GetCheeps(int pageNumber);
-    public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author);
+    public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author, int pageNumber);
 }
 
 public class CheepService : ICheepService
@@ -23,6 +23,11 @@ public class CheepService : ICheepService
             new CheepViewModel.CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
             new CheepViewModel.CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
+    
+    private static readonly List<CheepViewModel.CheepViewModel> _emptyCheeps = new()
+    {
+        
+    };
 
     public List<CheepViewModel.CheepViewModel> GetCheeps(int page)
     {
@@ -42,23 +47,55 @@ public class CheepService : ICheepService
         
         Console.WriteLine(cheeps.Count + "|" + indexStart + "|" + finalCheeps);
         
-        if (NO_OF_CHEEPS_ON_PAGE > finalCheeps)
+        
+        if (finalCheeps <= 0)
+        {
+            return _emptyCheeps;
+        }
+        else if (NO_OF_CHEEPS_ON_PAGE > finalCheeps)
         {
             return cheeps.GetRange(indexStart,finalCheeps);
         }
-        else
-        {
-            return cheeps.GetRange(indexStart,NO_OF_CHEEPS_ON_PAGE);
-        }
         
         
+
+        return cheeps.GetRange(indexStart,NO_OF_CHEEPS_ON_PAGE);
+
+
         //DatabaseRepository.Read();
         return _cheeps.GetRange(indexStart,indexEnd);
     }
 
-    public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author)
+    public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author, int page)
     {
+        int indexStart = 0;
+        //No. of cheeps
+        int indexEnd = page * NO_OF_CHEEPS_ON_PAGE;
+
+        if (page > 1)
+        {
+            indexStart = indexEnd - NO_OF_CHEEPS_ON_PAGE;
+        }
         // filter by the provided author name
+        List<CheepViewModel.CheepViewModel> cheeps = _DatabaseRepository.ReadFromAuthor(author,indexEnd).ToList();
+
+        int count = cheeps.Count;
+        int finalCheeps = count - indexStart;
+        
+        Console.WriteLine(cheeps.Count + "|" + indexStart + "|" + finalCheeps);
+        
+        if (finalCheeps <= 0)
+        {
+            return _emptyCheeps;
+        }
+        else if (NO_OF_CHEEPS_ON_PAGE > finalCheeps)
+        {
+            return cheeps.GetRange(indexStart,finalCheeps);
+        }
+
+        return cheeps.GetRange(indexStart,NO_OF_CHEEPS_ON_PAGE);
+
+
         return _DatabaseRepository.ReadFromAuthor(author).ToList();
         return _cheeps.Where(x => x.Author == author).ToList();
     }
