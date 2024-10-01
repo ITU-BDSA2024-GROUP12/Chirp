@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using CheepViewModel;
 
 
 namespace Chirp.Razor.Pages;
@@ -16,7 +17,7 @@ public class PublicModel : PageModel
     
     public ActionResult OnGet(int pageNumber = 1)
     {
-        Cheeps = _service.GetCheeps(pageNumber);
+        Cheeps = _service.GetCheeps();
         return Page();
     }
 }

@@ -1,7 +1,7 @@
 using Chirp.SQLite;
 using CheepViewModel;
 
-public record CheepViewModel(string Author, string Message, string Timestamp);
+//public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
@@ -26,7 +26,7 @@ public class CheepService : ICheepService
 
     public List<CheepViewModel.CheepViewModel> GetCheeps()
     {
-        
+        int page = 1;
         int indexStart = 0;
         int indexEnd = page * NO_OF_CHEEPS_ON_PAGE;
 
@@ -44,7 +44,7 @@ public class CheepService : ICheepService
         return _cheeps.GetRange(indexStart,indexEnd);
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(string author)
+    public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
         return _DatabaseRepository.ReadFromAuthor(author).ToList();
