@@ -1,29 +1,32 @@
 using Chirp.SQLite;
+using CheepViewModel;
 
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps(int page = 0);
-    public List<CheepViewModel> GetCheepsFromAuthor(string author);
+    public List<CheepViewModel.CheepViewModel> GetCheeps();
+    public List<CheepViewModel.CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
-    private readonly IDatabaseRepository<CheepViewModel> DatabaseRepository = DBFacade<CheepViewModel>.getInstance();
+    private readonly IDatabaseRepository<CheepViewModel.CheepViewModel> _DatabaseRepository =
+        DBFacade<CheepViewModel.CheepViewModel>.getInstance();
     
     private int NO_OF_CHEEPS_ON_PAGE = 32;
     
     
     // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel> _cheeps = new()
+    private static readonly List<CheepViewModel.CheepViewModel> _cheeps = new()
         {
-            new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
+            new CheepViewModel.CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
+            new CheepViewModel.CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
 
-    public List<CheepViewModel> GetCheeps(int page)
+    public List<CheepViewModel.CheepViewModel> GetCheeps()
     {
+        
         int indexStart = 0;
         int indexEnd = page * NO_OF_CHEEPS_ON_PAGE;
 
@@ -36,8 +39,7 @@ public class CheepService : ICheepService
         {
             indexEnd = _cheeps.Count;
         }
-        
-        
+        return _DatabaseRepository.Read().ToList();
         //DatabaseRepository.Read();
         return _cheeps.GetRange(indexStart,indexEnd);
     }
@@ -45,6 +47,7 @@ public class CheepService : ICheepService
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
+        return _DatabaseRepository.ReadFromAuthor(author).ToList();
         return _cheeps.Where(x => x.Author == author).ToList();
     }
 
@@ -55,5 +58,5 @@ public class CheepService : ICheepService
         dateTime = dateTime.AddSeconds(unixTimeStamp);
         return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
-
 }
+
