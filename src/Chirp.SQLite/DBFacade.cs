@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using Microsoft.Extensions.FileProviders; 
@@ -23,7 +24,21 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
         {
             Console.WriteLine("no environment variable CHIRPDBPATH, using temp DB path");
             path = Path.Combine(Path.GetTempPath(), "chirp.db");
-            //run initDB.sh... somehow
+            //run initDB.sh. 
+            //Taken from https://stackoverflow.com/a/20764166/17816920
+            bool IsWindows = System.OperatingSystem.IsWindows();
+            Process proc = new Process {
+                StartInfo = new ProcessStartInfo {
+                    FileName = (IsWindows ? @"..\Chirp.SQLite\data\makedb\initDB.bat" : "../Chirp.SQLite/data/makedb/initDB.sh"),
+                    Arguments = path,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+            proc.Start();
+            proc.WaitForExit();
+            
         }
         
         Console.WriteLine(path);
