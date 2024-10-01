@@ -26,7 +26,6 @@ public class CheepService : ICheepService
     
     private static readonly List<CheepViewModel.CheepViewModel> _emptyCheeps = new()
     {
-        
     };
 
     public List<CheepViewModel.CheepViewModel> GetCheeps(int page)
