@@ -19,31 +19,31 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
         {
             Console.WriteLine("using CHIRPDBPATH with path: " + Environment.GetEnvironmentVariable("CHIRPDBPATH"));
             path = Path.GetRelativePath(Directory.GetCurrentDirectory(), Environment.GetEnvironmentVariable("CHIRPDBPATH"));
+            conn = new SqliteConnection($"Data Source={path}");
         }
         else // If no environment variable is defined, default to the user's temp directory with chirp.db
         {
             Console.WriteLine("no environment variable CHIRPDBPATH, using temp DB path");
             path = Path.Combine(Path.GetTempPath(), "chirp.db");
-            //run initDB.sh. 
-            //Taken from https://stackoverflow.com/a/20764166/17816920
-            bool IsWindows = System.OperatingSystem.IsWindows();
-            Process proc = new Process {
-                StartInfo = new ProcessStartInfo {
-                    FileName = (IsWindows ? @"..\Chirp.SQLite\data\makedb\initDB.bat" : "../Chirp.SQLite/data/makedb/initDB.sh"),
-                    Arguments = path,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-            proc.Start();
-            proc.WaitForExit();
+            
+            Console.WriteLine("using temp DB path: " + path);
+
+            string sqlScript =
+                """drop table if exists user;create table user (user_id integer primary key autoincrement, username string not null,  email string not null,  pw_hash string not null);drop table if exists message;create table message (  message_id integer primary key autoincrement,  author_id integer not null,  text string not null,  pub_date integer);""";
+            conn = new SqliteConnection($"Data Source={path}");
+            
+            conn.Open();
+
+            // Create a command to execute the SQL script
+            using (SqliteCommand command = new SqliteCommand(sqlScript, conn))
+            {
+                // Execute the script
+                command.ExecuteNonQuery();
+            }
+
+            conn.Close();
             
         }
-        
-        Console.WriteLine(path);
-        conn = new SqliteConnection($"Data Source={path}");
-        
     }
 
 

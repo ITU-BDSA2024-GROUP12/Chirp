@@ -30,6 +30,7 @@ public class CheepService : ICheepService
 
     public List<CheepViewModel.CheepViewModel> GetCheeps(int page)
     {
+        Console.WriteLine("get");
         List<CheepViewModel.CheepViewModel> cheeps = _DatabaseRepository.Read(page).ToList();
 
         return cheeps;
