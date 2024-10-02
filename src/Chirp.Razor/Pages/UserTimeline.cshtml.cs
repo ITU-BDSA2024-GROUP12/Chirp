@@ -23,7 +23,6 @@ public class UserTimelineModel : PageModel
         {
             pageNumber = int.Parse(pageQuery);
         }
-        Console.WriteLine($"pageQuery: {pageQuery} | pageNumber: {pageNumber}");
         Cheeps = _service.GetCheepsFromAuthor(author, pageNumber);
         return Page();
     }
