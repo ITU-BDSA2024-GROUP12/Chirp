@@ -1,5 +1,6 @@
 namespace DataModel;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 public class Cheep 
 {
@@ -12,14 +13,13 @@ public class Author
 {
     public string Name { get; set; }
     public string Email { get; set; }
-    public ICollections<Cheep> Cheeps { get; set; }>
+    public ICollection<Cheep> Cheeps { get; set; }
 }
 
-public class CheepDbContext : DbContext {
+public class CheepDbContext : DbContext
+{
+    public DbSet<Cheep> Cheep { get; set; }
+    public DbSet<Author> Author { get; set; }
 
-    public DbSet<Cheep> Cheep {get;set;}
-    public DbSet<Author> Author {get;set;}
-
-    public CheepDbContext (DbContextOptions<CheepDbContext> options) : base(options){}
-
+    public CheepDbContext(DbContextOptions<CheepDbContext> options) : base(options) {}
 }
