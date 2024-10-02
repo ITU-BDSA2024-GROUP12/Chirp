@@ -24,6 +24,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: src/Chirp.Razor
+    - name: Start Localhost
+      run: dotnet run &
+      working-directory: src/Chirp.Razor 
     - name: Test
       run: dotnet test --no-build --verbosity normal
   release:
