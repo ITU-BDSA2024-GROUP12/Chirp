@@ -23,7 +23,6 @@ public class PublicModel : PageModel
         {
             pageNumber = int.Parse(pageQuery);
         }
-        Console.WriteLine($"pageQuery: {pageQuery} | pageNumber: {pageNumber}");
         Cheeps = _service.GetCheeps(pageNumber);
         return Page();
     }

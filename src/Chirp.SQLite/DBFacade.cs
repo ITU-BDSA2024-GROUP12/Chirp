@@ -61,15 +61,15 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
         return;
     }
 
-    public IEnumerable<T> ReadFromAuthor(string author, int? limit = null)
+    public IEnumerable<T> ReadFromAuthor(string author, int? page = null)
     {
         conn.Open();
         var command = conn.CreateCommand();
 
-        if (limit.HasValue)
+        if (page.HasValue)
         {
-            command.CommandText = @"SELECT text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id WHERE u.username = @author ORDER BY pub_date DESC LIMIT @limit;";
-            command.Parameters.AddWithValue("@limit", limit.Value);
+            command.CommandText = "SELECT text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id WHERE u.username = @author ORDER BY pub_date DESC LIMIT 32 OFFSET @page;";
+            command.Parameters.AddWithValue("@page", 32*page.Value);
         }
         else
         {
@@ -92,15 +92,15 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
 
     
 
-    public IEnumerable<T> Read(int? limit = null)
+    public IEnumerable<T> Read(int? page = null)
     {
         conn.Open();
         var command = conn.CreateCommand();
 
-        if (limit.HasValue)
+        if (page.HasValue)
         {
-            command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id ORDER BY pub_date DESC LIMIT @limit;";
-            command.Parameters.AddWithValue("@limit", limit.Value);
+            command.CommandText = @"SELECT username, text, pub_date FROM message m  JOIN user u ON m.author_id = u.user_id ORDER BY pub_date DESC LIMIT 32 OFFSET @page;";
+            command.Parameters.AddWithValue("@page", 32*page.Value);
         }
         else
         {
