@@ -14,23 +14,8 @@ public class CheepService : ICheepService
     private readonly IDatabaseRepository<CheepViewModel.CheepViewModel> _DatabaseRepository =
         DBFacade<CheepViewModel.CheepViewModel>.getInstance();
     
-    private int NO_OF_CHEEPS_ON_PAGE = 32;
-    
-    
-    // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel.CheepViewModel> _cheeps = new()
-        {
-            new CheepViewModel.CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel.CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
-        };
-    
-    private static readonly List<CheepViewModel.CheepViewModel> _emptyCheeps = new()
-    {
-    };
-
     public List<CheepViewModel.CheepViewModel> GetCheeps(int page)
     {
-        Console.WriteLine("get");
         List<CheepViewModel.CheepViewModel> cheeps = _DatabaseRepository.Read(page).ToList();
 
         return cheeps;
