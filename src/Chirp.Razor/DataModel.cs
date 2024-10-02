@@ -2,6 +2,7 @@ namespace DataModel;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
+[PrimaryKey(nameof(Author), nameof(TimeStamp))]        
 public class Cheep 
 {
     public string text { get; set; }
@@ -9,6 +10,7 @@ public class Cheep
     public Author Author { get; set; }
 }
 
+[PrimaryKey(nameof(Name))]
 public class Author
 {
     public string Name { get; set; }
