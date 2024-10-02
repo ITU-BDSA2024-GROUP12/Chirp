@@ -1,5 +1,11 @@
 using Chirp.SQLite;
+using Microsoft.EntityFrameworkCore;
+using DataModel;
 var builder = WebApplication.CreateBuilder(args);
+
+//EF core database context setup
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(connectionString));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
