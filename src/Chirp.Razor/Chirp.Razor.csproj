@@ -9,9 +9,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Chirp.SQLite\Chirp.SQLite.csproj" />
     <ProjectReference Include="..\CheepViewModel\CheepViewModel.csproj" />
-    <Content Include="../Chirp.SQLite/data/chirp.db">
-      	<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\sql\schema.sql" />
+  </ItemGroup>
+  
 </Project>
