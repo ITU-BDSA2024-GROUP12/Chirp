@@ -26,7 +26,6 @@ jobs:
       working-directory: src/Chirp.Razor
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      working-directory: test
   release:
     name: Release
     needs: build
