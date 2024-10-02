@@ -20,13 +20,13 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: src/Chirp.CLI
+      working-directory: src/Chirp.Razor
     - name: Build
       run: dotnet build --no-restore
-      working-directory: src/Chirp.CLI
+      working-directory: src/Chirp.Razor
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      working-directory: test/ChirpCLI.Tests
+      working-directory: test
   release:
     name: Release
     needs: build
