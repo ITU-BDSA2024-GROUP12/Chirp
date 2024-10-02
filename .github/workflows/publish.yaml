@@ -20,10 +20,8 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: src/Chirp.Razor
     - name: Build
       run: dotnet build --no-restore
-      working-directory: src/Chirp.Razor
     - name: Start Localhost
       run: dotnet run &
       working-directory: src/Chirp.Razor 
