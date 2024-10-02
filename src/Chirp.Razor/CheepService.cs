@@ -41,7 +41,6 @@ public class CheepService : ICheepService
         List<CheepViewModel.CheepViewModel> cheeps = _DatabaseRepository.ReadFromAuthor(author,page).ToList();
 
         return cheeps;
-
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
