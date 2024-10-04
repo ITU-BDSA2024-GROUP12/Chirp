@@ -10,6 +10,8 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<ICheepService, CheepService>();
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+
 /*builder.Services.AddSingleton<ICheepService>(provider =>
 {
     // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-8.0

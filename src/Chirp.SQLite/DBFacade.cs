@@ -15,11 +15,11 @@ public class DBFacade<T> : IDatabaseRepository<T> where T : CheepViewModel.Cheep
         //Create connection to the SQLite3 DB file
         //Using embbeded ressources
         string path;
-        if (Environment.GetEnvironmentVariable("CHIRPDBPATH") is not null)
+        string envstring = Environment.GetEnvironmentVariable("CHIRPDBPATH");
+        if (envstring is not null)
         {
             Console.WriteLine("using CHIRPDBPATH with path: " + Environment.GetEnvironmentVariable("CHIRPDBPATH"));
-            path = Path.GetRelativePath(Directory.GetCurrentDirectory(), Environment.GetEnvironmentVariable("CHIRPDBPATH"));
-            conn = new SqliteConnection($"Data Source={path}");
+            conn = new SqliteConnection($"Data Source={envstring}");
         }
         else // If no environment variable is defined, default to the user's temp directory with chirp.db
         {
