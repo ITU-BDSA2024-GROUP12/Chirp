@@ -11,13 +11,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
 // Create a disposable service scope
-
-
-
-
 var app = builder.Build();
-
-
 //code block taken from slides
 using (var scope = app.Services.CreateScope())
 {
