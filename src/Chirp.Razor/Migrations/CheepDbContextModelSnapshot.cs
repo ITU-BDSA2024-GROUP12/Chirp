@@ -25,6 +25,9 @@ namespace Chirp.Razor.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Name", "Email");
 
                     b.ToTable("Authors");
@@ -39,14 +42,17 @@ namespace Chirp.Razor.Migrations
                     b.Property<string>("AuthorEmail")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("AuthorName")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeStamp")
+                    b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("text")
-                        .IsRequired()
+                    b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");
 
                     b.HasKey("CheepId");

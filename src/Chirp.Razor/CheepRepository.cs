@@ -8,23 +8,43 @@ public class CheepRepository : ICheepRepository
     public CheepRepository(CheepDbContext cheepDbContext)
     {
         _cheepDbContext = cheepDbContext;
+        
         Console.WriteLine("Created Cheep Repository: " + this.GetType().Name);
     }
     
-    public void CreateMessage()
+    public void CreateMessage(/*CheepDTO cheep*/)
     {
-        
+        //TODO: CREATE CHEEPDTO
+        throw new NotImplementedException();
+    /*
+        Message newMessage = new() { Text = message.Text, ... };
+        var queryResult = await _dbContext.Messages.AddAsync(newMessage); // does not write to the database!
+
+        await _dbContext.SaveChangesAsync(); // persist the changes in the database
+        return queryResult.Entity.CheepId;
+        */
     }
 
-    public async void ReadMessage()
+    public async Task<List<CheepDTO>> ReadMessage()
     {
-        var q = _cheepDbContext.Cheeps.Select(message => new { message.Author, message.text });
-        var result = await q.ToListAsync();
-        
+        var query = _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
+        {
+            Author = cheep.Author.Name,
+            Text = cheep.Text,
+            Timestamp = cheep.TimeStamp
+        });
+        var result = await query.ToListAsync();
+
+        return result;
+    }
+
+    public void ReadMessagesFromAuthor(string author)
+    {
+        throw new NotImplementedException();
     }
 
     public void UpdateMessage()
     {
-        
+        throw new NotImplementedException();
     }
 }

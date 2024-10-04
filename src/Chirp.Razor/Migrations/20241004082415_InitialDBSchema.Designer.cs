@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Razor.Migrations
 {
     [DbContext(typeof(CheepDbContext))]
-    [Migration("20241002144246_InialCheepDBSchema")]
-    partial class InialCheepDBSchema
+    [Migration("20241004082415_InitialDBSchema")]
+    partial class InitialDBSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,9 @@ namespace Chirp.Razor.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Name", "Email");
 
                     b.ToTable("Authors");
@@ -42,14 +45,17 @@ namespace Chirp.Razor.Migrations
                     b.Property<string>("AuthorEmail")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("AuthorName")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeStamp")
+                    b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("text")
-                        .IsRequired()
+                    b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");
 
                     b.HasKey("CheepId");

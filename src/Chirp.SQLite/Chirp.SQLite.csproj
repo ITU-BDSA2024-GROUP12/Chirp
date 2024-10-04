@@ -10,7 +10,6 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.20" />
     <EmbeddedResource Include="data/**/*" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.8" />
-    <ProjectReference Include="..\CheepViewModel\CheepViewModel.csproj" />
   </ItemGroup>
   
 </Project>

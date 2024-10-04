@@ -1,6 +1,9 @@
-﻿public interface ICheepRepository
+﻿using DataModel;
+
+public interface ICheepRepository
 {
     public void CreateMessage();
-    public void ReadMessage();
+    public Task<List<CheepDTO>> ReadMessage();
     public void UpdateMessage();
+    public void ReadMessagesFromAuthor(string author);
 }
