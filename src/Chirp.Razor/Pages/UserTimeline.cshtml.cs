@@ -15,14 +15,9 @@ public class UserTimelineModel : PageModel
         _repository = repository;
     }
     
-    public ActionResult OnGet(int pageNumber = 1)
+    public async Task<ActionResult> OnGet(string author)
     {
-        StringValues pageQuery = Request.Query["page"];
-        if (!pageQuery.ToString().Equals(""))
-        {
-            pageNumber = int.Parse(pageQuery);
-        }
-        _repository.ReadMessage();
+        Cheeps = await _repository.ReadMessagesFromAuthor(author);
         return Page();
     }
 }

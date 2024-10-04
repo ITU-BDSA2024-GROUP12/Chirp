@@ -38,9 +38,17 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
-    public void ReadMessagesFromAuthor(string author)
+    public async Task<List<CheepDTO>> ReadMessagesFromAuthor(string author)
     {
-        throw new NotImplementedException();
+        var query = _cheepDbContext.Cheeps.Where(cheep => cheep.Author.Name == author).Select(cheep => new CheepDTO
+        {
+            Author = cheep.Author.Name,
+            Text = cheep.Text,
+            Timestamp = cheep.TimeStamp
+        });
+        var result = await query.ToListAsync();
+
+        return result;
     }
 
     public void UpdateMessage()
