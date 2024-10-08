@@ -31,7 +31,7 @@ public class CheepRepository : ICheepRepository
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
-            Timestamp = cheep.TimeStamp
+            TimeStamp = ToDateTime(cheep.TimeStamp)
         }).Skip((page * 32)).Take(32);
         var result = await query.ToListAsync();
 
@@ -44,7 +44,7 @@ public class CheepRepository : ICheepRepository
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
-            Timestamp = cheep.TimeStamp
+            TimeStamp = ToDateTime(cheep.TimeStamp)
         }).Skip(page*32).Take(32);
         var result = await query.ToListAsync();
 
@@ -54,5 +54,12 @@ public class CheepRepository : ICheepRepository
     public void UpdateMessage()
     {
         throw new NotImplementedException();
+    }
+    
+    private static DateTime ToDateTime(long unixTime)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        return dateTime.AddSeconds(unixTime);
     }
 }
