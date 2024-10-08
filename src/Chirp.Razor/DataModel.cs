@@ -13,7 +13,7 @@ public class Cheep
 
 public class Author
 {
-    public int AuthorId { get; set; }
+    public int AuthorId { get; set; } //primary key
     public string Name { get; set; }
     public string Email { get; set; }
     public ICollection<Cheep>? Cheeps { get; set; }

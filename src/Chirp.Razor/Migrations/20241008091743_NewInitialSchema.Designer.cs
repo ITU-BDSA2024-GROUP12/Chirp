@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Razor.Migrations
 {
     [DbContext(typeof(CheepDbContext))]
-    [Migration("20241004082415_InitialDBSchema")]
-    partial class InitialDBSchema
+    [Migration("20241008091743_NewInitialSchema")]
+    partial class NewInitialSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,16 +22,19 @@ namespace Chirp.Razor.Migrations
 
             modelBuilder.Entity("DataModel.Author", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("AuthorId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Name", "Email");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AuthorId");
 
                     b.ToTable("Authors");
                 });
@@ -42,14 +45,8 @@ namespace Chirp.Razor.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AuthorEmail")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("AuthorId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("AuthorName")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -60,7 +57,7 @@ namespace Chirp.Razor.Migrations
 
                     b.HasKey("CheepId");
 
-                    b.HasIndex("AuthorName", "AuthorEmail");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Cheeps");
                 });
@@ -69,7 +66,9 @@ namespace Chirp.Razor.Migrations
                 {
                     b.HasOne("DataModel.Author", "Author")
                         .WithMany("Cheeps")
-                        .HasForeignKey("AuthorName", "AuthorEmail");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
                 });
