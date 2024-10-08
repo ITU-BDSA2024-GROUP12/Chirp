@@ -23,7 +23,7 @@ public class PublicModel : PageModel
         {
             pageNumber = int.Parse(pageQuery);
         }
-        Cheeps = await _repository.ReadMessage();
+        Cheeps = await _repository.ReadMessage(pageNumber);
         return Page();
     }
 }

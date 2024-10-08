@@ -17,7 +17,13 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
-        Cheeps = await _repository.ReadMessagesFromAuthor(author);
+        int pageNumber = 1;
+        StringValues pageQuery = Request.Query["page"];
+        if (!pageQuery.ToString().Equals(""))
+        {
+            pageNumber = int.Parse(pageQuery);
+        }
+        Cheeps = await _repository.ReadMessagesFromAuthor(author,pageNumber);
         return Page();
     }
 }

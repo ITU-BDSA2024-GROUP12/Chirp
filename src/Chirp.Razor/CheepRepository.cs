@@ -25,27 +25,27 @@ public class CheepRepository : ICheepRepository
         */
     }
 
-    public async Task<List<CheepDTO>> ReadMessage()
+    public async Task<List<CheepDTO>> ReadMessage(int page)
     {
         var query = _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
             Timestamp = cheep.TimeStamp
-        });
+        }).Skip((page * 32)).Take(32);
         var result = await query.ToListAsync();
 
         return result;
     }
 
-    public async Task<List<CheepDTO>> ReadMessagesFromAuthor(string author)
+    public async Task<List<CheepDTO>> ReadMessagesFromAuthor(string author, int page)
     {
         var query = _cheepDbContext.Cheeps.Where(cheep => cheep.Author.Name == author).Select(cheep => new CheepDTO
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
             Timestamp = cheep.TimeStamp
-        });
+        }).Skip(page*32).Take(32);
         var result = await query.ToListAsync();
 
         return result;
