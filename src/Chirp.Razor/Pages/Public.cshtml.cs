@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DataModel;
 using Microsoft.Extensions.Primitives;
@@ -26,6 +26,4 @@ public class PublicModel : PageModel
         Cheeps = await _repository.ReadMessage(pageNumber);
         return Page();
     }
-    
-    
 }
