@@ -11,7 +11,6 @@ public class Cheep
     public Author Author { get; set; }
 }
 
-[PrimaryKey(nameof(Name), nameof(Email))]
 public class Author
 {
     public int AuthorId { get; set; }
