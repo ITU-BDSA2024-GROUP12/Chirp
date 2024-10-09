@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chirp.Razor.Migrations
 {
     /// <inheritdoc />
-    public partial class InialCheepDBSchema : Migration
+    public partial class NewInitialSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,12 +15,14 @@ namespace Chirp.Razor.Migrations
                 name: "Authors",
                 columns: table => new
                 {
+                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Authors", x => new { x.Name, x.Email });
+                    table.PrimaryKey("PK_Authors", x => x.AuthorId);
                 });
 
             migrationBuilder.CreateTable(
@@ -29,25 +31,25 @@ namespace Chirp.Razor.Migrations
                 {
                     CheepId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    text = table.Column<string>(type: "TEXT", nullable: false),
+                    Text = table.Column<string>(type: "TEXT", nullable: false),
                     TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    AuthorName = table.Column<string>(type: "TEXT", nullable: true),
-                    AuthorEmail = table.Column<string>(type: "TEXT", nullable: true)
+                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cheeps", x => x.CheepId);
                     table.ForeignKey(
-                        name: "FK_Cheeps_Authors_AuthorName_AuthorEmail",
-                        columns: x => new { x.AuthorName, x.AuthorEmail },
+                        name: "FK_Cheeps_Authors_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "Authors",
-                        principalColumns: new[] { "Name", "Email" });
+                        principalColumn: "AuthorId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cheeps_AuthorName_AuthorEmail",
+                name: "IX_Cheeps_AuthorId",
                 table: "Cheeps",
-                columns: new[] { "AuthorName", "AuthorEmail" });
+                column: "AuthorId");
         }
 
         /// <inheritdoc />

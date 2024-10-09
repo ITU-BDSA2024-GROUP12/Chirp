@@ -1,4 +1,3 @@
-using Chirp.SQLite;
 using Microsoft.EntityFrameworkCore;
 using DataModel;
 var builder = WebApplication.CreateBuilder(args);
@@ -9,20 +8,22 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ICheepService, CheepService>();
-/*builder.Services.AddSingleton<ICheepService>(provider =>
-{
-    // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-8.0
-    // Also some Rider autofinish, until it worked.
-    
-    //maybe dependency injection? i don't actually know if this is how you its supposed to work. 
-    IDatabaseRepository<CheepViewModel.CheepViewModel> database =
-        DBFacade<CheepViewModel.CheepViewModel>.getInstance();
-    
-    return new CheepService(database);
-});*/
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
+// Create a disposable service scope
 var app = builder.Build();
+//code block taken from slides
+using (var scope = app.Services.CreateScope())
+{
+    // From the scope, get an instance of our database context.
+    // Through the `using` keyword, we make sure to dispose it after we are done.
+    using var context = scope.ServiceProvider.GetService<CheepDbContext>();
+    
+    // Execute the migration from code.
+    context.Database.Migrate();
+    
+    DbInitializer.SeedDatabase(context);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

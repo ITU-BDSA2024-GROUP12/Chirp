@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using CheepViewModel;
+using DataModel;
 using Microsoft.Extensions.Primitives;
 
 namespace Chirp.Razor.Pages;
 
 public class UserTimelineModel : PageModel
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel.CheepViewModel> Cheeps { get; set; }
+    private readonly ICheepRepository _repository;
+    public List<CheepDTO> Cheeps { get; set; }
 
-    public UserTimelineModel(ICheepService service)
+    public UserTimelineModel(ICheepRepository repository)
     {
-        _service = service;
+        _repository = repository;
     }
-
-    public ActionResult OnGet(string author)
+    
+    public async Task<ActionResult> OnGet(string author)
     {
         int pageNumber = 1;
         StringValues pageQuery = Request.Query["page"];
@@ -23,7 +23,7 @@ public class UserTimelineModel : PageModel
         {
             pageNumber = int.Parse(pageQuery);
         }
-        Cheeps = _service.GetCheepsFromAuthor(author, pageNumber);
+        Cheeps = await _repository.ReadMessagesFromAuthor(author,pageNumber);
         return Page();
     }
 }
