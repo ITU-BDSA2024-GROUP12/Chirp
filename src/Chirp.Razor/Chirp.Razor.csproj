@@ -15,5 +15,12 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SQLite" Version="7" />
   </ItemGroup>
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chirp.Infrastructure\Chirp.Infrastructure.csproj" />
+    <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
+  </ItemGroup>
   
 </Project>

@@ -1,4 +1,4 @@
-﻿using DataModel;
+﻿namespace Chirp.Core;
 
 public interface ICheepRepository
 {

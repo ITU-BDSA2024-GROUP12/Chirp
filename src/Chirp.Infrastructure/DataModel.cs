@@ -1,6 +1,8 @@
-namespace DataModel;
+namespace Chirp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+
+
 
 public class Cheep 
 {

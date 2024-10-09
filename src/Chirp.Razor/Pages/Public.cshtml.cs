@@ -1,8 +1,7 @@
+using Chirp.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using DataModel;
 using Microsoft.Extensions.Primitives;
-
 
 namespace Chirp.Razor.Pages;
 
