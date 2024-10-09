@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: src/Chirp.Razor
+      working-directory: src/Chirp.Web
     - name: Build
       run: dotnet build --no-restore
-      working-directory: src/Chirp.Razor
+      working-directory: src/Chirp.Web

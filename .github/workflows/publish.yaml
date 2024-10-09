@@ -24,7 +24,7 @@ jobs:
       run: dotnet build --no-restore
     - name: Start Localhost
       run: dotnet run &
-      working-directory: src/Chirp.Razor 
+      working-directory: src/Chirp.Web 
     - name: Test
       run: dotnet test --no-build --verbosity normal
   release:
@@ -61,7 +61,7 @@ jobs:
           release_name="Chirp.Razor-$tag-${{ matrix.target }}"
 
           # Build everything
-          dotnet publish src/Chirp.Razor/Chirp.Razor.csproj --framework net7.0 --runtime "${{ matrix.target }}" --self-contained false -c Release -o "$release_name"
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net7.0 --runtime "${{ matrix.target }}" --self-contained false -c Release -o "$release_name"
 
           # Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
@@ -72,6 +72,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v2
         with:
-          files: "Chirp.Razor*"
+          files: "Chirp.Web*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
