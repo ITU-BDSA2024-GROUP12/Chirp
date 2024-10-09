@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Razor.Migrations
 {
     [DbContext(typeof(CheepDbContext))]
-    [Migration("20241009085603_DataModelRestrictions")]
-    partial class DataModelRestrictions
+    [Migration("20241008112203_ChangedDateTimeBackToDateTime")]
+    partial class ChangedDateTimeBackToDateTime
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,12 +36,6 @@ namespace Chirp.Razor.Migrations
 
                     b.HasKey("AuthorId");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.ToTable("Authors");
                 });
 
@@ -56,7 +50,6 @@ namespace Chirp.Razor.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("TimeStamp")
