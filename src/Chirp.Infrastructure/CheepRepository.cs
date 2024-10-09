@@ -35,7 +35,7 @@ public class CheepRepository : ICheepRepository
             Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
-        }).Skip((page * 32)).Take(32);
+        }).Skip((page - 1) * 32).Take(32);
         var result = await query.ToListAsync();
 
         return result;
@@ -48,7 +48,7 @@ public class CheepRepository : ICheepRepository
             Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
-        }).Skip(page*32).Take(32);
+        }).Skip((page - 1) * 32).Take(32);
         var result = await query.ToListAsync();
 
         return result;
