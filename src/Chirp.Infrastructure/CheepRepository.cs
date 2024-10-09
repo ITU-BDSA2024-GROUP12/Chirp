@@ -1,4 +1,7 @@
-﻿using DataModel;
+﻿using Chirp.Core;
+
+namespace Chirp.Infrastructure;
+
 using Microsoft.EntityFrameworkCore;
 
 public class CheepRepository : ICheepRepository

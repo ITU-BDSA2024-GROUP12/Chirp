@@ -1,5 +1,6 @@
+using Chirp.Core;
+using Chirp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using DataModel;
 var builder = WebApplication.CreateBuilder(args);
 
 //EF core database context setup
