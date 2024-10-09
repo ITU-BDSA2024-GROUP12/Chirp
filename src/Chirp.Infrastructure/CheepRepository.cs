@@ -1,4 +1,7 @@
-﻿namespace Chirp.Infrastructure;
+﻿using Chirp.Core;
+
+namespace Chirp.Infrastructure;
+
 using Microsoft.EntityFrameworkCore;
 
 public class CheepRepository : ICheepRepository
