@@ -8,7 +8,7 @@ namespace Chirp.Razor.Pages;
 public class PublicModel : PageModel
 {
     private readonly ICheepRepository _repository;
-    public List<CheepDTO> Cheeps { get; set; }
+    public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
 
     public PublicModel(ICheepRepository repository)
     {
@@ -18,10 +18,7 @@ public class PublicModel : PageModel
     public async Task<ActionResult> OnGet(int pageNumber = 1)
     {
         StringValues pageQuery = Request.Query["page"];
-        if (!pageQuery.ToString().Equals(""))
-        {
-            pageNumber = int.Parse(pageQuery);
-        }
+        Int32.TryParse(pageQuery, out pageNumber);
         Cheeps = await _repository.ReadMessage(pageNumber);
         return Page();
     }

@@ -8,7 +8,7 @@ namespace Chirp.Razor.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly ICheepRepository _repository;
-    public List<CheepDTO> Cheeps { get; set; }
+    public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>(); 
 
     public UserTimelineModel(ICheepRepository repository)
     {
@@ -17,12 +17,12 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
-        int pageNumber = 1;
+        int pageNumber;
         StringValues pageQuery = Request.Query["page"];
-        if (!pageQuery.ToString().Equals(""))
-        {
-            pageNumber = int.Parse(pageQuery);
-        }
+        if(!Int32.TryParse(pageQuery, out pageNumber)) 
+		{
+			pageNumber = 1;
+		}
         Cheeps = await _repository.ReadMessagesFromAuthor(author,pageNumber);
         return Page();
     }
