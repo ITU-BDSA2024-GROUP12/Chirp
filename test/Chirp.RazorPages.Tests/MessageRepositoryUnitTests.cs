@@ -13,7 +13,7 @@ public class MessageRepositoryUnitTests
     }
 
     [Fact]
-    public async void test()
+    public async void ReadMessageFromAuthorTest()
     {
         //Taken from slides: https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_07/Slides.md
         using var connection = new SqliteConnection("Filename=:memory:");
@@ -28,6 +28,25 @@ public class MessageRepositoryUnitTests
         ICheepRepository repository = new CheepRepository(context);
         
         List<CheepDTO> list = await repository.ReadMessagesFromAuthor("Helge", 1);
+        Assert.NotEmpty(list);
+    }
+    
+    [Fact]
+    public async void ReadMessageTest()
+    {
+        //Taken from slides: https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_07/Slides.md
+        using var connection = new SqliteConnection("Filename=:memory:");
+        await connection.OpenAsync();
+        var builder = new DbContextOptionsBuilder<CheepDbContext>().UseSqlite(connection);
+
+        using var context = new CheepDbContext(builder.Options);
+        await context.Database.EnsureCreatedAsync(); // Applies the schema to the database
+
+        DbInitializer.SeedDatabase(context); //empty database otherwise? 
+        
+        ICheepRepository repository = new CheepRepository(context);
+        
+        List<CheepDTO> list = await repository.ReadMessage(1);
         Assert.NotEmpty(list);
     }
 }
