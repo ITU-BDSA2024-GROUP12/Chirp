@@ -44,7 +44,6 @@ public class CheepRepository : ICheepRepository
             AuthorId = author.AuthorId,
             TimeStamp = DateTime.Parse(time),
             Author = author
-            
     };
         var query = _cheepDbContext.Cheeps.Add(newCheep);
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
