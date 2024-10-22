@@ -8,16 +8,13 @@ namespace Chirp.RazorPages.Tests;
 
 public class CheepRepositoryTests
 {
-
     private readonly DbContextOptionsBuilder<CheepDbContext> _builder;
 
     public CheepRepositoryTests(ITestOutputHelper testOutputHelper)
     {
-
         SqliteConnection connection = new SqliteConnection("Filename=:memory:");
         connection.OpenAsync();
         _builder = new DbContextOptionsBuilder<CheepDbContext>().UseSqlite(connection);
-        
     }
     
     [Theory]
@@ -35,7 +32,6 @@ public class CheepRepositoryTests
 
         // Act & Assert
         Assert.Throws<Exception>(() =>  repository.CreateAuthor(author, email));
-        
     }
     
     [Theory]
@@ -55,6 +51,5 @@ public class CheepRepositoryTests
         bool result = repository.CreateAuthor(author, email);
         
         Assert.True(result);
-        
     }
 }
