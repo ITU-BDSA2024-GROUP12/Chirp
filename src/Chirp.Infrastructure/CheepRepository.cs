@@ -28,6 +28,34 @@ public class CheepRepository : ICheepRepository
         */
     }
 
+    public bool CreateAuthor(string name, string email)
+    {
+        if (DoesAuthorExist(name))
+        {
+            Console.WriteLine("Author already exists");
+            throw new Exception($"Author {name} already exists");
+        }
+        else
+        {
+            Console.WriteLine("Creating Author: " + name);
+            Author auth = new Author
+            {
+                Name = name,
+                Email = email
+            };
+            var query = _cheepDbContext.Authors.Add(auth);
+            Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+            return true;
+        }
+    }
+
+    private Boolean DoesAuthorExist(string name)
+    {
+        var query = _cheepDbContext.Authors.Where(x => x.Name == name);
+        //Console.WriteLine(query.Any());
+        return query.Any();
+    }
+
     public async Task<List<CheepDTO>> ReadMessage(int page)
     {
         var query = _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
