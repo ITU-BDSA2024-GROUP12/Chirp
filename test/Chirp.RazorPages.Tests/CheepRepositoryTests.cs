@@ -52,4 +52,28 @@ public class CheepRepositoryTests
         
         Assert.True(result);
     }
+
+    [Theory]
+    [InlineData("John John","jojo@itu.dk","Hi everyone!, this is a test!","2024-10-22 13:27:18")]
+    [InlineData("Adrian","adho@itu.dk","This is starting to look like something...","2024-10-22 13:34:53")]
+    public async void CancCreateCheep(string author, string email, string text, string time)
+    {
+        // Arrange
+        _builder.EnableSensitiveDataLogging();
+        CheepDbContext context = new CheepDbContext(_builder.Options);
+        await context.Database.EnsureCreatedAsync();
+        
+        // Applies the schema to the database
+        DbInitializer.SeedDatabase(context);
+        ICheepRepository repository = new CheepRepository(context);
+        
+        // Act 
+        repository.CreateCheep(author,email,text,time);
+        
+        
+        //Assert
+        List<CheepDTO> result = repository.ReadMessagesFromAuthor(author,0).Result;
+        
+        Assert.Equal(result.Last().Text,text);
+    }
 }
