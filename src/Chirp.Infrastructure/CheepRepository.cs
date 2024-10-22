@@ -54,7 +54,6 @@ public class CheepRepository : ICheepRepository
         var query = _cheepDbContext.Authors.Where(x => x.Name == name);
         //Console.WriteLine(query.Any());
         return query.Any();
-
     }
 
     public async Task<List<CheepDTO>> ReadMessage(int page)
