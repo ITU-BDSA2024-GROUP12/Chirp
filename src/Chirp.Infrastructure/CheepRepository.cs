@@ -36,16 +36,15 @@ public class CheepRepository : ICheepRepository
         }
 
         Author author = GetAuthor(name, email).Result;
-        
         Console.WriteLine("Creating cheep for: "+author.Name + ":" + author.Email + ":" + author.AuthorId + " With text: \n"+text);
 
         Cheep newCheep = new Cheep()
         {
             Text = text,
             AuthorId = author.AuthorId,
-            TimeStamp = DateTime.Parse(time)
-        };
-        
+            TimeStamp = DateTime.Parse(time),
+            Author = author
+    };
         var query = _cheepDbContext.Cheeps.Add(newCheep);
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
 
