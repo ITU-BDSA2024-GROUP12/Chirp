@@ -7,19 +7,22 @@ using System.ComponentModel.DataAnnotations;
 public class Cheep 
 {
     public int CheepId { get; set; } //primary key
-    [Required]
+    [Required] //Is this required when using inline Required keyword?
     [MaxLength(500)]
-    public string Text { get; set; }
+    public required string Text { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
     public DateTime TimeStamp { get; set; }
     public int AuthorId { get; set; }
-    public Author Author { get; set; }
+    [MaxLength(256)]
+    public required Author Author { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
 }
 
 public class Author
 {
     public int AuthorId { get; set; } //primary key
-    public string Name { get; set; }
-    public string Email { get; set; }
+    [MaxLength(256)]
+    public required string Name { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
+    [MaxLength(256)]
+    public string? Email { get; set; }
     public ICollection<Cheep>? Cheeps { get; set; }
 }
 

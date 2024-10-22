@@ -1,8 +1,8 @@
 namespace Chirp.Core;
 public class CheepDTO
 {
-    public string Author { get; set; } 
-    public string Text { get; set; }
+    public string Author { get; set; } = string.Empty;
+    public string Text { get; set; } = string.Empty;
     public long TimeStamp { get; set; }
     public string DateTime()
     {
