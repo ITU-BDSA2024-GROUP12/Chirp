@@ -28,32 +28,75 @@ public class CheepRepository : ICheepRepository
         */
     }
 
+    public bool CreateCheep(string name, string email, string text, string time)
+    {
+        try
+        {
+            CreateAuthor(name,email);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
+        Author author = GetAuthor(name, email).Result;
+        
+        Console.WriteLine("Creating cheep for: "+author.Name + ":" + author.Email + ":" + author.AuthorId + " With text: \n"+text);
+
+        Cheep newCheep = new Cheep()
+        {
+            Text = text,
+            AuthorId = author.AuthorId,
+            TimeStamp = DateTime.Parse(time)
+        };
+        
+        var query = _cheepDbContext.Cheeps.Add(newCheep);
+        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+
+        return (tsk.Result == 1);
+    }
+
     public bool CreateAuthor(string name, string email)
     {
         if (DoesAuthorExist(name))
         {
-            Console.WriteLine("Author already exists");
             throw new Exception($"Author {name} already exists");
         }
-        else
+
+        Console.WriteLine("Creating Author: " + name);
+        Author auth = new Author
         {
-            Console.WriteLine("Creating Author: " + name);
-            Author auth = new Author
-            {
-                Name = name,
-                Email = email
-            };
-            var query = _cheepDbContext.Authors.Add(auth);
-            Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-            return true;
-        }
+            Name = name,
+            Email = email
+        };
+        
+        _cheepDbContext.Authors.Add(auth);
+        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+        return (tsk.Result == 1);
     }
 
     private Boolean DoesAuthorExist(string name)
     {
         var query = _cheepDbContext.Authors.Where(x => x.Name == name);
-        //Console.WriteLine(query.Any());
-        return query.Any();
+        if (query.Any())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private async Task<Author> GetAuthor(string name, string email)
+    {
+        var query = _cheepDbContext.Authors.Where(x => x.Name == name && x.Email == email).Select(author => new Author
+        {
+            AuthorId = author.AuthorId,
+            Name = author.Name,
+            Email = author.Email,
+        });
+        
+        Author author = await query.FirstAsync();
+
+        return author;
     }
 
     public async Task<List<CheepDTO>> ReadMessage(int page)
