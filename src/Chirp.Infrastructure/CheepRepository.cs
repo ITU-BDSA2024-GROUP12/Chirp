@@ -28,9 +28,9 @@ public class CheepRepository : ICheepRepository
         */
     }
 
-    public void CreateAuthor(string name, string email)
+    public bool CreateAuthor(string name, string email)
     {
-        if (doesAuthorExist(name))
+        if (DoesAuthorExist(name))
         {
             Console.WriteLine("Author already exists");
             throw new Exception($"Author {name} already exists");
@@ -38,19 +38,21 @@ public class CheepRepository : ICheepRepository
         else
         {
             Console.WriteLine("Creating Author: " + name);
-            Author auth = new Author();
-            auth.Name = name;
-            auth.Email = email;
+            Author auth = new Author
+            {
+                Name = name,
+                Email = email
+            };
             var query = _cheepDbContext.Authors.Add(auth);
             Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-            Console.WriteLine(tsk.Result);
+            return true;
         }
     }
 
-    private Boolean doesAuthorExist(string name)
+    private Boolean DoesAuthorExist(string name)
     {
         var query = _cheepDbContext.Authors.Where(x => x.Name == name);
-        Console.WriteLine(query.Any());
+        //Console.WriteLine(query.Any());
         return query.Any();
 
     }

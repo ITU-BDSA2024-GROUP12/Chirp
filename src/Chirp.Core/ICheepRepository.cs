@@ -7,5 +7,5 @@ public interface ICheepRepository
     public void UpdateMessage();
     public Task<List<CheepDTO>> ReadMessagesFromAuthor(string author, int page);
 
-    public void CreateAuthor(string name, string email);
+    public bool CreateAuthor(string name, string email);
 }
