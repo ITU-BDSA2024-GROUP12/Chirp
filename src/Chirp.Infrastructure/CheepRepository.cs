@@ -36,16 +36,18 @@ public class CheepRepository : ICheepRepository
         }
 
         Author author = GetAuthor(name, email).Result;
-        
+        _cheepDbContext.Entry(author).State = EntityState.Detached;
         Console.WriteLine("Creating cheep for: "+author.Name + ":" + author.Email + ":" + author.AuthorId + " With text: \n"+text);
 
         Cheep newCheep = new Cheep()
         {
             Text = text,
             AuthorId = author.AuthorId,
-            TimeStamp = DateTime.Parse(time)
-        };
-        
+            TimeStamp = DateTime.Parse(time),
+            Author = author
+            
+    };
+        _cheepDbContext.Entry(author).State = EntityState.Detached;
         var query = _cheepDbContext.Cheeps.Add(newCheep);
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
 
@@ -74,6 +76,7 @@ public class CheepRepository : ICheepRepository
         
         _cheepDbContext.Authors.Add(auth);
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+        _cheepDbContext.Entry(auth).State = EntityState.Detached;
         return (tsk.Result == 1);
     }
 /// <summary>
