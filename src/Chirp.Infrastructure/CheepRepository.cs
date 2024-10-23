@@ -36,19 +36,25 @@ public class CheepRepository : ICheepRepository
         }
 
         Author author = GetAuthor(name, email).Result;
-        Console.WriteLine("Creating cheep for: "+author.Name + ":" + author.Email + ":" + author.AuthorId + " With text: \n"+text);
+        //Console.WriteLine("Creating cheep for: "+author.Name + ":" + author.Email + ":" + author.AuthorId + " With text: \n"+text);
 
+        
+        
+        var trackedAuthor = _cheepDbContext.Authors.Local
+            .FirstOrDefault(a => a.AuthorId == author.AuthorId);
+        
         Cheep newCheep = new Cheep()
         {
             Text = text,
-            AuthorId = author.AuthorId,
             TimeStamp = DateTime.Parse(time),
-            Author = author
-    };
+            Author = trackedAuthor,
+        };
+        
         var query = _cheepDbContext.Cheeps.Add(newCheep);
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-
+        
         return (tsk.Result == 1);
+        
     }
 /// <summary>
 /// Creates a new author with the given name and email
@@ -100,12 +106,12 @@ public class CheepRepository : ICheepRepository
 /// <returns>Author</returns>
     private async Task<Author> GetAuthor(string name, string email)
     {
-        var query = _cheepDbContext.Authors.Where(x => x.Name == name && x.Email == email).Select(author => new Author
+        var query = _cheepDbContext.Authors.Where(x => x.Name == name && x.Email == email).AsNoTracking().Select(author => new Author
         {
             AuthorId = author.AuthorId,
             Name = author.Name,
             Email = author.Email,
-        });
+        }).AsNoTracking();
         
         //There should only be one author returned, so return the first one.
         Author author = await query.FirstAsync();

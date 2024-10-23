@@ -14,6 +14,7 @@ public class Cheep
     public int AuthorId { get; set; }
     [MaxLength(256)]
     public required Author Author { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
+    
 }
 
 public class Author
