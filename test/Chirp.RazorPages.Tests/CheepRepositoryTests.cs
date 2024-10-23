@@ -107,7 +107,6 @@ public class CheepRepositoryTests
         DbInitializer.SeedDatabase(context);
         ICheepRepository repository = new CheepRepository(context);
         
-        // Act & Assert
         await Assert.ThrowsAsync<UserNotFoundException>(() => repository.GetAuthor(author,email));
     }
     
