@@ -109,6 +109,4 @@ public class CheepRepositoryTests
         
         await Assert.ThrowsAsync<UserNotFoundException>(() => repository.GetAuthor(author,email));
     }
-    
-    
 }
