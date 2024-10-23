@@ -1,4 +1,4 @@
-﻿using Chirp.Core;
+using Chirp.Core;
 
 namespace Chirp.Infrastructure;
 
@@ -86,7 +86,6 @@ public class CheepRepository : ICheepRepository
     {
         var query = _cheepDbContext.Authors.Where(x => x.Name == name);
         return query.Any();
-
     }
 
     /// <summary>
