@@ -104,6 +104,11 @@ public class CheepRepository : ICheepRepository
         
         //There should only be one author returned, so return the first one.
         AuthorDTO author = await query.FirstAsync();
+        
+        if (author == null)
+        {
+            throw new UserNotFoundException();
+        }
 
         return author;
     }    
@@ -123,6 +128,11 @@ public class CheepRepository : ICheepRepository
         
         //There should only be one author returned, so return the first one.
         AuthorDTO author = await query.FirstAsync();
+        
+        if (author == null)
+        {
+            throw new UserNotFoundException();
+        }
 
         return author;
     }
@@ -136,6 +146,11 @@ public class CheepRepository : ICheepRepository
 /// <returns>Author</returns>
     public async Task<AuthorDTO> GetAuthor(string name, string email)
     {
+        if (!DoesAuthorExist(name))
+        {
+            throw new UserNotFoundException();
+        }
+        
         var query = _cheepDbContext.Authors.Where(x => x.Name == name && x.Email == email).Select(author => new AuthorDTO
         {
             AuthorId = author.AuthorId,
@@ -145,7 +160,7 @@ public class CheepRepository : ICheepRepository
         
         //There should only be one author returned, so return the first one.
         AuthorDTO author = await query.FirstAsync();
-
+        
         return author;
     }
 
@@ -158,7 +173,7 @@ public class CheepRepository : ICheepRepository
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
         }).Skip((page - 1) * 32).Take(32);
         var result = await query.ToListAsync();
-
+       
         return result;
     }
 
