@@ -13,7 +13,7 @@ public class Cheep
     public DateTime TimeStamp { get; set; }
     public int AuthorId { get; set; }
     [MaxLength(256)]
-    public required Author Author { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
+    public Author? Author { get; set; } //Duplicate author reference, maybe remove??
 }
 
 public class Author
