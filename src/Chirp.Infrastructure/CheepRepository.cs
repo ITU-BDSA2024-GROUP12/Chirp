@@ -85,12 +85,10 @@ public class CheepRepository : ICheepRepository
     private Boolean DoesAuthorExist(string name)
     {
         var query = _cheepDbContext.Authors.Where(x => x.Name == name);
-        if (query.Any())
-        {
-            return true;
-        }
-        return false;
+        return query.Any();
+
     }
+
     /// <summary>
     /// Returns a author with the given email from the db.
     /// </summary>
