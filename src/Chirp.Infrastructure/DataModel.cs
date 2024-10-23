@@ -14,7 +14,6 @@ public class Cheep
     public int AuthorId { get; set; }
     [MaxLength(256)]
     public Author? Author { get; set; } //Duplicate author reference, maybe remove??
-    
 }
 
 public class Author
