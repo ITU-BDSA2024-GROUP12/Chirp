@@ -94,4 +94,21 @@ public class CheepRepositoryTests
         
         Assert.Equal(result.Last().Text,text);
     }
+    
+    [Theory]
+    [InlineData("Johannes", "johje@itu.dk")]
+    public async void GetAuthor(string author, string email)
+    {
+        // Arrange
+        CheepDbContext context = new CheepDbContext(_builder.Options);
+        await context.Database.EnsureCreatedAsync();
+        
+        // Applies the schema to the database
+        DbInitializer.SeedDatabase(context);
+        ICheepRepository repository = new CheepRepository(context);
+        
+        // Act & Assert
+        await Assert.ThrowsAsync<UserNotFoundException>(() => repository.GetAuthor(author,email));
+    }
+    
 }
