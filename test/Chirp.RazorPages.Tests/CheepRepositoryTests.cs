@@ -29,9 +29,15 @@ public class CheepRepositoryTests
         DbInitializer.SeedDatabase(context);
 
         ICheepRepository repository = new CheepRepository(context);
+        
+        AuthorDTO authorDto = new AuthorDTO()
+        {
+            Name = author,
+            Email = email
+        };
 
         // Act & Assert
-        Assert.Throws<Exception>(() => repository.CreateAuthor(author, email));
+        Assert.Throws<Exception>(() => repository.CreateAuthor(authorDto));
     }
 
     [Theory]
@@ -47,20 +53,25 @@ public class CheepRepositoryTests
 
         ICheepRepository repository = new CheepRepository(context);
 
+        AuthorDTO authorDto = new AuthorDTO()
+        {
+            Name = author,
+            Email = email
+        };
+
         // Act & Assert
-        bool result = repository.CreateAuthor(author, email);
+        bool result = repository.CreateAuthor(authorDto);
 
         Assert.True(result);
     }
-}
-    /*
+
+    
     [Theory]
     [InlineData("John John","jojo@itu.dk","Hi everyone!, this is a test!","2024-10-22 13:27:18")]
     [InlineData("Adrian","adho@itu.dk","This is starting to look like something...","2024-10-22 13:34:53")]
-    public async void CancCreateCheep(string author, string email, string text, string time)
+    public async void CanCreateCheep(string author, string email, string text, string time)
     {
         // Arrange
-        _builder.EnableSensitiveDataLogging();
         CheepDbContext context = new CheepDbContext(_builder.Options);
         await context.Database.EnsureCreatedAsync();
         
@@ -68,8 +79,14 @@ public class CheepRepositoryTests
         DbInitializer.SeedDatabase(context);
         ICheepRepository repository = new CheepRepository(context);
         
-        // Act 
-        repository.CreateCheep(author,email,text,time);
+        AuthorDTO authorDto = new AuthorDTO()
+        {
+            Name = author,
+            Email = email
+        };
+        
+        // Act
+        repository.CreateCheep(authorDto, text, time);
         
         
         //Assert
@@ -77,4 +94,4 @@ public class CheepRepositoryTests
         
         Assert.Equal(result.Last().Text,text);
     }
-}*/
+}
