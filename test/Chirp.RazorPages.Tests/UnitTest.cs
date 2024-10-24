@@ -69,6 +69,17 @@ public class CustomWebApplicationFactory<Program> : WebApplicationFactory<Progra
 			{
 				options.UseInMemoryDatabase("InMemoryDbForTesting");
 			});
+
+			
+			using (var scope = services.BuildServiceProvider().CreateScope())
+			{
+				var scopedServices = scope.ServiceProvider;
+				var db = scopedServices.GetRequiredService<CheepDbContext>();
+				//**
+				//CURRENTLY EMPTY DATABASE; CAN BE SEEDED IF UNCOMMENTED.
+				//**
+				//DbInitializer.SeedDatabase(db);
+			}
 		});
 	}
 }
