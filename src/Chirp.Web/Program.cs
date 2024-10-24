@@ -1,5 +1,6 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,38 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
+//Github OAuth Services configuration
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = "GitHub";
+    })
+    .AddCookie()
+    .AddGitHub(o =>
+    {
+        o.ClientId = builder.Configuration["authentication_github_clientId"];
+        o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
+        o.CallbackPath = "/signin-github";
+    });
+
+//Taken from https://stackoverflow.com/questions/31886779/asp-net-mvc-6-aspnet-session-errors-unable-to-resolve-service-for-type
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(1800);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // Create a disposable service scope
 var app = builder.Build();
+
+//Github OAuth
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseSession();
+
 //code block taken from slides
 using (var scope = app.Services.CreateScope())
 {
@@ -32,6 +63,11 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+
+
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
