@@ -24,8 +24,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Start Localhost
-      run: dotnet run &
-      working-directory: src/Chirp.Web  
     - name: Test
       run: dotnet test --no-build --verbosity normal
