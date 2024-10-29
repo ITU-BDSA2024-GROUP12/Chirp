@@ -1,3 +1,4 @@
+using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;

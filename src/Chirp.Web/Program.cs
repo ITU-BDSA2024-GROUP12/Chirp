@@ -1,5 +1,6 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
+using Chirp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,7 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 
 //EF Identity
 builder.Services.AddDefaultIdentity<ChirpUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<DbContext>();
+    .AddEntityFrameworkStores<CheepDbContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
