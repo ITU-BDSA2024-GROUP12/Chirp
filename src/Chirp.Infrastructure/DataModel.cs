@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 namespace Chirp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -26,7 +28,7 @@ public class Author
     public ICollection<Cheep>? Cheeps { get; set; }
 }
 
-public class CheepDbContext : DbContext
+public class CheepDbContext : IdentityDbContext<ChirpUser>
 {
     public DbSet<Cheep> Cheeps { get; set; }
     public DbSet<Author> Authors { get; set; }
