@@ -20,6 +20,4 @@ public class LoginManager
                        Input.Password, Input.RememberMe, lockoutOnFailure: true);*/
         return true;
     }
-
-    
 }
