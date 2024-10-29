@@ -10,7 +10,7 @@ string? connectionString = builder.Configuration.GetConnectionString("DefaultCon
 builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(connectionString));
 
 //EF Identity
-builder.Services.AddDefaultIdentity<ChiprUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ChirpUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<DbContext>();
 
 // Add services to the container.
