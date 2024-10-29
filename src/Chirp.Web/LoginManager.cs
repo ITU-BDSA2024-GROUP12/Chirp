@@ -16,8 +16,8 @@ public class LoginManager
 
     public async Task<bool> LogIn()
     {
-        var result = await _signInManager.PasswordSignInAsync(Input.Email,
-                       Input.Password, Input.RememberMe, lockoutOnFailure: true);
+        /*var result = await _signInManager.PasswordSignInAsync(Input.Email,
+                       Input.Password, Input.RememberMe, lockoutOnFailure: true);*/
         return true;
     }
 
