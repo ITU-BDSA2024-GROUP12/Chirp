@@ -1,19 +1,18 @@
 using System.Net.Http.Headers;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Chirp.RazorPages.Tests;
-
-public class UnitTest
+//https://stackoverflow.com/questions/55131379/integration-testing-asp-net-core-with-net-framework-cant-find-deps-json/70490057#70490057
+public class UnitTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {
 	private HttpClient _client;
 
-	public UnitTest()
+	public UnitTest(CustomWebApplicationFactory<Program> factory)
 	{
-		var baseURL = "http://localhost:5273";
-		_client = new();
+		// Use the factory to create a client
+		
+		_client = factory.CreateClient();
 		_client.DefaultRequestHeaders.Accept.Clear();
 		_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html"));
-		_client.BaseAddress = new Uri(baseURL);
 	}
 	
 	[Fact]
@@ -40,3 +39,4 @@ public class UnitTest
 		Assert.Contains($"{author}'s Timeline", content);
 	}
 }
+
