@@ -52,6 +52,10 @@ Generated\ Files/
 TestResult.xml
 nunit-*.xml
 
+# Local chirp database
+chirp.db-shm
+chirp.db-wal
+
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
