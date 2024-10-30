@@ -41,8 +41,8 @@ builder.Services.AddSession(options =>
 
 
 // Add services to the container.
-builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddRazorPages();
 
 // Create a disposable service scope
 var app = builder.Build();
