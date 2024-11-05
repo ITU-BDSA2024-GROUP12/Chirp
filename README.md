@@ -1,3 +1,5 @@
+[![.NET Test](https://github.com/ITU-BDSA2024-GROUP12/Chirp/actions/workflows/test.yaml/badge.svg)](https://github.com/ITU-BDSA2024-GROUP12/Chirp/actions/workflows/test.yaml)[![.NET Build](https://github.com/ITU-BDSA2024-GROUP12/Chirp/actions/workflows/build.yaml/badge.svg)](https://github.com/ITU-BDSA2024-GROUP12/Chirp/actions/workflows/build.yaml)
+
 # Chirp
 Chirp is a website where authors can post messages in form of cheeps, and read other authors' messages.
 
