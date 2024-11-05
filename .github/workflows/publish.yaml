@@ -24,9 +24,9 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-            env:
-            authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
-            authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
+      env:
+        authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
+        authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
   release:
     name: Release
     needs: build
