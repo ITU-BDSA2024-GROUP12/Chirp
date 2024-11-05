@@ -4,12 +4,12 @@
     <title>@ViewData["Title"]</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/NetIdentity.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="icon" type="image/png" href="/favicon/favicon.ico">
 </head>
 <body>
 <div class=page>
-    <h1><img src="/images/icon1.png" alt="Icon1"/>Chirp! test</h1>
+    <h1><img src="/images/icon1.png" alt="Icon1"/>Chirp!</h1>
     <partial name="_LoginPartial"></partial>
     <div class=body>
         @RenderBody()
@@ -18,6 +18,10 @@
         Chirp &mdash; An ASP.NET Application
     </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 
 </body>
 @await RenderSectionAsync("Scripts", required: false)

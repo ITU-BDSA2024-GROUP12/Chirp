@@ -2,27 +2,23 @@
 @using Chirp.Infrastructure.Data
 @inject SignInManager<ChirpUser> SignInManager
 @inject UserManager<ChirpUser> UserManager
-
-<ul class="navbar-nav">
+<div class=navigation>
     @if (User.Identity.IsAuthenticated)
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-        </li>
-        <li class="nav-item">
-            <p>@Url.Page("/", new { area = "" })</p>
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
+        <div>
+            <a href="/@(User.Identity.Name)">my timeline</a> |
+            <a href="/">public timeline</a> |
+            <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">logout [@(User.Identity.Name)]</a>
+        </div>
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
+        <div>
+            <a href="/">public timeline</a> |
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">register</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">login</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">manage</a>
+            
+        </div>
     }
-</ul>
+</div>
