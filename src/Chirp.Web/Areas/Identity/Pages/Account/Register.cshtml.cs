@@ -28,7 +28,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly SignInManager<ChirpUser> _signInManager;
         private readonly UserManager<ChirpUser> _userManager;
         private readonly IUserStore<ChirpUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly IUserEmailStore<ChirpUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
@@ -170,13 +170,13 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<ChirpUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<ChirpUser>)_userStore;
         }
     }
 }
