@@ -5,6 +5,8 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
 
+using System.Threading.Tasks;
+
 namespace Chirp.RazorPages.Tests;
 
 public class CheepRepositoryTests
@@ -16,6 +18,15 @@ public class CheepRepositoryTests
         SqliteConnection connection = new SqliteConnection("Filename=:memory:");
         connection.OpenAsync();
         _builder = new DbContextOptionsBuilder<CheepDbContext>().UseSqlite(connection);
+    }
+
+    private CheepDbContext GetInMemoryDbContext()
+    {
+        var options = new DbContextOptionsBuilder<CheepDbContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+
+        return new CheepDbContext(options);
     }
 
     [Theory]
@@ -110,4 +121,23 @@ public class CheepRepositoryTests
         
         await Assert.ThrowsAsync<UserNotFoundException>(() => repository.GetAuthor(author,email));
     }
+    [Fact]
+    public async Task CreateNonExistingAuthor()
+    {
+        // Arrange
+        var dbContext = GetInMemoryDbContext();
+        var repository = new CheepRepository(dbContext);
+        var authorDto = new AuthorDTO { Name = "John Testman", Email = "john@test.com" };
+
+        // Act
+        var result = repository.CreateAuthor(authorDto);
+
+        // Assert
+        Assert.True(result);
+        var authorInDb = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == "John Testman");
+        Assert.NotNull(authorInDb);
+        Assert.Equal("john@test.com", authorInDb.Email);
+    }
+
+ 
 }
