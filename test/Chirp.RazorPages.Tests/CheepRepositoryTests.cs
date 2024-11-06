@@ -121,6 +121,7 @@ public class CheepRepositoryTests
         
         await Assert.ThrowsAsync<UserNotFoundException>(() => repository.GetAuthor(author,email));
     }
+    
     [Fact]
     public async Task CreateNonExistingAuthor()
     {
@@ -139,5 +140,42 @@ public class CheepRepositoryTests
         Assert.Equal("john@test.com", authorInDb.Email);
     }
 
- 
+    [Fact]
+    public void CreateAuthorExistingAuthor()
+    {
+        // Arrange
+        var dbContext = GetInMemoryDbContext();
+        var repository = new CheepRepository(dbContext);
+        var author = new Author { Name = "Jane Test", Email = "jane@test.com" };
+        dbContext.Authors.Add(author);
+        dbContext.SaveChanges();
+
+        var authorDto = new AuthorDTO { Name = "Jane Test", Email = "jane@test.com" };
+
+        // Act & Assert
+        var exception = Assert.Throws<Exception>(() => repository.CreateAuthor(authorDto));
+        Assert.Equal("Author Jane Test already exists", exception.Message);
+    }
+
+    [Fact]
+    public async Task GetAuthorByEmailWhenAuthorExists()
+    {
+        // Arrange
+        var dbContext = GetInMemoryDbContext();
+        var repository = new CheepRepository(dbContext);
+        var author = new Author { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
+        dbContext.Authors.Add(author);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var result = await repository.GetAuthorByEmail("jane@test.com");
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Jane Test", result.Name);
+    }
+
+
+
+
 }
