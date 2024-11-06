@@ -175,6 +175,37 @@ public class CheepRepositoryTests
         Assert.Equal("Jane Test", result.Name);
     }
 
+    [Fact]
+    public async Task GetAuthorByEmailNonExistingAuthor()
+    {
+        // Arrange
+        var dbContext = GetInMemoryDbContext();
+        var repository = new CheepRepository(dbContext);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UserNotFoundException>(() => repository.GetAuthorByEmail("nonexistent@test.com"));
+    }
+    [Fact]
+    public async Task CreateCheepWhenAuthorExists()
+    {
+        // Arrange
+        var dbContext = GetInMemoryDbContext();
+        var repository = new CheepRepository(dbContext);
+        var author = new Author { AuthorId = 1, Name = "John Testman", Email = "john@test.com" };
+        dbContext.Authors.Add(author);
+        await dbContext.SaveChangesAsync();
+
+        var authorDto = new AuthorDTO { Name = "John Testman", Email = "john@test.com" };
+
+        // Act
+        var result = repository.CreateCheep(authorDto, "Hello World!", "2024-11-05 12:00:00");
+
+        // Assert
+        Assert.True(result);
+        var cheepInDb = await dbContext.Cheeps.FirstOrDefaultAsync(c => c.Text == "Hello World!");
+        Assert.NotNull(cheepInDb);
+        Assert.Equal(author.AuthorId, cheepInDb.AuthorId);
+    }
 
 
 
