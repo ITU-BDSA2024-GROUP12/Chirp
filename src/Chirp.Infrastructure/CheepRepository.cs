@@ -170,8 +170,8 @@ public class CheepRepository : ICheepRepository
             Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
-        }).Skip((page - 1) * 32).Take(32);
-        var result = await query.ToListAsync();
+        }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
+        var result = query.ToList();
        
         return result;
     }
@@ -183,9 +183,9 @@ public class CheepRepository : ICheepRepository
             Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
-        }).Skip((page - 1) * 32).Take(32);
-        var result = await query.ToListAsync();
-
+        }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
+        var result = query.ToList();
+       
         return result;
     }
 

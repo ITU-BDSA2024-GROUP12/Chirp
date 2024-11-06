@@ -9,6 +9,17 @@
 <div>
     <h2> @routeName's Timeline </h2>
 
+    @if (User.Identity.IsAuthenticated)
+    {
+    <div class="cheepbox">
+        <h3>What's on your mind @(User.Identity.Name)?</h3>
+        <form method="post">
+            <input style="float: left" type="text" name="Cheep">
+            <input type="submit" value="Share">
+        </form>
+    </div>
+    }
+
     @if (Model.Cheeps.Any())
     {
         <p>Showing @Model.Cheeps.Count() cheeps!</p>

@@ -1,4 +1,6 @@
 using Chirp.Core;
+using Chirp.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Primitives;
@@ -12,10 +14,13 @@ public class PublicModel : PageModel
     [BindProperty]
     public string Cheep { get; set; }
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
+    
+    private SignInManager<ChirpUser> _signInManager;
 
-    public PublicModel(ICheepRepository repository)
+    public PublicModel(ICheepRepository repository, SignInManager<ChirpUser> signInManager)
     {
         _repository = repository;
+        _signInManager = signInManager;
     }
     
     public async Task<ActionResult> OnGet(int pageNumber = 1)
@@ -29,6 +34,12 @@ public class PublicModel : PageModel
     public ActionResult OnPost(string Cheep)
     {
         // Do something with the text ...
+        AuthorDTO author = new AuthorDTO()
+        {
+            Name = User.Identity.Name, //Change to Username
+            Email = User.Identity.Name
+        };
+        _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
 }

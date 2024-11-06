@@ -26,4 +26,16 @@ public class UserTimelineModel : PageModel
         Cheeps = await _repository.ReadMessagesFromAuthor(author,pageNumber);
         return Page();
     }
+    
+    public ActionResult OnPost(string Cheep)
+    {
+        // Do something with the text ...
+        AuthorDTO author = new AuthorDTO()
+        {
+            Name = User.Identity.Name, //Change to Username
+            Email = User.Identity.Name
+        };
+        _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
+        return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
+    }
 }
