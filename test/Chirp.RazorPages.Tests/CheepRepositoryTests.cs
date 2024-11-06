@@ -174,7 +174,7 @@ public class CheepRepositoryTests
         Assert.NotNull(result);
         Assert.Equal("Jane Test", result.Name);
     }
-
+    //needs bugfix
     [Fact]
     public async Task GetAuthorByEmailNonExistingAuthor()
     {
@@ -205,6 +205,46 @@ public class CheepRepositoryTests
         var cheepInDb = await dbContext.Cheeps.FirstOrDefaultAsync(c => c.Text == "Hello World!");
         Assert.NotNull(cheepInDb);
         Assert.Equal(author.AuthorId, cheepInDb.AuthorId);
+    }
+
+    [Fact]
+    public async Task ReadMessageShouldReturnMessagesPaged()
+    {
+        // Arrange
+        var dbContext = GetInMemoryDbContext();
+        var repository = new CheepRepository(dbContext);
+        var author = new Author { Name = "John Testman" };
+        dbContext.Authors.Add(author);
+
+        dbContext.Cheeps.Add(new Cheep { Author = author, Text = "Hello World!", TimeStamp = DateTime.UtcNow });
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var result = await repository.ReadMessage(1);
+
+        // Assert
+        Assert.Single(result);
+        Assert.Equal("Hello World!", result[0].Text);
+    }
+
+    [Fact]
+    public async Task ReadMessagesFromAuthorPaged()
+    {
+        // Arrange
+        var dbContext = GetInMemoryDbContext();
+        var repository = new CheepRepository(dbContext);
+        var author = new Author { Name = "John Testman" };
+        dbContext.Authors.Add(author);
+
+        dbContext.Cheeps.Add(new Cheep { Author = author, Text = "Hello from John!", TimeStamp = DateTime.UtcNow });
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var result = await repository.ReadMessagesFromAuthor("John Testman", 1);
+
+        // Assert
+        Assert.Single(result);
+        Assert.Equal("Hello from John!", result[0].Text);
     }
 
 
