@@ -246,6 +246,4 @@ public class CheepRepositoryTests
         Assert.Single(result);
         Assert.Equal("Hello from John!", result[0].Text);
     }
-
-
 }
