@@ -88,8 +88,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Name")]
-            public string Name { get; set; }
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -134,7 +134,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var claim = new Claim("Name", Input.Name);
+                    var claim = new Claim("UserName", Input.UserName);
                     await _userManager.AddClaimAsync(user, claim);
 
                     var userId = await _userManager.GetUserIdAsync(user);
