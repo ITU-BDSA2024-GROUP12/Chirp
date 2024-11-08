@@ -104,7 +104,7 @@ public class CheepRepositoryTests
         //Assert
         List<CheepDTO> result = repository.ReadMessagesFromAuthor(author,0).Result;
         
-        Assert.Equal(result.Last().Text,text);
+        Assert.Equal(result.First().Text,text);
     }
     
     [Theory]
