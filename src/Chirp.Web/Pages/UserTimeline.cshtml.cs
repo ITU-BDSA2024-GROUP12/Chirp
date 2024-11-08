@@ -1,4 +1,5 @@
-﻿using Chirp.Core;
+﻿using System.Security.Claims;
+using Chirp.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Primitives;
@@ -32,7 +33,7 @@ public class UserTimelineModel : PageModel
         // Do something with the text ...
         AuthorDTO author = new AuthorDTO()
         {
-            Name = User.Identity.Name, //Change to Username
+            Name = User.FindFirstValue("UserName"),
             Email = User.Identity.Name
         };
         _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());

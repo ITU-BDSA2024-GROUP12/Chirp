@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Chirp.Core;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +37,7 @@ public class PublicModel : PageModel
         // Do something with the text ...
         AuthorDTO author = new AuthorDTO()
         {
-            Name = User.Identity.Name, //Change to Username
+            Name = User.FindFirstValue("UserName"),
             Email = User.Identity.Name
         };
         _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
