@@ -13,7 +13,7 @@ public class ExampleTest : PageTest
     [Test]
     public async Task GetStartedLink()
     {
-		await Page.GotoAsync("https://bdsagroup12chirprazor.azurewebsites.net/");
+		await Page.GotoAsync("https://localhost:7102/");
 		await Page.GetByRole(AriaRole.Heading, new() { Name = "Icon1Chirp!" }).ClickAsync();
 		await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Public Timeline" })).ToBeVisibleAsync();
     } 
