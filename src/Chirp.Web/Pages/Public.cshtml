@@ -1,4 +1,5 @@
 ﻿@page "/{pageNumber:int?}"
+@using System.Security.Claims
 @model Chirp.Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -7,7 +8,17 @@
 
 <div>
     <h2> Public Timeline </h2>
-    
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="cheepbox">
+            <h3>What's on your mind @(User.FindFirstValue("UserName"))?</h3>
+            <form method="post">
+                <input style="float: left" type="text" name="Cheep">
+                <input type="submit" value="Share">
+            </form>
+        </div>
+    }
     @if (Model.Cheeps.Any())
     {
         <p>Showing @Model.Cheeps.Count() cheeps!</p>

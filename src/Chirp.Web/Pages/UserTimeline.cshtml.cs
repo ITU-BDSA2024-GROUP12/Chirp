@@ -1,4 +1,5 @@
-﻿using Chirp.Core;
+﻿using System.Security.Claims;
+using Chirp.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Primitives;
@@ -25,5 +26,17 @@ public class UserTimelineModel : PageModel
 		}
         Cheeps = await _repository.ReadMessagesFromAuthor(author,pageNumber);
         return Page();
+    }
+    
+    public ActionResult OnPost(string Cheep)
+    {
+        // Do something with the text ...
+        AuthorDTO author = new AuthorDTO()
+        {
+            Name = User.FindFirstValue("UserName"),
+            Email = User.Identity.Name
+        };
+        _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
+        return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
 }

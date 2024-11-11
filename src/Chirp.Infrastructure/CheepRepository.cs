@@ -19,8 +19,7 @@ public class CheepRepository : ICheepRepository
 /// Creates a new cheep with the given text, and from the provided author name.
 /// If the author does not exists in the db, it creates the author.
 /// </summary>
-/// <param name="name">Name of the author</param>
-/// <param name="email">E-mail of the author</param>
+/// <param name="authorDto">DTO of the Cheep Author</param>
 /// <param name="text">Body of the cheep</param>
 /// <param name="time">Timestamp "yyyy-mm-dd hh:mm:ss"</param>
 /// <returns>True: if the cheep is created, otherwise false</returns>
@@ -171,8 +170,8 @@ public class CheepRepository : ICheepRepository
             Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
-        }).Skip((page - 1) * 32).Take(32);
-        var result = await query.ToListAsync();
+        }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
+        var result = query.ToList();
        
         return result;
     }
@@ -184,9 +183,9 @@ public class CheepRepository : ICheepRepository
             Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
-        }).Skip((page - 1) * 32).Take(32);
-        var result = await query.ToListAsync();
-
+        }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
+        var result = query.ToList();
+       
         return result;
     }
 
