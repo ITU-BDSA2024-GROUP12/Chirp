@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
+using System.Diagnostics;
 using NUnit.Framework;
 
 namespace PlaywrightTests;
@@ -39,20 +40,12 @@ public class TestSetup
     }
 }
 
+
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class ExampleTest : PageTest
 {
 
-	private IPlaywright _playwright;
-	private IBrowser _browser;
-
-	[OneTimeSetUp]
-	public async Task SetUp()
-	{
-		  _playwright = await Playwright.CreateAsync();
-          _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
-	}
 
     [Test]
     public async Task GetStartedLink()
@@ -62,10 +55,4 @@ public class ExampleTest : PageTest
 		await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Public Timeline" })).ToBeVisibleAsync();
     } 
 
-	[OneTimeTearDown]
-	public async Task TearDown()
-	{
-		 await _browser.CloseAsync();
-         _playwright.Dispose();
-	}
 }
