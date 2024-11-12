@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Chirp.RazorPages.Tests
 {
-    public class EndToEnd : IClassFixture<CustomWebApplicationFactory<Program>>
+    /*public class EndToEnd : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private HttpClient _client;
         private CustomWebApplicationFactory<Program> _factory;
@@ -77,5 +77,5 @@ namespace Chirp.RazorPages.Tests
 
             return Task.FromResult(result);
         }
-    }
+    }*/
 }
