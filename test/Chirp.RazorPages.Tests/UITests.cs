@@ -7,6 +7,8 @@ using NUnit.Framework;
 
 namespace PlaywrightTests;
 
+
+//setting up local host for tests to run on
 [SetUpFixture]
 public class TestSetup
 {
@@ -18,16 +20,17 @@ public class TestSetup
         // Start the development server
         _webServerProcess = new Process();
 		_webServerProcess.StartInfo.FileName = "dotnet";
-        _webServerProcess.StartInfo.Arguments = "run --urls \"http://localhost:5002\"";
-        _webServerProcess.StartInfo.WorkingDirectory = @"..\..\..\..\..\src\Chirp.Web";
+        _webServerProcess.StartInfo.Arguments = "run --urls \"http://localhost:5002\""; //designated port
+        _webServerProcess.StartInfo.WorkingDirectory = @"..\..\..\..\..\src\Chirp.Web"; //don't ask why it's so deep..
         _webServerProcess.StartInfo.CreateNoWindow = true;
         _webServerProcess.StartInfo.UseShellExecute = false;
         _webServerProcess.Start();
             
 		//delay to let it spin up
-       Task.Delay(6000).Wait();
+       Task.Delay(5000).Wait();
     }
-
+	
+	//ends localhost once tests are over
     [OneTimeTearDown]
     public void GlobalTeardown()
     {
@@ -45,6 +48,8 @@ public class TestSetup
 public class ExampleTest : PageTest
 {
 
+	//tests go here:
+
     [Test]
     public async Task GetStartedLink()
     {
@@ -53,6 +58,6 @@ public class ExampleTest : PageTest
 		await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Public Timeline" })).ToBeVisibleAsync();
     } 
 
-    }
+}
 
 
