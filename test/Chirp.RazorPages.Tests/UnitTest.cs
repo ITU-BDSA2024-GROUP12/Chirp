@@ -72,10 +72,13 @@ public class UnitTest : IClassFixture<CustomWebApplicationFactory<Program>>
     
                 //Act
                 var response = await client.GetAsync("/Public");
-    
+				var response2 = await client.PostAsync("/Public",new StringContent("testCheep"));
+				
                 // Assert
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            }
+				Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
+
+    }
         }
 
 class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
