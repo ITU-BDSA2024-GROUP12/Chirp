@@ -17,15 +17,15 @@ public class TestSetup
     {
         // Start the development server
         _webServerProcess = new Process();
-		_webServerProcess.StartInfo.FileName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "cmd.exe" : "/bin/bash";
-        _webServerProcess.StartInfo.Arguments = "dotnet run";
+		_webServerProcess.StartInfo.FileName = "dotnet";
+        _webServerProcess.StartInfo.Arguments = "run --urls \"http://localhost:5002\"";
         _webServerProcess.StartInfo.WorkingDirectory = @"..\..\..\..\..\src\Chirp.Web";
         _webServerProcess.StartInfo.CreateNoWindow = true;
         _webServerProcess.StartInfo.UseShellExecute = false;
         _webServerProcess.Start();
             
 		//delay to let it spin up
-        Task.Delay(3000).Wait();
+       Task.Delay(6000).Wait();
     }
 
     [OneTimeTearDown]
@@ -48,7 +48,7 @@ public class ExampleTest : PageTest
     [Test]
     public async Task GetStartedLink()
     {
-		await Page.GotoAsync("http://localhost:5273");
+		await Page.GotoAsync("http://localhost:5002");
 		await Page.GetByRole(AriaRole.Heading, new() { Name = "Icon1Chirp!" }).ClickAsync();
 		await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Public Timeline" })).ToBeVisibleAsync();
     } 
