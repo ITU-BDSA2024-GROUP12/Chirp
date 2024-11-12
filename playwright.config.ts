@@ -71,8 +71,9 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npm run start', 
+    command: 'dotnet chirp.cli run', 
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: !process.env.CI,
-  },
+    timeout: 120 * 1000, //giving the server time to boot up
+   },
 });
