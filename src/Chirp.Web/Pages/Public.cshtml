@@ -19,6 +19,13 @@
             </form>
         </div>
     }
+    @if (!ModelState.IsValid)
+    {
+        @foreach (var error in ModelState["Cheep"].Errors)
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    }
     @if (Model.Cheeps.Any())
     {
         <p>Showing @Model.Cheeps.Count() cheeps!</p>
