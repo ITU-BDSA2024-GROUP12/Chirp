@@ -25,6 +25,10 @@ public class CheepRepository : ICheepRepository
 /// <returns>True: if the cheep is created, otherwise false</returns>
     public bool CreateCheep(AuthorDTO authorDto, string text, string time)
     {
+        if (text.Length > 160)
+        {
+            throw new Exception("Cheep too long!");
+        }
         try
         {
             CreateAuthor(authorDto);
@@ -33,6 +37,8 @@ public class CheepRepository : ICheepRepository
         {
             Console.WriteLine(e.Message);
         }
+        
+        
 
         AuthorDTO author = GetAuthor(authorDto.Name,authorDto.Email).Result;
         Console.WriteLine("Creating cheep for: "+author.Name + ":" + author.Email + ":" + author.AuthorId + " With text: \n"+text);
