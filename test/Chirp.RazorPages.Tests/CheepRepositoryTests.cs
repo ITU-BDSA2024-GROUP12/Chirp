@@ -133,7 +133,7 @@ public class CheepRepositoryTests
         var sb = new StringBuilder();
         for (var i = 0; i < 161; i++)
         {
-            sb.Append(".");
+            sb.Append('.');
         }
 
         var text = sb.ToString();
@@ -152,7 +152,6 @@ public class CheepRepositoryTests
         };
         // Act & Assert
         Assert.Throws<InvalidDataException>(() => repository.CreateCheep(authorDto, text, DateTime.Now.ToString()));
-            
     }
     
     [Fact]
