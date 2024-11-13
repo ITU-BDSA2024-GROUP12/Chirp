@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(CheepDbContext))]
-    [Migration("20241113131234_genericAuthorEmail")]
+    [Migration("20241113133625_genericAuthorEmail")]
     partial class genericAuthorEmail
     {
         /// <inheritdoc />
