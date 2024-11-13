@@ -27,7 +27,7 @@ public class CheepRepository : ICheepRepository
     {
         if (text.Length > 160)
         {
-            throw new Exception("Cheep too long!");
+            throw new InvalidDataException("Cheep too long!");
         }
         try
         {
