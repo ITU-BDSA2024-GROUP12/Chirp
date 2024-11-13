@@ -29,6 +29,10 @@
                     <p>
                         <strong>
                             <a href="/@cheep.Author">@cheep.Author</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a href="@cheep.Author/follow">Follow</a>
+                            }
                         </strong>
                         @cheep.Text
                         <small>- @cheep.DateTime()</small>
