@@ -10,8 +10,7 @@ public class UserTimelineModel : PageModel
 {
     private readonly ICheepRepository _repository;
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
-
-    private string a { get; set; }
+    
 
     public UserTimelineModel(ICheepRepository repository)
     {
@@ -26,7 +25,6 @@ public class UserTimelineModel : PageModel
 		{
 			pageNumber = 1;
 		}
-        a = author;
         GetCheeps(pageNumber, author);
         return Page();
     }
