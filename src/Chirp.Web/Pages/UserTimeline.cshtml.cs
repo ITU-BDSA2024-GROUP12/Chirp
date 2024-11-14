@@ -40,12 +40,12 @@ public class UserTimelineModel : PageModel
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            GetCheeps(1, User.FindFirstValue("UserName"));
+            GetCheeps(1, User.FindFirstValue(ClaimTypes.Name));
             return Page();
         }
         AuthorDTO author = new AuthorDTO()
         {
-            Name = User.FindFirstValue("UserName"),
+            Name = User.FindFirstValue(ClaimTypes.Name),
             Email = User.Identity.Name
         };
         _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
