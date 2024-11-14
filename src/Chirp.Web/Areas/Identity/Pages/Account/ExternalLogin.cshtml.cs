@@ -86,8 +86,13 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
         }
-        
-        public IActionResult OnGet() => RedirectToPage("./Login");
+
+        public IActionResult OnGet()
+        {
+            Console.WriteLine("Get request accepted!");
+            RedirectToPage("./Login");
+            return null;
+        }
 
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
@@ -149,7 +154,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
-                        var userId = await _userManager.GetUserIdAsync(user);
+                        /*var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                         var callbackUrl = Url.Page(
@@ -165,13 +170,14 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
                             return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
-                        }
+                        }*/
 
                         Console.WriteLine("Signing in and redirecting");
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
                         return LocalRedirect(returnUrl);
                     }
                 }
+                
                 }
                 return Page();
             }
