@@ -159,7 +159,6 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
-                
                 }
                 return Page();
             }
