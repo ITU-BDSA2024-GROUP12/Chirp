@@ -19,7 +19,7 @@ public class Cheep
     public Author? Author { get; set; } //Duplicate author reference, maybe remove??
 }
 
-public class Author
+public class Author : ChirpUser
 {
     public int AuthorId { get; set; } //primary key
     [MaxLength(256)]
