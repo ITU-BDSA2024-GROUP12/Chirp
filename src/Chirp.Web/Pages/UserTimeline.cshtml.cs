@@ -9,7 +9,9 @@ namespace Chirp.Web.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly ICheepRepository _repository;
-    public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>(); 
+    public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
+
+    private string a { get; set; }
 
     public UserTimelineModel(ICheepRepository repository)
     {
@@ -24,13 +26,25 @@ public class UserTimelineModel : PageModel
 		{
 			pageNumber = 1;
 		}
-        Cheeps = await _repository.ReadMessagesFromAuthor(author,pageNumber);
+        a = author;
+        GetCheeps(pageNumber, author);
         return Page();
+    }
+
+    private async void GetCheeps(int page, string author)
+    {
+        Cheeps = await _repository.ReadMessagesFromAuthor(author,page);
     }
     
     public ActionResult OnPost(string Cheep)
     {
         // Do something with the text ...
+        if (Cheep.Length > 160)
+        {
+            ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
+            GetCheeps(1, User.FindFirstValue("UserName"));
+            return Page();
+        }
         AuthorDTO author = new AuthorDTO()
         {
             Name = User.FindFirstValue("UserName"),
