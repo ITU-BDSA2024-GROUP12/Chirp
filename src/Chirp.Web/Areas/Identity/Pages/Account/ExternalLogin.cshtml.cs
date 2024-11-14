@@ -119,6 +119,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
+            
             if (result.IsLockedOut)
             {
                 return RedirectToPage("./Lockout");
@@ -130,10 +131,47 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 ProviderDisplayName = info.ProviderDisplayName;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
-                    Input = new InputModel
+                    var user = CreateUser();
+
+                    Console.WriteLine("Creating user");
+                
+                await _userStore.SetUserNameAsync(user, info.Principal.FindFirstValue(ClaimTypes.Name), CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, info.Principal.FindFirstValue(ClaimTypes.Email), CancellationToken.None);
+
+                var loginResult = await _userManager.CreateAsync(user);
+
+                Console.WriteLine(loginResult);
+                
+                if (loginResult.Succeeded)
+                {
+                    loginResult = await _userManager.AddLoginAsync(user, info);
+                    if (loginResult.Succeeded)
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-                    };
+                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
+                        var userId = await _userManager.GetUserIdAsync(user);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = userId, code = code },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                        // If account confirmation is required, we need to show the link if we don't have a real email sender
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                        }
+
+                        Console.WriteLine("Signing in and redirecting");
+                        await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                        return LocalRedirect(returnUrl);
+                    }
+                }
                 }
                 return Page();
             }
@@ -155,13 +193,13 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 
 
-                foreach (var claim in info.Principal.Claims)
+                /*foreach (var claim in info.Principal.Claims)
                 {
                     Console.WriteLine(claim.ToString());
-                } 
+                }*/
                 
-                await _userStore.SetUserNameAsync(user, info.Principal.FindFirstValue("name"), CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, info.Principal.FindFirstValue("emailaddress"), CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, info.Principal.FindFirstValue(ClaimTypes.Name), CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, info.Principal.FindFirstValue(ClaimTypes.Email), CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
