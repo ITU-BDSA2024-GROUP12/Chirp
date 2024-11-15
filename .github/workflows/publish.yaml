@@ -72,6 +72,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v2
         with:
-          files: "Chirp.Web*"
+          files: "Chirp.Razor*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
