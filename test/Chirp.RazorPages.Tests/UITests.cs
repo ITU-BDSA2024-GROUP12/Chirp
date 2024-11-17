@@ -21,7 +21,7 @@ public class TestSetup
         _webServerProcess = new Process();
 		_webServerProcess.StartInfo.FileName = "dotnet";
         _webServerProcess.StartInfo.Arguments = "run --urls \"http://localhost:5002\""; //designated port
-        _webServerProcess.StartInfo.WorkingDirectory = @"..\..\..\..\..\src\Chirp.Web"; //don't ask why it's so deep..
+        _webServerProcess.StartInfo.WorkingDirectory = @"..\..\..\..\..\src\Chirp.Web"; //Runs from the .net in bin file
         _webServerProcess.StartInfo.CreateNoWindow = true;
         _webServerProcess.StartInfo.UseShellExecute = false;
         _webServerProcess.Start();
@@ -50,13 +50,15 @@ public class ExampleTest : PageTest
 
 	//tests go here:
 
-    [Test]
-    public async Task GetStartedLink()
+    [Test] //tests for basic information that should be visible on public timeline. (un-loggedIn)
+    public async Task publicTimeLineTest()
     {
 		await Page.GotoAsync("http://localhost:5002");
 		await Page.GetByRole(AriaRole.Heading, new() { Name = "Icon1Chirp!" }).ClickAsync();
 		await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Public Timeline" })).ToBeVisibleAsync();
-    } 
+        await Expect(Page.Locator("div").Filter(new() { HasText = "Public Timeline Showing 32" }).Nth(1)).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Showing 32 cheeps!")).ToBeVisibleAsync();
+    }
 
 }
 
