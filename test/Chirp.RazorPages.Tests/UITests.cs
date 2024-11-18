@@ -158,39 +158,6 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 
 
 /*
-//setting up local host for tests to run on
-[SetUpFixture]
-public class TestSetup
-{
-    private Process _webServerProcess;
-
-    [OneTimeSetUp]
-    public void GlobalSetup()
-    {
-        // Start the development server
-        _webServerProcess = new Process();
-		_webServerProcess.StartInfo.FileName = "dotnet";
-        _webServerProcess.StartInfo.Arguments = "run --urls \"http://localhost:5002\""; //designated port
-        _webServerProcess.StartInfo.WorkingDirectory = @"..\..\..\..\..\src\Chirp.Web"; //Runs from the .net in bin file
-        _webServerProcess.StartInfo.CreateNoWindow = true;
-        _webServerProcess.StartInfo.UseShellExecute = false;
-        _webServerProcess.Start();
-            
-		//delay to let it spin up
-       Task.Delay(5000).Wait();
-    }
-	
-	//ends localhost once tests are over
-    [OneTimeTearDown]
-    public void GlobalTeardown()
-    {
-        // Stop the server
-        if (!_webServerProcess.HasExited)
-        {
-            _webServerProcess.Kill();
-        }
-    }
-}
 
 
 [Parallelizable(ParallelScope.Self)]
