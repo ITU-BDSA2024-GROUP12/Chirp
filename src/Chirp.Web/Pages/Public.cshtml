@@ -12,12 +12,19 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="cheepbox">
-            <h3>What's on your mind @(User.FindFirstValue("UserName"))?</h3>
+            <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
             <form method="post">
                 <input style="float: left" type="text" name="Cheep">
                 <input type="submit" value="Share">
             </form>
         </div>
+    }
+    @if (!ModelState.IsValid)
+    {
+        @foreach (var error in ModelState["Cheep"].Errors)
+        {
+            <p>@error.ErrorMessage</p>
+        }
     }
     @if (Model.Cheeps.Any())
     {

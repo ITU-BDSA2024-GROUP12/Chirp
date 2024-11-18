@@ -1,3 +1,4 @@
+using System.Text;
 using Chirp.Core;
 using Chirp.Infrastructure;
 
@@ -120,6 +121,37 @@ public class CheepRepositoryTests
         ICheepRepository repository = new CheepRepository(context);
         
         await Assert.ThrowsAsync<UserNotFoundException>(() => repository.GetAuthor(author,email));
+    }
+
+    [Fact]
+    public async Task CannotCreateCheepOver160()
+    {
+        // Arrange
+        var author = "test";
+        var email = "test@test.com";
+
+        var sb = new StringBuilder();
+        for (var i = 0; i < 161; i++)
+        {
+            sb.Append('.');
+        }
+
+        var text = sb.ToString();
+            
+        CheepDbContext context = new CheepDbContext(_builder.Options);
+        await context.Database.EnsureCreatedAsync();
+        
+        // Applies the schema to the database
+        DbInitializer.SeedDatabase(context);
+        ICheepRepository repository = new CheepRepository(context);
+        
+        AuthorDTO authorDto = new AuthorDTO()
+        {
+            Name = author,
+            Email = email
+        };
+        // Act & Assert
+        Assert.Throws<InvalidDataException>(() => repository.CreateCheep(authorDto, text, DateTime.Now.ToString()));
     }
     
     [Fact]

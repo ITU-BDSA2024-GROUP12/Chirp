@@ -27,6 +27,7 @@ builder.Services.AddAuthentication(options =>
         o.ClientId = builder.Configuration["authentication_github_clientId"];
         o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
         o.CallbackPath = "/signin-github";
+        o.Scope.Add("user");
     });
 
 //Taken from https://stackoverflow.com/questions/31886779/asp-net-mvc-6-aspnet-session-errors-unable-to-resolve-service-for-type

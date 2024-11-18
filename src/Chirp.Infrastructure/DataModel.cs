@@ -44,8 +44,5 @@ public class CheepDbContext : IdentityDbContext<ChirpUser>
         modelBuilder.Entity<Author>()
             .HasIndex(c => c.Name)
             .IsUnique();
-        modelBuilder.Entity<Author>()
-            .HasIndex(c => c.Email)
-            .IsUnique();
     }
 }
