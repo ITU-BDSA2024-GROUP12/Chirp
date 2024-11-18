@@ -16,7 +16,8 @@ using Microsoft.Data.Sqlite;
 
 namespace PlaywrightTests;
 
-
+// the webAllplicationFactory is taken from https://github.com/donbavand/playwright-webapplicationfactory/blob/main/Playwright.App.Tests/BlazorUiTests.cs
+//with Apache License. The software has been modified with the addition of the ConfigureServices.
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     
