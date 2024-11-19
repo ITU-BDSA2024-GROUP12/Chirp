@@ -6,14 +6,13 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Diagnostics;
+using Xunit.Microsoft.DependencyInjection.TestsOrder;
 using Microsoft.Playwright;
 using Chirp.Infrastructure;
 using Microsoft.Data.Sqlite;
 using NUnit.Framework;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 using Assert = Xunit.Assert;
 
 namespace PlaywrightTests;
@@ -119,7 +118,18 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     }
 }
 
-[TestFixture]
+public class TestOrderer : ITestCaseOrderer
+{
+    public IEnumerable<TTestCase> OrderTestCases<TTestCase>(IEnumerable<TTestCase> testCases)
+        where TTestCase : ITestCase
+    {
+        // Example: Order tests alphabetically by method name
+        return testCases.OrderBy(tc => tc.TestMethod.Method.Name);
+    }
+}
+
+
+[TestCaseOrderer("PlaywrightTests.TestOrderer", "Chirp.RazorPages.Tests")]//runs test in alphabetical order
 public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
@@ -129,9 +139,9 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
     {
         _baseUrl = factory.ServerAddress;
     }
-
+    
     [Fact]
-    public async Task SimplePublicTimeLineTest()
+    public async Task C_SimplePublicTimeLineTest()
     {
         // Start Playwright and launch the browser
         var playwright = await Playwright.CreateAsync();
@@ -143,14 +153,15 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 
         // Navigate to the in-memory server's URL
         await page.GotoAsync(_baseUrl);
-		await page.GetByRole(AriaRole.Heading, new() { Name = "Icon1Chirp!" }).ClickAsync();
+        await page.GetByRole(AriaRole.Heading, new() { Name = "Icon1Chirp!" }).ClickAsync();
         Assert.True(await page.Locator("role=heading[name='Public Timeline']").IsVisibleAsync());
 		
         await browser.CloseAsync();
     }
-
+    
+    
 	 [Fact]
-    public async Task RegisterTest()
+    public async Task A_RegisterTest() //first register a user in temp db
     {
         // Start Playwright and launch the browser
         var playwright = await Playwright.CreateAsync();
@@ -174,6 +185,32 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         
         await browser.CloseAsync();
     }
+    /*
+    [Fact]
+    public async Task B_LoginAndOutTest()
+    {
+        // Start Playwright and launch the browser
+        var playwright = await Playwright.CreateAsync();
+        var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
+
+        // Create a new browser context and page
+        var context = await browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+
+        // Navigate to the in-memory server's URL
+        await page.GotoAsync(_baseUrl);
+        await page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await page.GetByPlaceholder("name@example.com").FillAsync("TestUser@example.com");
+        await page.GetByPlaceholder("password").FillAsync("Password123!");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+       // Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser@example.com]" }).IsVisibleAsync());
+        Assert.True(await page.GetByText("What's on your mind TestUser@example.com? Share").IsVisibleAsync());
+        await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser@example.com]" }).ClickAsync();
+        await page.GetByRole(AriaRole.Button, new() { Name = "Click here to Logout" }).ClickAsync();
+        Assert.True(await page.GetByText("You have successfully logged").IsVisibleAsync());
+        await page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
+        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "login" }).IsVisibleAsync());
+    }*/
 }
 
 
