@@ -17,7 +17,7 @@ using Microsoft.Data.Sqlite;
 namespace PlaywrightTests;
 
 // the webAllplicationFactory is taken from https://github.com/donbavand/playwright-webapplicationfactory/blob/main/Playwright.App.Tests/BlazorUiTests.cs
-//with Apache License. The software has been modified with the addition of the ConfigureServices.
+//with Apache License 2.0. The software has been modified with the addition of the ConfigureServices.
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     
@@ -117,6 +117,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     }
 }
 
+[TestFixture]
 public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
@@ -128,7 +129,7 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task TestExample()
+    public async Task SimplePublicTimeLineTest()
     {
         // Start Playwright and launch the browser
         var playwright = await Playwright.CreateAsync();
@@ -142,50 +143,28 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         await page.GotoAsync(_baseUrl);
 		await page.GetByRole(AriaRole.Heading, new() { Name = "Icon1Chirp!" }).ClickAsync();
         Assert.True(await page.Locator("role=heading[name='Public Timeline']").IsVisibleAsync(), "'Public Timeline' is visible.");
-
+		
         await browser.CloseAsync();
     }
-/*
-	private void Dispose()
-{
-    _browser?.CloseAsync();
-    _playwright?.Dispose();
-    _factory?.Dispose();
-}
-*/
-}
 
-
-
-
-/*
-
-
-[Parallelizable(ParallelScope.Self)]
-[TestFixture]
-public class ExampleTest : PageTest
-{
-
-	//tests go here:
-
-    [Test] //tests for basic information that should be visible on public timeline. (un-loggedIn)
-    public async Task publicTimeLineTest()
+	 [Fact]
+    public async Task RegisterTest()
     {
-		await Page.GotoAsync("http://localhost:5002");
-		await Page.GetByRole(AriaRole.Heading, new() { Name = "Icon1Chirp!" }).ClickAsync();
-		await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Public Timeline" })).ToBeVisibleAsync();
-        await Expect(Page.Locator("div").Filter(new() { HasText = "Public Timeline Showing 32" }).Nth(1)).ToBeVisibleAsync();
-        await Expect(Page.GetByText("Showing 32 cheeps!")).ToBeVisibleAsync();
-    }
-    
-     [Test] //tests for basic information that should be visible on public timeline. (un-loggedIn)
-        public async Task registerTest()
-        {
-    		await Page.GotoAsync("http://localhost:5002");
-    		
-        }
-    
+        // Start Playwright and launch the browser
+        var playwright = await Playwright.CreateAsync();
+        var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
 
+        // Create a new browser context and page
+        var context = await browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+
+        // Navigate to the in-memory server's URL
+        await page.GotoAsync(_baseUrl);
+		
+		
+        await browser.CloseAsync();
+    }
 }
 
-*/
+
+
