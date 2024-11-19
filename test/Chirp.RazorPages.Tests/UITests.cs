@@ -13,6 +13,8 @@ using System.Diagnostics;
 using Microsoft.Playwright;
 using Chirp.Infrastructure;
 using Microsoft.Data.Sqlite;
+using NUnit.Framework;
+using Assert = Xunit.Assert;
 
 namespace PlaywrightTests;
 
@@ -142,7 +144,7 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         // Navigate to the in-memory server's URL
         await page.GotoAsync(_baseUrl);
 		await page.GetByRole(AriaRole.Heading, new() { Name = "Icon1Chirp!" }).ClickAsync();
-        Assert.True(await page.Locator("role=heading[name='Public Timeline']").IsVisibleAsync(), "'Public Timeline' is visible.");
+        Assert.True(await page.Locator("role=heading[name='Public Timeline']").IsVisibleAsync());
 		
         await browser.CloseAsync();
     }
@@ -160,8 +162,16 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 
         // Navigate to the in-memory server's URL
         await page.GotoAsync(_baseUrl);
-		
-		
+        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "register" }).IsVisibleAsync());
+		await page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
+		await page.GetByPlaceholder("name@example.com").FillAsync("TestUser@example.com");
+		await page.GetByPlaceholder("John Doe").FillAsync("TestUser");
+		await page.GetByLabel("Password", new() { Exact = true }).FillAsync("Password123!");
+		await page.GetByLabel("Confirm Password").FillAsync("Password123!");
+		await page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
+        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser@example.com]" }).IsVisibleAsync());
+        Assert.True(await page.GetByText("What's on your mind TestUser@example.com? Share").IsVisibleAsync(), "once registered the testUser can cheep");
+        
         await browser.CloseAsync();
     }
 }
