@@ -578,3 +578,6 @@ fabric.properties
 
 # WSL Specific
 *:Zone.Identifier
+/playwright-report/
+/blob-report/
+/playwright/.cache/
