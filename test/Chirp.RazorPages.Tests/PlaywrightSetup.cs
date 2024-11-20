@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +20,6 @@ namespace PlaywrightSetup;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
-    
     private IHost? _host;
 
     public string ServerAddress
@@ -34,7 +33,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        
         builder.ConfigureServices(services =>
         {
             // Remove the existing DbContext registration
