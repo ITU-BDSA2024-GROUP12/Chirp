@@ -28,16 +28,28 @@ public class PublicModel : PageModel
     {
         StringValues pageQuery = Request.Query["page"];
         Int32.TryParse(pageQuery, out pageNumber);
-        Cheeps = await _repository.ReadMessage(pageNumber);
+        GetCheeps(pageNumber);
         return Page();
+    }
+
+    private async void GetCheeps(int pageNumber)
+    {
+        Cheeps = await _repository.ReadMessage(pageNumber);
     }
     
     public ActionResult OnPost(string Cheep)
     {
+        if (Cheep.Length > 160)
+        {
+            ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
+            GetCheeps(1);
+            return Page();
+        }
+        
         // Do something with the text ...
         AuthorDTO author = new AuthorDTO()
         {
-            Name = User.FindFirstValue("UserName"),
+            Name = User.FindFirstValue(ClaimTypes.Name),
             Email = User.Identity.Name
         };
         _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
