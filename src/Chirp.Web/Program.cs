@@ -14,7 +14,7 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //EF Identity
-builder.Services.AddDefaultIdentity<ChirpUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ChirpUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<CheepDbContext>();
 
 //Github OAuth authorization option
@@ -27,7 +27,7 @@ builder.Services.AddAuthentication(options =>
         o.ClientId = builder.Configuration["authentication_github_clientId"];
         o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
         o.CallbackPath = "/signin-github";
-        o.Scope.Add("user");
+        o.Scope.Add("user:email");
     });
 
 //Taken from https://stackoverflow.com/questions/31886779/asp-net-mvc-6-aspnet-session-errors-unable-to-resolve-service-for-type
