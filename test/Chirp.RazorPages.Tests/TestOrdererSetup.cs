@@ -2,10 +2,13 @@
 using Xunit.Microsoft.DependencyInjection.TestsOrder;
 using Xunit.Sdk;
 
-// file for setting up Testorderer for executing test in order.
-
 namespace TestOrderer;
 
+/// <summary>
+/// This testOrderer is meant to be used for Playwright tests but can be used elsewhere as well
+/// It allows Xunit to order test by alphabetical order
+/// remember to state both namespace and assembly name when using.
+/// </summary>
 public class TestOrderer : ITestCaseOrderer
 {
     public IEnumerable<TTestCase> OrderTestCases<TTestCase>(IEnumerable<TTestCase> testCases)

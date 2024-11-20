@@ -12,12 +12,17 @@ using Chirp.Infrastructure;
 
 namespace PlaywrightSetup;
 
-/*
-/file for setting up the webHost local server for in-memory testing.
-*/
 
-
-
+/// <summary>
+/// The webApplicationFactory used by Playwright test to set up a local server with an in-memory sqlite test-database
+/// Most of this class is taken from
+/// https://github.com/donbavand/playwright-webapplicationfactory/blob/main/Playwright.App.Tests/BlazorUiTests.cs
+/// which is provided as-is under the Apache License 2.0
+/// Full license: https://github.com/donbavand/playwright-webapplicationfactory/blob/main/LICENSE
+///
+/// The class has been modified for the specific use with the addition of the CreateHost method,
+/// that setups up the in-memory test db.
+/// </summary>
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     private IHost? _host;
@@ -114,8 +119,3 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         }
     }
 }
-
-// the webAllplicationFactory is taken from https://github.com/donbavand/playwright-webapplicationfactory/blob/main/Playwright.App.Tests/BlazorUiTests.cs
-//with Apache License 2.0. The software has been modified with the addition of the ConfigureServices.
-
-

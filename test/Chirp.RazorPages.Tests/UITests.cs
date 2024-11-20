@@ -5,7 +5,20 @@ using PlaywrightSetup;
 
 namespace PlaywrightTests;
 
-
+///<summery>
+/// If Errors occour due to lack of installed playwright call
+/// pwsh test/Chirp.RazorPages.Tests/bin/Debug/net7.0/playwright.ps1 install --with-deps
+/// from the source location. Alternatively call
+/// pwsh bin/Debug/net7.0/playwright.ps1 install --with-deps
+/// from the test file
+///
+/// The playwright tests do NOT use PageTest
+/// as it does not work well together with setting up a local server with WebApplicationFactory,
+/// Instead it uses a manuel setup of playwright, browser, context and page.
+///
+/// The test are order by alphabetical order, as some test require that a user is registered in memory.
+/// The syntax for naming a test should therefore be [letterOrNumberDepictingOrder]_testName example: A_test1
+///</summery>
 [TestCaseOrderer("TestOrderer.TestOrderer", "Chirp.RazorPages.Tests")]//runs test in alphabetical order
 public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 {
