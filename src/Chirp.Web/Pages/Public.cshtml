@@ -31,7 +31,11 @@
                             <a href="/@cheep.Author">@cheep.Author</a>
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <a href="@cheep.Author/follow">Follow</a>
+                                <form method="post">
+                                    <input type="hidden" id="user" name="user" value=@(User.FindFirstValue("UserName"))>
+                                    <input type="hidden" id="author" name="author" value=@cheep.Author>
+                                    <input type="submit" value="Follow">
+                                </form>
                             }
                         </strong>
                         @cheep.Text
