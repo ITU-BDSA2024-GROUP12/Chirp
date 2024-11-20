@@ -9,10 +9,8 @@ public class AuthorizationTests
     private SignInManager<ChirpUser> _signInManager;
 
     public AuthorizationTests(SignInManager<ChirpUser> signInManager) {
-        
         {
             _signInManager = signInManager;
-            
         }
     }
 
