@@ -6,7 +6,7 @@ using PlaywrightSetup;
 namespace PlaywrightTests;
 
 
-[TestCaseOrderer("PlaywrightSetup.TestOrderer", "Chirp.RazorPages.Tests")]//runs test in alphabetical order
+[TestCaseOrderer("TestOrderer.TestOrderer", "Chirp.RazorPages.Tests")]//runs test in alphabetical order
 public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 {
     private  readonly string _baseUrl;

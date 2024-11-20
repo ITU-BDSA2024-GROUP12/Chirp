@@ -7,26 +7,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Data.Sqlite;
-using Xunit.Abstractions;
-using Xunit.Microsoft.DependencyInjection.TestsOrder;
-using Xunit.Sdk;
+
 using Chirp.Infrastructure;
 
 namespace PlaywrightSetup;
 
 /*
-/file for setting up the webHost local server for in-memory testing and Testorderer for executing test in order.
+/file for setting up the webHost local server for in-memory testing.
 */
 
-public class TestOrderer : ITestCaseOrderer
-{
-    public IEnumerable<TTestCase> OrderTestCases<TTestCase>(IEnumerable<TTestCase> testCases)
-        where TTestCase : ITestCase
-    {
-        // Example: Order tests alphabetically by method name
-        return testCases.OrderBy(tc => tc.TestMethod.Method.Name);
-    }
-}
+
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
