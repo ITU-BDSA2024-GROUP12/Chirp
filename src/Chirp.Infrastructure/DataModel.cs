@@ -27,6 +27,7 @@ public class Author
     [MaxLength(256)]
     public string? Email { get; set; }
     public ICollection<Cheep>? Cheeps { get; set; }
+    public ICollection<Author>? Following { get; set; }
 }
 
 public class CheepDbContext : IdentityDbContext<ChirpUser>
