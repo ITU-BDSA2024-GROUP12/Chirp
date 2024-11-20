@@ -126,7 +126,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -134,7 +134,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var claim = new Claim("UserName", Input.UserName);
+                    var claim = new Claim(ClaimTypes.Name, Input.UserName);
+                    Console.WriteLine("Input is: " + Input.UserName + " " + claim.Value);
                     await _userManager.AddClaimAsync(user, claim);
 
                     var userId = await _userManager.GetUserIdAsync(user);
