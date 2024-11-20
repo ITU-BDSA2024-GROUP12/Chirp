@@ -60,7 +60,6 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         Assert.True(await page.GetByText("What's on your mind TestUser@example.com? Share").IsVisibleAsync(), "once registered the testUser can cheep");
         
         await browser.CloseAsync();
-        
     }
     /* This test is correctly set up however login does currently not work.
     [Fact]
