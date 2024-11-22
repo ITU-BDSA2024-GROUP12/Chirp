@@ -61,7 +61,7 @@ jobs:
           release_name="Chirp.Razor-$tag-${{ matrix.target }}"
 
           # Build everything
-          dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net7.0 --runtime "${{ matrix.target }}" --self-contained false -c Release -o "$release_name"
+          dotnet publish Chirp.sln --framework net7.0 --runtime "${{ matrix.target }}" --self-contained false -c Release -o "$release_name"
 
           # Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
@@ -72,6 +72,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v2
         with:
-          files: "Chirp.Web*"
+          files: "Chirp.Razor*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
