@@ -191,7 +191,6 @@ public class CheepRepository : ICheepRepository
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
         }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
         var result = query.ToList();
-       
         return result;
     }
 
