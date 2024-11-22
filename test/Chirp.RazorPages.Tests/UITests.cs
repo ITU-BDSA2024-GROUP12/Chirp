@@ -69,8 +69,8 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 		await page.GetByLabel("Password", new() { Exact = true }).FillAsync("Password123!");
 		await page.GetByLabel("Confirm Password").FillAsync("Password123!");
 		await page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
-        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser@example.com]" }).IsVisibleAsync());
-        Assert.True(await page.GetByText("What's on your mind TestUser@example.com? Share").IsVisibleAsync(), "once registered the testUser can cheep");
+        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser]" }).IsVisibleAsync());
+        Assert.True(await page.GetByText("What's on your mind TestUser? Share").IsVisibleAsync(), "once registered the testUser can cheep");
         
         await browser.CloseAsync();
     }
