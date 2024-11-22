@@ -271,6 +271,21 @@ public class CheepRepositoryTests
         Assert.Equal("Hello World!", result[0].Text);
     }
     
+    [Fact]
+    public async Task GetMessageReturn32Cheeps()
+    {
+        // Arrange
+        var dbContext = GetInMemoryDbContext();
+        DbInitializer.SeedDatabase(dbContext);
+        var repository = new CheepRepository(dbContext);
+        
+        // Act
+        var result = await repository.GetMessages(1);
+        // Assert
+        Assert.Equal(32, result.Count);
+       
+    }
+    
     //GetMessagesFromAuthor
     [Fact]
     public async Task ReadMessagesFromAuthorPaged()
