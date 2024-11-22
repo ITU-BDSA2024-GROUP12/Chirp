@@ -45,6 +45,8 @@ public class CheepRepositoryTests
     //ReadMessage
     
     
+    
+    
     [Theory]
     [InlineData("Adrian", "adho@itu.dk")]
     public async void CanCreateAuthor_ThrowsException(string author, string email)
@@ -118,7 +120,7 @@ public class CheepRepositoryTests
         
         
         //Assert
-        List<CheepDTO> result = repository.ReadMessagesFromAuthor(author,0).Result;
+        List<CheepDTO> result = repository.GetMessagesFromAuthor(author,0).Result;
         
         Assert.Equal(result.First().Text,text);
     }
@@ -287,7 +289,7 @@ public class CheepRepositoryTests
         await dbContext.SaveChangesAsync();
 
         // Act
-        var result = await repository.ReadMessagesFromAuthor("John Testman", 1);
+        var result = await repository.GetMessagesFromAuthor("John Testman", 1);
 
         // Assert
         Assert.Single(result);

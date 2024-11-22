@@ -182,7 +182,7 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
-    public async Task<List<CheepDTO>> ReadMessagesFromAuthor(string author, int page)
+    public async Task<List<CheepDTO>> GetMessagesFromAuthor(string author, int page)
     {
         var query = _cheepDbContext.Cheeps.Where(cheep => cheep.Author.Name == author).Select(cheep => new CheepDTO
         {
