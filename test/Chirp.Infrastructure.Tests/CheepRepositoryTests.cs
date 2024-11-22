@@ -283,7 +283,6 @@ public class CheepRepositoryTests
         var result = await repository.GetMessages(1);
         // Assert
         Assert.Equal(32, result.Count);
-       
     }
     
     //GetMessagesFromAuthor
