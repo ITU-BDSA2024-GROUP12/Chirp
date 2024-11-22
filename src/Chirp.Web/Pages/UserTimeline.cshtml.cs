@@ -31,7 +31,7 @@ public class UserTimelineModel : PageModel
 
     private async void GetCheeps(int page, string author)
     {
-        Cheeps = await _repository.ReadMessagesFromAuthor(author,page);
+        Cheeps = await _repository.GetMessagesFromAuthor(author,page);
     }
     
     public ActionResult OnPost(string Cheep)
