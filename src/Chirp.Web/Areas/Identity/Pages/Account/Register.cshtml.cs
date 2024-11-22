@@ -135,7 +135,6 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var claim = new Claim(ClaimTypes.Name, Input.UserName);
-                    Console.WriteLine("Input is: " + Input.UserName + " " + claim.Value);
                     await _userManager.AddClaimAsync(user, claim);
 
                     var userId = await _userManager.GetUserIdAsync(user);
