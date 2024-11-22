@@ -29,7 +29,22 @@ public class CheepRepositoryTests
 
         return new CheepDbContext(options);
     }
-
+    
+    //CreateCheep
+    
+    //CreateAuthor
+    
+    //DoesAuthorExist
+    
+    //GetAuthorByEmail
+    
+    //GetAuthorByName
+    
+    //GetAuthor
+    
+    //ReadMessage
+    
+    
     [Theory]
     [InlineData("Adrian", "adho@itu.dk")]
     public async void CanCreateAuthor_ThrowsException(string author, string email)
@@ -252,7 +267,7 @@ public class CheepRepositoryTests
         await dbContext.SaveChangesAsync();
 
         // Act
-        var result = await repository.ReadMessage(1);
+        var result = await repository.GetMessages(1);
 
         // Assert
         Assert.Single(result);

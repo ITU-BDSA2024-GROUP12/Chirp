@@ -34,7 +34,7 @@ public class PublicModel : PageModel
 
     private async void GetCheeps(int pageNumber)
     {
-        Cheeps = await _repository.ReadMessage(pageNumber);
+        Cheeps = await _repository.GetMessages(pageNumber);
     }
     
     public ActionResult OnPost(string Cheep)

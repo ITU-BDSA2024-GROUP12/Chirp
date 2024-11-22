@@ -169,7 +169,7 @@ public class CheepRepository : ICheepRepository
         return author;
     }
 
-    public async Task<List<CheepDTO>> ReadMessage(int page)
+    public async Task<List<CheepDTO>> GetMessages(int page)
     {
         var query = _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
         {
