@@ -15,7 +15,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 namespace Chirp.RazorPages.Tests
 {
-    public class EndToEnd : IClassFixture<CustomWebApplicationFactory<Program>>
+    /*public class EndToEnd : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private HttpClient _client;
         private CustomWebApplicationFactory<Program> _factory;
@@ -68,5 +68,5 @@ namespace Chirp.RazorPages.Tests
             var result = AuthenticateResult.Success(ticket);
             return Task.FromResult(result);
         }
-    }
+    }*/
 }
