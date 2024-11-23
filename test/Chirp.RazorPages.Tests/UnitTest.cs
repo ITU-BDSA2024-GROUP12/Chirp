@@ -51,7 +51,7 @@ public class UnitTest : IClassFixture<CustomWebApplicationFactory<Program>>
 	}
 
     [Fact]
-    public async void TestLoginAndSendCheep()
+    public async void TestLogin()
     {
         // Arrange
         var client = _factory.WithWebHostBuilder(builder =>
