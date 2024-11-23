@@ -1,9 +1,7 @@
 using Microsoft.Playwright;
 using Assert = Xunit.Assert;
 using PlaywrightSetup;
-using Xunit;
-
-
+using Xunit.Abstractions;
 
 namespace PlaywrightTests;
 
@@ -21,26 +19,33 @@ namespace PlaywrightTests;
 /// The test are order by alphabetical order, as some test require that a user is registered in memory.
 /// The syntax for naming a test should therefore be [letterOrNumberDepictingOrder]_testName example: A_test1
 ///</summery>
-[TestCaseOrderer("TestOrderer.TestOrderer", "Chirp.UI.Tests")]//runs test in alphabetical order
+[TestCaseOrderer(
+    ordererTypeName: "TestOrdererSetup.TestOrderer.AlphabeticalOrderer ",
+    ordererAssemblyName: "Chirp.UI.Tests")]//runs test in alphabetical order
 public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 {
+
+    private readonly ITestOutputHelper _output;
+
     private  readonly string _baseUrl;
 
-    public PlaywrightTests(CustomWebApplicationFactory factory)
+    public PlaywrightTests(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _baseUrl = factory.ServerAddress;
+        _output = output;
     }
     
     [Fact]
     public async Task C_SimplePublicTimeLineTest()
     {
+        _output.WriteLine("TestC");
         // Start Playwright and launch the browser
         var playwright = await Playwright.CreateAsync();
         var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
 
         // Create a new browser context and page
         var context = await browser.NewContextAsync();
-        var page = await context.NewPageAsync();
+        var page = await context.NewPageAsync();        
 
         // Navigate to the in-memory server's URL
         await page.GotoAsync(_baseUrl);
@@ -54,6 +59,7 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 	 [Fact]
     public async Task A_RegisterTest() //Test to register a user, said user is used in later tests
     {
+        _output.WriteLine("TestA");
         // Start Playwright and launch the browser
         var playwright = await Playwright.CreateAsync();
         var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
@@ -66,13 +72,13 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         await page.GotoAsync(_baseUrl);
         Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "register" }).IsVisibleAsync());
 		await page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
-		await page.GetByPlaceholder("name@example.com").FillAsync("TestUser@example.com");
-		await page.GetByPlaceholder("John Doe").FillAsync("TestUser");
+		await page.GetByPlaceholder("name@example.com").FillAsync("TestUser1@example.com");
+		await page.GetByPlaceholder("John Doe").FillAsync("TestUser1");
 		await page.GetByLabel("Password", new() { Exact = true }).FillAsync("Password123!");
 		await page.GetByLabel("Confirm Password").FillAsync("Password123!");
 		await page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
-        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser]" }).IsVisibleAsync());
-        Assert.True(await page.GetByText("What's on your mind TestUser? Share").IsVisibleAsync(), "once registered the testUser can cheep");
+        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser1]" }).IsVisibleAsync());
+        Assert.True(await page.GetByText("What's on your mind TestUser1? Share").IsVisibleAsync(), "once registered the testUser can cheep");
         
         await browser.CloseAsync();
     }
@@ -80,6 +86,7 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task B_LoginAndOutTest()
     {
+        _output.WriteLine("TestB");
         // Start Playwright and launch the browser
         var playwright = await Playwright.CreateAsync();
         var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
@@ -91,18 +98,15 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         // Navigate to the in-memory server's URL
         await page.GotoAsync(_baseUrl);
         await page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
-        await page.GetByPlaceholder("name@example.com").FillAsync("TestUser@example.com");
+        await page.GetByPlaceholder("name@example.com").FillAsync("TestUser1@example.com");
         await page.GetByPlaceholder("password").FillAsync("Password123!");
         await page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
-        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser]" }).IsVisibleAsync());
-        Assert.True(await page.GetByText("What's on your mind TestUser? Share").IsVisibleAsync());
-        await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser]" }).ClickAsync();
+        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser1]" }).IsVisibleAsync());
+        Assert.True(await page.GetByText("What's on your mind TestUser1? Share").IsVisibleAsync());
+        await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser1]" }).ClickAsync();
         await page.GetByRole(AriaRole.Button, new() { Name = "Click here to Logout" }).ClickAsync();
         Assert.True(await page.GetByText("You have successfully logged").IsVisibleAsync());
         await page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
         Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "login" }).IsVisibleAsync());
     }
 }
-
-
-
