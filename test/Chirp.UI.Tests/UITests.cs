@@ -7,10 +7,10 @@ namespace PlaywrightTests;
 
 ///<summery>
 /// If Errors occour due to lack of installed playwright call
-/// pwsh test/Chirp.RazorPages.Tests/bin/Debug/net7.0/playwright.ps1 install --with-deps
+/// pwsh test/Chirp.UI.Tests/bin/Debug/net7.0/playwright.ps1 install --with-deps
 /// from the source location. Alternatively call
 /// pwsh bin/Debug/net7.0/playwright.ps1 install --with-deps
-/// from the test file
+/// from the UI test file
 ///
 /// The playwright tests do NOT use PageTest
 /// as it does not work well together with setting up a local server with WebApplicationFactory,
