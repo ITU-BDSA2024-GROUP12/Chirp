@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Chirp.RazorPages.Tests;
 //https://stackoverflow.com/questions/55131379/integration-testing-asp-net-core-with-net-framework-cant-find-deps-json/70490057#70490057
