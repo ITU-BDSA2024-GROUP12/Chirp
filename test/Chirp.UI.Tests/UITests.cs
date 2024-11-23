@@ -1,6 +1,5 @@
 using Microsoft.Playwright;
 using Assert = Xunit.Assert;
-using Chirp.Infrastructure;
 using PlaywrightSetup;
 
 namespace PlaywrightTests;
@@ -19,7 +18,7 @@ namespace PlaywrightTests;
 /// The test are order by alphabetical order, as some test require that a user is registered in memory.
 /// The syntax for naming a test should therefore be [letterOrNumberDepictingOrder]_testName example: A_test1
 ///</summery>
-[TestCaseOrderer("TestOrderer.TestOrderer", "Chirp.RazorPages.Tests")]//runs test in alphabetical order
+[TestCaseOrderer("TestOrderer.TestOrderer", "Chirp.UI.Tests")]//runs test in alphabetical order
 public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 {
     private  readonly string _baseUrl;
@@ -74,7 +73,7 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         
         await browser.CloseAsync();
     }
-    /* This test is correctly set up however login does currently not work.
+    
     [Fact]
     public async Task B_LoginAndOutTest()
     {
@@ -92,14 +91,14 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         await page.GetByPlaceholder("name@example.com").FillAsync("TestUser@example.com");
         await page.GetByPlaceholder("password").FillAsync("Password123!");
         await page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
-       // Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser@example.com]" }).IsVisibleAsync());
-        Assert.True(await page.GetByText("What's on your mind TestUser@example.com? Share").IsVisibleAsync());
-        await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser@example.com]" }).ClickAsync();
+        Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser]" }).IsVisibleAsync());
+        Assert.True(await page.GetByText("What's on your mind TestUser? Share").IsVisibleAsync());
+        await page.GetByRole(AriaRole.Link, new() { Name = "logout [TestUser]" }).ClickAsync();
         await page.GetByRole(AriaRole.Button, new() { Name = "Click here to Logout" }).ClickAsync();
         Assert.True(await page.GetByText("You have successfully logged").IsVisibleAsync());
         await page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
         Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "login" }).IsVisibleAsync());
-    }*/
+    }
 }
 
 

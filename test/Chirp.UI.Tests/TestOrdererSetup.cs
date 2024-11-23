@@ -1,5 +1,4 @@
 ﻿using Xunit.Abstractions;
-using Xunit.Microsoft.DependencyInjection.TestsOrder;
 using Xunit.Sdk;
 
 namespace TestOrderer;
