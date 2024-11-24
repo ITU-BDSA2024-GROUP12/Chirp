@@ -24,7 +24,6 @@ namespace PlaywrightTests;
     ordererAssemblyName: "Chirp.UI.Tests")]//runs test in alphabetical order
 public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
 {
-
     private readonly ITestOutputHelper _output;
 
     private  readonly string _baseUrl;
@@ -146,5 +145,4 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         
         await browser.CloseAsync();
     }
-  
 }
