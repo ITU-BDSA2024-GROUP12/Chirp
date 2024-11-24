@@ -36,9 +36,9 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
     }
     
     [Fact]
-    public async Task C_SimplePublicTimeLineTest()
+    public async Task E_SimplePublicTimeLineTest()
     {
-        _output.WriteLine("Test C failed - attempted to view public timeline");
+        _output.WriteLine("Test E failed - attempted to view public timeline");
         // Start Playwright and launch the browser
         var playwright = await Playwright.CreateAsync();
         var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
@@ -108,5 +108,37 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         Assert.True(await page.GetByText("You have successfully logged").IsVisibleAsync());
         await page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
         Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "login" }).IsVisibleAsync());
+        
+        await browser.CloseAsync();
     }
+
+
+     [Fact]
+    public async Task C_PostCheep()
+    {
+        _output.WriteLine("Test C failed - Attempted to log in and Cheep a message");
+        // Start Playwright and launch the browser
+        var playwright = await Playwright.CreateAsync();
+        var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
+
+        // Create a new browser context and page
+        var context = await browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+
+        // Navigate to the in-memory server's URL
+        await page.GotoAsync(_baseUrl);
+        //login to be able to cheep
+        await page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await page.GetByPlaceholder("name@example.com").FillAsync("TestUser@example.com");
+        await page.GetByPlaceholder("password").FillAsync("Password123!");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        //cheep a message
+        await page.GetByRole(AriaRole.Textbox).FillAsync("This is a message!");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
+        Assert.True(await page.Locator("li").Filter(new() { HasText = "TestUser This is a message" }).IsVisibleAsync());
+
+        await browser.CloseAsync();
+    }
+
+  
 }
