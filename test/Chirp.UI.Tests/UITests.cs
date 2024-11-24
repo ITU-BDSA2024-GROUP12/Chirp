@@ -136,9 +136,15 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         await page.GetByRole(AriaRole.Textbox).FillAsync("This is a message!");
         await page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
         Assert.True(await page.Locator("li").Filter(new() { HasText = "TestUser This is a message" }).IsVisibleAsync());
-
+        //Check timeline for message 
+        await page.GetByRole(AriaRole.Link, new() { Name = "my timeline" }).ClickAsync();
+        Assert.True(await page.GetByRole(AriaRole.Heading, new() { Name = "TestUser's Timeline" }).IsVisibleAsync());
+        Assert.True(await page.GetByText("Showing 1 cheeps!").IsVisibleAsync());
+        Assert.True(await page.GetByText("TestUser This is a message").IsVisibleAsync());
+        //check that the user also can cheep from user timeline
+        Assert.True(await page.GetByText("What's on your mind TestUser? Share").IsVisibleAsync());
+        
         await browser.CloseAsync();
     }
-
   
 }
