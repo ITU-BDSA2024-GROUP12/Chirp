@@ -17,6 +17,9 @@ public class Cheep
     public int AuthorId { get; set; }
     [MaxLength(256)]
     public Author? Author { get; set; } //Duplicate author reference, maybe remove??
+
+    public ICollection<CheepMention>? Mentions { get; set; }
+    public ICollection<Notification>? Notifications { get; set; }
 }
 
 public class Author
@@ -27,6 +30,7 @@ public class Author
     [MaxLength(256)]
     public string? Email { get; set; }
     public ICollection<Cheep>? Cheeps { get; set; }
+    public ICollection<Notification>? Notifications { get; set; }
 }
 
 public class CheepMention
@@ -53,6 +57,8 @@ public class CheepDbContext : IdentityDbContext<ChirpUser>
 {
     public DbSet<Cheep> Cheeps { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public DbSet<CheepMention> CheepMentions { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     public CheepDbContext(DbContextOptions<CheepDbContext> options) : base(options) {}
     
