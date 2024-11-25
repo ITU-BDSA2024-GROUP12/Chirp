@@ -29,6 +29,26 @@ public class Author
     public ICollection<Cheep>? Cheeps { get; set; }
 }
 
+public class CheepMention
+{
+    public int Id { get; set; } //primary key
+    public int CheepId { get; set; }
+    public Cheep Cheep { get; set; }
+    public string MentionedUsername { get; set; } //the name of the Author
+}
+
+public class Notification
+{
+    public int Id { get; set; } //primary key
+    public int AuthorId { get; set; }
+    public Author Author { get; set; }
+    public int CheepId { get; set; }
+    public Cheep Cheep { get; set; }
+    public bool IsRead { get; set; } = false;
+    public DateTime Timestamp { get; set; }
+}
+
+
 public class CheepDbContext : IdentityDbContext<ChirpUser>
 {
     public DbSet<Cheep> Cheeps { get; set; }
