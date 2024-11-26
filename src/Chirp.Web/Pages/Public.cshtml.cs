@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Chirp.Core;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +25,32 @@ public class PublicModel : PageModel
         _signInManager = signInManager;
     }
     
+        /// <summary>
+    /// Replaces valid @usernames with a highlight
+    /// </summary>
+    /// <param name="content">The Text of a cheep</param>
+    /// <returns></returns>
+    private async Task<string> HighlightMentionsAsync(string content)
+    {
+        // Extract mentioned usernames using Regex
+
+        var matches = Util.ExtractMentions(content);
+
+        // Validate the mentions
+        var validUsernames =  await _repository.GetValidUsernames(matches);
+
+        // Replace mentions with links for valid usernames only
+        return new Regex(@"@(\w+)").Replace(content, match =>
+        {
+            var username = match.Groups[1].Value;
+            if (validUsernames.Any(u => u.Name == username))
+            {
+                return $"<a href='/profile/{username}'>@{username}</a>";
+            }
+            return $"@{username}"; // Leave as plain text if not valid
+        });
+    }
+    
     public async Task<ActionResult> OnGet(int pageNumber = 1)
     {
         StringValues pageQuery = Request.Query["page"];
@@ -34,7 +61,14 @@ public class PublicModel : PageModel
 
     private async void GetCheeps(int pageNumber)
     {
-        Cheeps = await _repository.GetMessages(pageNumber);
+        var cheeps = await _repository.GetMessages(pageNumber);
+        
+        foreach (var cheep in cheeps)
+        {
+            cheep.Text = await HighlightMentionsAsync(cheep.Text);
+        }
+
+        Cheeps = cheeps;
     }
     
     public ActionResult OnPost(string Cheep)
@@ -52,6 +86,12 @@ public class PublicModel : PageModel
             Name = User.FindFirstValue(ClaimTypes.Name),
             Email = User.Identity.Name
         };
+
+               // Parsing mentions from the Cheep text (@username)
+        var mentions = Util.ExtractMentions(Cheep);
+
+        var ValidMentions =  _repository.GetValidUsernames(mentions);
+        
         _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
