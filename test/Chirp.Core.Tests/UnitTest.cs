@@ -34,11 +34,47 @@ public class UnitTest
         };
         //Act & Asert
         
-        Assert.IsType(typeof(int), authorDto.AuthorId);
-        Assert.IsType(typeof(string), authorDto.Email);
-        Assert.IsType(typeof(string), authorDto.Name);
+        Assert.IsType<int>(authorDto.AuthorId);
+        Assert.IsType<string>(authorDto.Email);
+        Assert.IsType<string>(authorDto.Name);
         
     }
     
     //CheepDTO
+    [Fact]
+    public void CheepDTOtest()
+    {
+        //Arrange
+        CheepDTO cheepDto = new CheepDTO()
+        {
+            Author = "test",
+            Text = "test",
+            TimeStamp = 0
+        };
+        //Act & Asert
+        
+        
+        Assert.Equal("test", cheepDto.Author);
+        Assert.Equal("test", cheepDto.Text);
+        Assert.Equal(0, cheepDto.TimeStamp);
+    }
+    
+    [Fact]
+    public void CheepDTOtypes()
+    {
+        
+        //Arrange
+        CheepDTO cheepDto = new CheepDTO()
+        {
+            Author = "test",
+            Text = "test",
+            TimeStamp = 0
+        };
+        //Act & Asert
+        
+        Assert.IsType<long>(cheepDto.TimeStamp);
+        Assert.IsType<string>(cheepDto.Author);
+        Assert.IsType<string>(cheepDto.Text);
+        
+    }
 }
