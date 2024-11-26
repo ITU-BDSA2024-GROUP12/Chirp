@@ -11,6 +11,6 @@ public interface ICheepRepository
     public Task<AuthorDTO> GetAuthorByName(string name);
     public Task<AuthorDTO> GetAuthor(string name, string email);
     public Task<List<AuthorDTO>> GetValidUsernames(List<string> mentions);
-    public Task<NotificationDTO> CreateNotification(int authorId, int cheepId);
+    //public Task<NotificationDTO> CreateNotification(int authorId, int cheepId);
 
 }

@@ -205,4 +205,16 @@ public class CheepRepository : ICheepRepository
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         return dateTime.AddSeconds(unixTime);
     }
+
+        public async Task<List<AuthorDTO>> GetValidUsernames(List<string> mentions) {
+        var query = _cheepDbContext.Authors.Where(Author => mentions.Contains(Author.Name)).Select(Author => new AuthorDTO
+        {
+            AuthorId = Author.AuthorId,
+            Name = Author.Name,
+            Email = Author.Email,
+            });
+            var result = query.ToList();
+            return result;
+        }
+
 }
