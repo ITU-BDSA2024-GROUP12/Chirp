@@ -213,7 +213,7 @@ public class CheepRepository : ICheepRepository
             Name = Author.Name,
             Email = Author.Email,
             });
-            var result = query.ToList();
+            var result = await query.ToListAsync();
             return result;
         }
 
