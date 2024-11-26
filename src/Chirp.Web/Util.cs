@@ -4,9 +4,12 @@ namespace Chirp.Web;
 
 
 /// <summary>
-/// This method takes in a cheep and returns a list of strings, 
-/// which where preceeded by @ meaning they were possible mentions.
+/// This method finds all cases in a given string, 
+/// which where preceeded by @ making them possible mentions.
 /// </summary>
+/// <returns>
+/// <param name="mentions" > a list of possible mentions </param>
+/// </returns>
 static class Util {
     public static List<string> ExtractMentions(string cheep)
     {
