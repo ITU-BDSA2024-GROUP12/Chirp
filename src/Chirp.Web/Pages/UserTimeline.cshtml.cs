@@ -28,12 +28,15 @@ public class UserTimelineModel : PageModel
         // Extract mentioned usernames using Regex
 
         var matches = Util.ExtractMentions(content);
+        if (matches.Count > 0)
+        {
 
-        // Validate the mentions
-        var validUsernames =  await _repository.GetValidUsernames(matches);
+            // Validate the mentions
+            var validUsernames = await _repository.GetValidUsernames(matches);
 
-        // Replace mentions with links for valid usernames only
-        return new Regex(@"@(\w+)").Replace(content, match =>
+            // Replace mentions with links for valid usernames only
+
+            return new Regex(@"@(\w+)").Replace(content, match =>
         {
             var username = match.Groups[1].Value;
             if (validUsernames.Any(u => u.Name == username))
@@ -42,8 +45,15 @@ public class UserTimelineModel : PageModel
             }
             return $"@{username}"; // Leave as plain text if not valid
         });
+        }
+        else
+        {
+            return content;
+        }
+
+
     }
-    
+
     public async Task<ActionResult> OnGet(string author)
     {
         int pageNumber;
