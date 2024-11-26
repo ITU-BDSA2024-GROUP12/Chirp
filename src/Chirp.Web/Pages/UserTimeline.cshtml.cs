@@ -96,8 +96,9 @@ public class UserTimelineModel : PageModel
         // Parsing mentions from the Cheep text (@username)
         var mentions = Util.ExtractMentions(Cheep);
 
+        if(mentions.Count > 0) {
         var ValidMentions =  _repository.GetValidUsernames(mentions);
-
+        }
         _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
