@@ -31,5 +31,9 @@
     <ProjectReference Include="..\Chirp.Infrastructure\Chirp.Infrastructure.csproj" />
     <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <_EnableMacOSCodeSign>false</_EnableMacOSCodeSign>
+  </PropertyGroup>
   
 </Project>

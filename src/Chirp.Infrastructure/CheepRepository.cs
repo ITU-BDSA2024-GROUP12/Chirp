@@ -169,7 +169,7 @@ public class CheepRepository : ICheepRepository
         return author;
     }
 
-    public async Task<List<CheepDTO>> ReadMessage(int page)
+    public async Task<List<CheepDTO>> GetMessages(int page)
     {
         var query = _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
         {
@@ -182,7 +182,7 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
-    public async Task<List<CheepDTO>> ReadMessagesFromAuthor(string author, int page)
+    public async Task<List<CheepDTO>> GetMessagesFromAuthor(string author, int page)
     {
         var query = _cheepDbContext.Cheeps.Where(cheep => cheep.Author.Name == author).Select(cheep => new CheepDTO
         {
@@ -191,7 +191,6 @@ public class CheepRepository : ICheepRepository
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
         }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
         var result = query.ToList();
-       
         return result;
     }
 
