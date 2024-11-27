@@ -23,7 +23,7 @@ public class CheepRepository : ICheepRepository
 /// <param name="text">Body of the cheep</param>
 /// <param name="time">Timestamp "yyyy-mm-dd hh:mm:ss"</param>
 /// <returns>True: if the cheep is created, otherwise false</returns>
-    public bool CreateCheep(AuthorDTO authorDto, string text, string time)
+    public bool CreateCheep(AuthorDTO authorDto, string text, List<AuthorDTO>? mentions, string time)
     {
         if (text.Length > 160)
         {
@@ -48,8 +48,29 @@ public class CheepRepository : ICheepRepository
             Text = text,
             AuthorId = author.AuthorId,
             TimeStamp = DateTime.Parse(time),
-    };
+        };
         var query = _cheepDbContext.Cheeps.Add(newCheep);
+        //add mentions and notifications if present
+        if (mentions != null)
+        {
+            foreach (var mentioned in mentions)
+            {
+                CheepMention Cmention = new CheepMention()
+                {
+                    MentionedUsername = mentioned.Name,
+                    CheepId = newCheep.CheepId,
+                    Cheep = newCheep,
+                };
+                Notification notification = new Notification()
+                {
+                    AuthorId = mentioned.AuthorId,
+                    Cheep = newCheep,
+                    CheepId = newCheep.CheepId,
+                    Timestamp = DateTime.Parse(time),
+                };
+            }   
+        }
+        //save changes to database
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
 
         return (tsk.Result == 1);
