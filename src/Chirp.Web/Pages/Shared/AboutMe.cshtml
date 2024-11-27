@@ -18,7 +18,27 @@
     <div> <!-- NAME EMAIL; CHEEPS FOLLOWS  --> 
         <p>Name: @(User.FindFirstValue(ClaimTypes.Name))</p>
         <p>Email: @(User.FindFirstValue(ClaimTypes.Email))</p>
-        <p>Cheeps: x</p>
+        <p>Cheeps: </p>
+        @if (Model.Cheeps.Any())
+        {
+            <ul id="messagelist" class="cheeps">
+                @foreach (var cheep in Model.Cheeps)
+                {
+                    <li>
+                        <p>
+                            @cheep.Text
+                            <small>- @cheep.DateTime()</small>
+                        </p>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>None</p>
+        }
+        
+        
         <p>Following: x</p>
     </div>
     <button color="red"><a>Forget me!</a></button>
