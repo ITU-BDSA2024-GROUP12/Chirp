@@ -44,7 +44,7 @@ public class CheepRepositoryTests
         var authorDto = new AuthorDTO { Name = "John Testman", Email = "john@test.com" };
 
         // Act
-        var result = repository.CreateCheep(authorDto, "Hello World!", "2024-11-05 12:00:00");
+        var result = repository.CreateCheep(authorDto, "Hello World!",  null,"2024-11-05 12:00:00");
 
         // Assert
         Assert.True(result);
@@ -81,7 +81,7 @@ public class CheepRepositoryTests
             Email = email
         };
         // Act & Assert
-        Assert.Throws<InvalidDataException>(() => repository.CreateCheep(authorDto, text, DateTime.Now.ToString()));
+        Assert.Throws<InvalidDataException>(() => repository.CreateCheep(authorDto, text, null,DateTime.Now.ToString()));
     }
     
     [Theory]
@@ -104,7 +104,7 @@ public class CheepRepositoryTests
         };
         
         // Act
-        repository.CreateCheep(authorDto, text, time);
+        repository.CreateCheep(authorDto, text, null, time);
         
         
         //Assert
