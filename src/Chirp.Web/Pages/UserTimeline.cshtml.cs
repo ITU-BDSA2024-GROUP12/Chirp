@@ -99,7 +99,7 @@ public class UserTimelineModel : PageModel
         if(mentions.Count > 0) {
         var ValidMentions =  _repository.GetValidUsernames(mentions);
         }
-        _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
+        _repository.CreateCheep(author, Cheep, null, DateTimeOffset.UtcNow.ToString());
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
 }
