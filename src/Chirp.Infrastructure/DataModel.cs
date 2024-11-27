@@ -37,18 +37,17 @@ public class CheepMention
 {
     public int Id { get; set; } //primary key
     public int CheepId { get; set; }
-    public Cheep Cheep { get; set; }
-    public string MentionedUsername { get; set; } //the name of the Author
+    public Cheep? Cheep { get; set; }
+    public string? MentionedUsername { get; set; } //the name of the Author
 }
 
 public class Notification
 {
     public int Id { get; set; } //primary key
     public int AuthorId { get; set; }
-    public Author Author { get; set; }
+    public Author? Author { get; set; }
     public int CheepId { get; set; }
-    public Cheep Cheep { get; set; }
-    public bool IsRead { get; set; } = false;
+    public Cheep? Cheep { get; set; }
     public DateTime Timestamp { get; set; }
 }
 
