@@ -1,4 +1,5 @@
-﻿using Chirp.Core;
+﻿using System.Security.Claims;
+using Chirp.Core;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
@@ -15,6 +16,8 @@ public class ForgetMe : PageModel
     
     public void OnGet()
     {
-        _repository.AnonymizeUser("poopballs","rasmus06111@gmail.com1");
+        Console.WriteLine(User.FindFirstValue(ClaimTypes.Name));
+        Console.WriteLine(User.FindFirstValue(ClaimTypes.Email));
+        _repository.AnonymizeUser(User.FindFirstValue(ClaimTypes.Name),User.FindFirstValue(ClaimTypes.Email));
     }
 }
