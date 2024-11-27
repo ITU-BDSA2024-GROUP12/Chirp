@@ -1,0 +1,27 @@
+﻿@page "/about-me"
+@using System.Security.Claims
+@model Chirp.Web.Pages.Shared.AboutMe
+
+@{
+    ViewData["Title"] = "Chirp - About me!";
+    Layout = "Shared/_Layout";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div>
+    <div> <!-- NAME EMAIL; CHEEPS FOLLOWS  --> 
+        <p>Name: @(User.FindFirstValue(ClaimTypes.Name))</p>
+        <p>Email: @(User.FindFirstValue(ClaimTypes.Email))</p>
+        <p>Cheeps: x</p>
+        <p>Following: x</p>
+    </div>
+    <button color="red"><a>Forget me!</a></button>
+</div>
+</body>
+</html>
