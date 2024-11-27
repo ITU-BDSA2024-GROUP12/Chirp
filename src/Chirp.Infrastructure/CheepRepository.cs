@@ -198,6 +198,16 @@ public class CheepRepository : ICheepRepository
     {
         throw new NotImplementedException();
     }
+
+    public void AnonymizeUser(string name, string email)
+    {
+        var result = _cheepDbContext.Users.Where(user => user.Email == email)
+            .ExecuteUpdateAsync(setter => setter.SetProperty(e => e.Email, "TEST@SOMETEST.TEST")
+                .SetProperty(e => e.NormalizedEmail, "TEST@SOMETEST.TEST")
+                .SetProperty(n => n.UserName, "Test")
+                .SetProperty(n => n.NormalizedUserName, "TEST"));
+        _cheepDbContext.SaveChanges();
+    }
     
     private static DateTime ToDateTime(long unixTime)
     {
