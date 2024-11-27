@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Chirp.Core;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +9,6 @@ namespace Chirp.Web.Pages;
 
 public class ForgetMe : PageModel
 {
-
     private ICheepRepository _repository;
     private SignInManager<ChirpUser> _signInManager;
     

@@ -201,7 +201,6 @@ public class CheepRepository : ICheepRepository
 
     public async void AnonymizeUser(string name, string email)
     {
-
         AuthorDTO a = await GetAuthor(name, name);
         var r = _cheepDbContext.Users.Where(user => user.Email == email).ExecuteDeleteAsync().Result;
         var r2 = _cheepDbContext.Cheeps.Where(cheep => cheep.AuthorId == a.AuthorId)

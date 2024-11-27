@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Chirp.Core;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,7 +7,6 @@ namespace Chirp.Web.Pages.Shared;
 
 public class AboutMe : PageModel
 {
-    
     private readonly ICheepRepository _repository;
     
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
