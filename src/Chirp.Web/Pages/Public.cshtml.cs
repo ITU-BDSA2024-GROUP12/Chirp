@@ -79,7 +79,7 @@ public class PublicModel : PageModel
         Cheeps = cheeps;
     }
     
-    public ActionResult OnPost(string Cheep)
+    public async Task<IActionResult> OnPost(string Cheep)
     {
         if (Cheep.Length > 160)
         {
@@ -94,14 +94,17 @@ public class PublicModel : PageModel
             Name = User.FindFirstValue(ClaimTypes.Name),
             Email = User.Identity.Name
         };
-
-               // Parsing mentions from the Cheep text (@username)
-        var mentions = Util.ExtractMentions(Cheep);
-        if(mentions.Count > 0) {
-        var ValidMentions =  _repository.GetValidUsernames(mentions);
-        }
         
-        _repository.CreateCheep(author, Cheep, null,DateTimeOffset.UtcNow.ToString());
+        // Parsing mentions from the Cheep text (@username)
+        var mentions = Util.ExtractMentions(Cheep);
+        
+        //only query if there are mentions
+        if(mentions.Count > 0) {
+            var validMentions =  await _repository.GetValidUsernames(mentions);
+            _repository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
+        }
+        else _repository.CreateCheep(author, Cheep, null, DateTimeOffset.UtcNow.ToString());
+        
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
 }
