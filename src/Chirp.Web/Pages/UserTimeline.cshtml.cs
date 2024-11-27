@@ -10,6 +10,8 @@ public class UserTimelineModel : PageModel
 {
     private readonly ICheepRepository _repository;
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
+    public int page;
+    public string authornextpage;
     
 
     public UserTimelineModel(ICheepRepository repository)
@@ -19,12 +21,14 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
+        authornextpage = author;
         int pageNumber;
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out pageNumber)) 
 		{
 			pageNumber = 1;
 		}
+        page = pageNumber;
         GetCheeps(pageNumber, author);
         return Page();
     }

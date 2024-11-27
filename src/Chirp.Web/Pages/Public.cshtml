@@ -28,7 +28,8 @@
     }
     @if (Model.Cheeps.Any())
     {
-        <p>Showing @Model.Cheeps.Count() cheeps!</p>
+        <p>Showing @Model.Cheeps.Count() cheeps!</p> 
+        
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
@@ -43,10 +44,19 @@
                 </li>
             }
         </ul>
+        <div style="display: flex; justify-content: center;">
+            <button><a href="/?page=@(Model.page+1)">Next Page</a></button>
+        </div>
+        
+        
+        
+        
+        
     }
     else
     {
         <em>There are no cheeps so far.</em>
     }
+    
 
 </div>
