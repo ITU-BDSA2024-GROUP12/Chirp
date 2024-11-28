@@ -41,7 +41,7 @@
                         {
                             if (part.IsMention)
                             {
-                                <a href="@Url.Page("/Profile", new { username = part.Text.TrimStart('@') })">@part.Text</a>
+                                <a href="/@part.Text.TrimStart('@')">@part.Text</a>
                             }
                             else
                             {
