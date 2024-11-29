@@ -11,10 +11,7 @@ namespace Chirp.Web.Pages;
 public class PublicModel : PageModel
 {
     private readonly ICheepRepository _repository;
-    
-    [BindProperty]
-    public string Cheep { get; set; }
-    public List<CheepDTO>? Cheeps { get; set; } = new List<CheepDTO>();
+    public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
     
     private SignInManager<ChirpUser> _signInManager;
 
