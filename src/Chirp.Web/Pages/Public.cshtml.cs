@@ -53,7 +53,7 @@ public class PublicModel : PageModel
         }
         
         // Do something with the text ...
-        AuthorDTO author = new AuthorDTO()
+        AuthorDTO author = new AuthorDTO() //This gets name, twice?
         {
             Name = User.FindFirstValue(ClaimTypes.Name),
             Email = User.Identity.Name

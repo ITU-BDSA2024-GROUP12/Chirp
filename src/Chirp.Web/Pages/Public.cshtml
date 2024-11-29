@@ -9,7 +9,7 @@
 <div>
     <h2> Public Timeline </h2>
 
-    @if (User.Identity.IsAuthenticated)
+    @if (User.Identity is not null && User.Identity.IsAuthenticated)
     {
         <div class="cheepbox">
             <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
