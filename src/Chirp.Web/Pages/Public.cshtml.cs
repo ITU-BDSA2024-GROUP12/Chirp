@@ -49,7 +49,7 @@ public class PublicModel : PageModel
             return Page();
         }
         var name = User.FindFirstValue(ClaimTypes.Name);
-        string? email = User.Identity?.Name;
+        var email = User.FindFirstValue(ClaimTypes.Email);
         // Do something with the text ...
         if (name is not null && email is not null)
         {

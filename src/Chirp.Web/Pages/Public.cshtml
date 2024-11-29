@@ -21,9 +21,13 @@
     }
     @if (!ModelState.IsValid)
     {
-        @foreach (var error in ModelState["Cheep"].Errors)
+        var cheepErrors = ModelState["Cheep"]?.Errors;
+        if (cheepErrors != null)
         {
-            <p>@error.ErrorMessage</p>
+            @foreach (var error in cheepErrors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
         }
     }
     @if (Model.Cheeps.Any())

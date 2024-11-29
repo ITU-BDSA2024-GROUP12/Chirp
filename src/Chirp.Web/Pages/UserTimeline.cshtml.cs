@@ -38,7 +38,7 @@ public class UserTimelineModel : PageModel
     {
         // Do something with the text ...
         var name = User.FindFirstValue(ClaimTypes.Name);
-        string? email = User.Identity?.Name;
+        var email = User.FindFirstValue(ClaimTypes.Email);
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
