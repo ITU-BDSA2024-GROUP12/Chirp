@@ -41,7 +41,6 @@ public class PublicModel : PageModel
     
     public async Task<ActionResult> OnPost(string Cheep)
     {
-        
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);

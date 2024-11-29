@@ -80,7 +80,6 @@ using (var scope = app.Services.CreateScope())
     {
         DbInitializer.SeedDatabase(context);
     }
-    
 }
 
 app.UseHttpsRedirection();

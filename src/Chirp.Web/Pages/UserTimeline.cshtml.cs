@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Chirp.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -47,7 +47,6 @@ public class UserTimelineModel : PageModel
                 await GetCheeps(1, name);
             }
             return Page(); 
-            
         }
         if (name is not null && email is not null)
         {
@@ -59,9 +58,5 @@ public class UserTimelineModel : PageModel
             _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
         }
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
-        
-        
-        
-        
     }
 }
