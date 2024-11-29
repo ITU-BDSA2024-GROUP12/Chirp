@@ -30,31 +30,38 @@ public class PublicModel : PageModel
         {
             PageNumber = 1;
         }
-        GetCheeps(PageNumber);
+        await GetCheeps(PageNumber);
         return Page();
     }
 
-    private async void GetCheeps(int pageNumber)
+    private async Task GetCheeps(int pageNumber)
     {
         Cheeps = await _repository.GetMessages(pageNumber);
     }
     
-    public ActionResult OnPost(string Cheep)
+    public async Task<ActionResult> OnPost(string Cheep)
     {
+        
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            GetCheeps(1);
+            await GetCheeps(1);
             return Page();
         }
-        
+        var name = User.FindFirstValue(ClaimTypes.Name);
+        string? email = User.Identity?.Name;
         // Do something with the text ...
-        AuthorDTO author = new AuthorDTO() //This gets name, twice?
+        if (name is not null && email is not null)
         {
-            Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.Identity.Name
-        };
-        _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
+            AuthorDTO author = new AuthorDTO() //This gets name, twice?
+            {
+                Name = name,
+                Email = email
+            };
+            _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
+        }
+
+        
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
 }

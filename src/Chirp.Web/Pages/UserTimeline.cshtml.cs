@@ -25,30 +25,43 @@ public class UserTimelineModel : PageModel
 			PageNumber = 1;
 		}
         
-        GetCheeps(PageNumber, author);
+        await GetCheeps(PageNumber, author);
         return Page();
     }
 
-    private async void GetCheeps(int page, string author)
+    private async Task GetCheeps(int page, string author)
     {
         Cheeps = await _repository.GetMessagesFromAuthor(author,page);
     }
     
-    public ActionResult OnPost(string Cheep)
+    public async Task<ActionResult> OnPost(string Cheep)
     {
         // Do something with the text ...
+        var name = User.FindFirstValue(ClaimTypes.Name);
+        string? email = User.Identity?.Name;
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            GetCheeps(1, User.FindFirstValue(ClaimTypes.Name));
-            return Page();
+            if (name is not null)
+            {
+                await GetCheeps(1, name);
+            }
+            return Page(); 
+            
         }
-        AuthorDTO author = new AuthorDTO()
+        if (name is not null && email is not null)
         {
-            Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.Identity.Name
-        };
-        _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
+            AuthorDTO author = new AuthorDTO()
+            {
+                Name = name,
+                Email = email
+            };
+            _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
+        }
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
+        
+        
+        
+        
     }
 }

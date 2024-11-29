@@ -25,7 +25,7 @@ public class AboutMe : PageModel
         Cheeps = await _repository.GetMessagesFromAuthor(name, 1);
     }
     
-    public async void OnGet()
+    public void OnGet()
     {  
         GetCheeps(User.FindFirstValue(ClaimTypes.Name));
     }
