@@ -14,11 +14,11 @@ public class PublicModel : PageModel
     
     [BindProperty]
     public string Cheep { get; set; }
-    public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
+    public List<CheepDTO>? Cheeps { get; set; } = new List<CheepDTO>();
     
     private SignInManager<ChirpUser> _signInManager;
 
-    public int page;
+    public int PageNumber;
 
     public PublicModel(ICheepRepository repository, SignInManager<ChirpUser> signInManager)
     {
@@ -29,12 +29,11 @@ public class PublicModel : PageModel
     public async Task<ActionResult> OnGet(int pageNumber = 1)
     {
         StringValues pageQuery = Request.Query["page"];
-        if(!Int32.TryParse(pageQuery, out pageNumber)) 
+        if(!Int32.TryParse(pageQuery, out PageNumber)) 
         {
-            pageNumber = 1;
+            PageNumber = 1;
         }
-        page = pageNumber;
-        GetCheeps(pageNumber);
+        GetCheeps(PageNumber);
         return Page();
     }
 
