@@ -9,10 +9,10 @@ namespace Chirp.Web.Pages;
 
 public class ForgetMe : PageModel
 {
-    private ICheepRepository _repository;
+    private IAuthorRepository _repository;
     private SignInManager<ChirpUser> _signInManager;
     
-    public ForgetMe(ICheepRepository repository, SignInManager<ChirpUser> signInManager)
+    public ForgetMe(IAuthorRepository repository, SignInManager<ChirpUser> signInManager)
     {
         _repository = repository;
         _signInManager = signInManager;
