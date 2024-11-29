@@ -1,4 +1,4 @@
-﻿namespace Chirp.Core;
+namespace Chirp.Core;
 
 public interface ICheepRepository
 {
@@ -6,5 +6,4 @@ public interface ICheepRepository
     public void UpdateMessage();
     public Task<List<CheepDTO>> GetMessagesFromAuthor(string author, int page);
     public bool CreateCheep(AuthorDTO author, string text, string time);
-    
 }
