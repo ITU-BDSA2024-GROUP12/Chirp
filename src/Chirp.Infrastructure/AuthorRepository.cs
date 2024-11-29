@@ -7,6 +7,13 @@ public class AuthorRepository : IAuthorRepository
 {
     private readonly CheepDbContext _cheepDbContext;
     
+    public AuthorRepository(CheepDbContext cheepDbContext)
+    {
+        _cheepDbContext = cheepDbContext;
+        
+        Console.WriteLine("Created Cheep Repository: " + this.GetType().Name);
+    }
+    
     /// <summary>
     /// Creates a new author with the given name and email
     /// </summary>
