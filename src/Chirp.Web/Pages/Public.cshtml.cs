@@ -18,6 +18,8 @@ public class PublicModel : PageModel
     
     private SignInManager<ChirpUser> _signInManager;
 
+    public int page;
+
     public PublicModel(ICheepRepository repository, SignInManager<ChirpUser> signInManager)
     {
         _repository = repository;
@@ -27,7 +29,11 @@ public class PublicModel : PageModel
     public async Task<ActionResult> OnGet(int pageNumber = 1)
     {
         StringValues pageQuery = Request.Query["page"];
-        Int32.TryParse(pageQuery, out pageNumber);
+        if(!Int32.TryParse(pageQuery, out pageNumber)) 
+        {
+            pageNumber = 1;
+        }
+        page = pageNumber;
         GetCheeps(pageNumber);
         return Page();
     }
