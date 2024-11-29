@@ -19,7 +19,6 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
-        authornextpage = author;
         int pageNumber;
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out pageNumber)) 
