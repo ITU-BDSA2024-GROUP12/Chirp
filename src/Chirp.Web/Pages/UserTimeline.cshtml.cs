@@ -11,8 +11,6 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository _repository;
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
     public int page;
-    public string authornextpage;
-    
 
     public UserTimelineModel(ICheepRepository repository)
     {
