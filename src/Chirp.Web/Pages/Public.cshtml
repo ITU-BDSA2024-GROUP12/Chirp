@@ -28,14 +28,23 @@
     }
     @if (Model.Cheeps.Any())
     {
-        <p>Showing @Model.Cheeps.Count() cheeps!</p>
+        <p>Showing @Model.Cheeps.Count() cheeps!</p> 
+        
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
+                
                 <li>
                     <p>
                         <strong>
-                            <a href="/@cheep.Author">@cheep.Author</a>
+                            @if(cheep.Author.Equals("DeletedUser"))
+                            {
+                                <a disabled="true">@cheep.Author</a>
+                            }
+                            else
+                            {
+                                <a href="/@cheep.Author">@cheep.Author</a>
+                            }
                         </strong>
                         @foreach (var part in cheep.HighlightedParts) //Displaying text of cheeps
                         {
@@ -53,10 +62,14 @@
                 </li>
             }
         </ul>
+        <div style="display: flex; justify-content: center;">
+            <button><a href="/?page=@(Model.page+1)">Next Page</a></button>
+        </div>
     }
     else
     {
         <em>There are no cheeps so far.</em>
     }
+    
 
 </div>

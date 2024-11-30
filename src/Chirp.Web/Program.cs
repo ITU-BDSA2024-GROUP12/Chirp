@@ -43,6 +43,7 @@ builder.Services.AddSession(options =>
 
 
 // Add services to the container.
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddRazorPages();
 

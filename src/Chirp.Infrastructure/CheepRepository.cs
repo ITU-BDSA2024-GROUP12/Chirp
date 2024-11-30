@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 public class CheepRepository : ICheepRepository
 {
     private readonly CheepDbContext _cheepDbContext;
+    private readonly IAuthorRepository _authorRepository;
 
-    public CheepRepository(CheepDbContext cheepDbContext)
+    public CheepRepository(CheepDbContext cheepDbContext, IAuthorRepository authorRepository)
     {
         _cheepDbContext = cheepDbContext;
+        _authorRepository = authorRepository;
         
         Console.WriteLine("Created Cheep Repository: " + this.GetType().Name);
     }
@@ -31,7 +33,7 @@ public class CheepRepository : ICheepRepository
         }
         try
         {
-            CreateAuthor(authorDto);
+            _authorRepository.CreateAuthor(authorDto);
         }
         catch (Exception e)
         {
@@ -40,7 +42,7 @@ public class CheepRepository : ICheepRepository
         
         
 
-        AuthorDTO author = GetAuthor(authorDto.Name,authorDto.Email).Result;
+        AuthorDTO author = _authorRepository.GetAuthor(authorDto.Name,authorDto.Email).Result;
         Console.WriteLine("Creating cheep for: "+author.Name + ":" + author.Email + ":" + author.AuthorId + " With text: \n"+text);
 
         Cheep newCheep = new Cheep()
@@ -75,121 +77,10 @@ public class CheepRepository : ICheepRepository
 
         return (tsk.Result == 1);
     }
-/// <summary>
-/// Creates a new author with the given name and email
-/// </summary>
-/// <param name="name">Name of the author</param>
-/// <param name="email">E-mail of the author</param>
-/// <returns>True: if the author is created successfully</returns>
-/// <exception cref="Exception">Throws if the author already exists</exception>
-    public bool CreateAuthor(AuthorDTO author)
-    {
-        if (DoesAuthorExist(author.Name))
-        {
-            throw new Exception($"Author {author.Name} already exists");
-        }
-
-        Console.WriteLine("Creating Author: " + author.Name);
-        Author auth = new Author
-        {
-            Name = author.Name,
-            Email = author.Email
-        };
-        
-        _cheepDbContext.Authors.Add(auth);
-        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-        return (tsk.Result == 1);
-    }
-/// <summary>
-/// Check if the author with the name exists in the database
-/// </summary>
-/// <param name="name">Name of the author</param>
-/// <returns>
-///     True: if the author exists in the db
-///     False: if the author does not exist in the db
-/// </returns>
-    private Boolean DoesAuthorExist(string name)
-    {
-        var query = _cheepDbContext.Authors.Where(x => x.Name == name);
-        return query.Any();
-    }
-
-    /// <summary>
-    /// Returns a author with the given email from the db.
-    /// </summary>
-    /// <param name="email">E-Mail of author</param>
-    /// <returns>Author</returns>
-    public async Task<AuthorDTO> GetAuthorByEmail(string email)
-    {
-        var query = _cheepDbContext.Authors.Where(x => x.Email == email).Select(author => new AuthorDTO
-        {
-            AuthorId = author.AuthorId,
-            Name = author.Name,
-            Email = author.Email,
-        });
-        
-        //There should only be one author returned, so return the first one.
-        AuthorDTO author = await query.FirstAsync();
-        
-        if (author == null)
-        {
-            throw new UserNotFoundException();
-        }
-
-        return author;
-    }    
-    /// <summary>
-    /// Returns a author with the given name from the db.
-    /// </summary>
-    /// <param name="name">Name of author</param>
-    /// <returns>Author</returns>
-    public async Task<AuthorDTO> GetAuthorByName(string name)
-    {
-        var query = _cheepDbContext.Authors.Where(x => x.Name == name).Select(author => new AuthorDTO
-        {
-            AuthorId = author.AuthorId,
-            Name = author.Name,
-            Email = author.Email,
-        });
-        
-        //There should only be one author returned, so return the first one.
-        AuthorDTO author = await query.FirstAsync();
-        
-        if (author == null)
-        {
-            throw new UserNotFoundException();
-        }
-
-        return author;
-    }
 
 
-/// <summary>
-/// Returns a author with the given name and email from the db.
-/// </summary>
-/// <param name="name">Name of author</param>
-/// <param name="email">E-mail of author</param>
-/// <returns>Author</returns>
-    public async Task<AuthorDTO> GetAuthor(string name, string email)
-    {
-        if (!DoesAuthorExist(name))
-        {
-            throw new UserNotFoundException();
-        }
-        
-        var query = _cheepDbContext.Authors.Where(x => x.Name == name && x.Email == email).Select(author => new AuthorDTO
-        {
-            AuthorId = author.AuthorId,
-            Name = author.Name,
-            Email = author.Email,
-        });
-        
-        //There should only be one author returned, so return the first one.
-        AuthorDTO author = await query.FirstAsync();
-        
-        return author;
-    }
-
+    
+    
     public async Task<List<CheepDTO>> GetMessages(int page)
     {
         var query = _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
@@ -219,6 +110,8 @@ public class CheepRepository : ICheepRepository
     {
         throw new NotImplementedException();
     }
+
+    
     
     private static DateTime ToDateTime(long unixTime)
     {
