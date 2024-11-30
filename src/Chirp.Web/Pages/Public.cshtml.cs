@@ -11,7 +11,8 @@ namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
-    private readonly ICheepRepository _repository;
+    private readonly ICheepRepository _cRepository;
+    private readonly IAuthorRepository _aRepository;
     
     [BindProperty]
     public string Cheep { get; set; }
@@ -21,9 +22,10 @@ public class PublicModel : PageModel
 
     public int page;
 
-    public PublicModel(ICheepRepository repository, SignInManager<ChirpUser> signInManager)
+    public PublicModel(ICheepRepository cRepository, IAuthorRepository aRepository, SignInManager<ChirpUser> signInManager)
     {
-        _repository = repository;
+        _cRepository = cRepository;
+        _aRepository = aRepository;
         _signInManager = signInManager;
     }
     
@@ -44,7 +46,7 @@ public class PublicModel : PageModel
         {
 
             // Validate the mentions
-            var validUsernames = await _repository.GetValidUsernames(matches);
+            var validUsernames = await _aRepository.GetValidUsernames(matches);
 
             // Break content into parts
             var regex = new Regex(@"@(\w+)");
@@ -101,7 +103,7 @@ public class PublicModel : PageModel
 
     private async void GetCheeps(int pageNumber)
     {
-        var cheeps = await _repository.GetMessages(pageNumber);
+        var cheeps = await _cRepository.GetMessages(pageNumber);
 
         foreach (var cheep in cheeps)
         {
@@ -132,10 +134,10 @@ public class PublicModel : PageModel
         
         //only query if there are mentions
         if(mentions.Count > 0) {
-            var validMentions =  await _repository.GetValidUsernames(mentions);
-            _repository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
+            var validMentions =  await _aRepository.GetValidUsernames(mentions);
+            _cRepository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
         }
-        else _repository.CreateCheep(author, Cheep, null, DateTimeOffset.UtcNow.ToString());
+        else _cRepository.CreateCheep(author, Cheep, null, DateTimeOffset.UtcNow.ToString());
         
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
