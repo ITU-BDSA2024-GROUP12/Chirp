@@ -57,19 +57,22 @@ public class CheepRepository : ICheepRepository
         {
             foreach (var mentioned in mentions)
             {
-                CheepMention Cmention = new CheepMention()
+                CheepMention mention = new()
                 {
                     MentionedUsername = mentioned.Name,
                     CheepId = newCheep.CheepId,
                     Cheep = newCheep,
                 };
-                Notification notification = new Notification()
+                 _cheepDbContext.CheepMentions.Add(mention);
+                Notification notification = new()
                 {
                     AuthorId = mentioned.AuthorId,
                     Cheep = newCheep,
                     CheepId = newCheep.CheepId,
                     Timestamp = DateTime.Parse(time),
                 };
+                _cheepDbContext.Notifications.Add(notification);
+
             }   
         }
         //save changes to database
