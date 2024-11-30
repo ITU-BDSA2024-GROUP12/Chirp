@@ -149,4 +149,15 @@ public class AuthorRepository : IAuthorRepository
         _cheepDbContext.SaveChanges();
         Console.WriteLine(r);
     }
+
+     public async Task<List<AuthorDTO>> GetValidUsernames(List<string> mentions) {
+        var query = _cheepDbContext.Authors.Where(Author => mentions.Contains(Author.Name)).Select(Author => new AuthorDTO
+        {
+            AuthorId = Author.AuthorId,
+            Name = Author.Name,
+            Email = Author.Email,
+            });
+            var result = await query.ToListAsync();
+            return result;
+        }
 }

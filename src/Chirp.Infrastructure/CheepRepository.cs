@@ -110,7 +110,6 @@ public class CheepRepository : ICheepRepository
     {
         throw new NotImplementedException();
     }
-
     
     
     private static DateTime ToDateTime(long unixTime)
@@ -120,15 +119,5 @@ public class CheepRepository : ICheepRepository
         return dateTime.AddSeconds(unixTime);
     }
 
-        public async Task<List<AuthorDTO>> GetValidUsernames(List<string> mentions) {
-        var query = _cheepDbContext.Authors.Where(Author => mentions.Contains(Author.Name)).Select(Author => new AuthorDTO
-        {
-            AuthorId = Author.AuthorId,
-            Name = Author.Name,
-            Email = Author.Email,
-            });
-            var result = await query.ToListAsync();
-            return result;
-        }
 
 }
