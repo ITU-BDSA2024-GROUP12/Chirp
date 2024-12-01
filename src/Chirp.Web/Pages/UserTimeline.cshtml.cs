@@ -47,7 +47,7 @@ public class UserTimelineModel : PageModel
         AuthorDTO author = new AuthorDTO()
         {
             Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.Identity.Name
+            Email = User.FindFirstValue(ClaimTypes.Email)
         };
         _repository.CreateCheep(author, Cheep, DateTimeOffset.UtcNow.ToString());
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
