@@ -32,13 +32,15 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ChirpUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly CheepDbContext _cheepDbContext;
 
         public RegisterModel(
             UserManager<ChirpUser> userManager,
             IUserStore<ChirpUser> userStore,
             SignInManager<ChirpUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            CheepDbContext cheepDbContext)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -46,6 +48,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _cheepDbContext = cheepDbContext;
         }
 
         /// <summary>
@@ -133,6 +136,16 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    var author = new Author
+                    {
+                        Name = user.UserName,
+                        Email = user.Email
+                    };
+                    _cheepDbContext.Authors.Add(author);
+                    await _cheepDbContext.SaveChangesAsync();
+                    Console.WriteLine("New author? " + author + "details: " + author.AuthorId);
+                    _logger.LogInformation("Author generated.");
 
                     var claim = new Claim(ClaimTypes.Name, Input.UserName);
                     await _userManager.AddClaimAsync(user, claim);
