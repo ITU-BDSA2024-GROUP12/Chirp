@@ -49,7 +49,7 @@ public class Notification
     public string? Content { get; set; }
     public int CheepId { get; set; }
     public Cheep? Cheep { get; set; }
-    public DateTime Timestamp { get; set; }
+    public DateTime TimeStamp { get; set; }
 }
 
 

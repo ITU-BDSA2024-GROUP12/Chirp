@@ -92,6 +92,8 @@ public class UserTimelineModel : PageModel
 		}
         page = pageNumber;
         GetCheeps(pageNumber, author);
+        GetNotifications(author);
+
         return Page();
     }
 
@@ -105,6 +107,10 @@ public class UserTimelineModel : PageModel
         }
 
         Cheeps = cheeps;
+    }
+
+    private async void GetNotifications(string author){
+        
     }
     
     public async Task<IActionResult> OnPost(string Cheep)

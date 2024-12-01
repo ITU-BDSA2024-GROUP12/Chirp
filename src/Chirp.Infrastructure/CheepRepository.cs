@@ -70,7 +70,7 @@ public class CheepRepository : ICheepRepository
                     Cheep = newCheep,
                     CheepId = newCheep.CheepId,
                     Content = $"{author.Name} mentioned you in a Cheep!",
-                    Timestamp = DateTime.Parse(time),
+                    TimeStamp = DateTime.Parse(time),
                 };
                 _cheepDbContext.Notifications.Add(notification);
 
@@ -108,6 +108,32 @@ public class CheepRepository : ICheepRepository
         }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
         var result = query.ToList();
         return result;
+    }
+
+    public async Task<List<NotificationDTO>> GetNotifications(string username)
+    {
+        // Fetch the AuthorId based on the provided username
+        var author = await _cheepDbContext.Authors
+        .FirstOrDefaultAsync(a => a.Name == username);
+
+        if (author == null)
+        {
+            throw new ArgumentException("Invalid username: no author found.", nameof(username));
+        }
+
+        // Use the AuthorId to filter notifications
+        var notifications = await _cheepDbContext.Notifications
+            .Where(n => n.AuthorId == author.AuthorId) // Assuming RecipientAuthorId in Notifications
+            .Select(n => new NotificationDTO
+            {
+                AuthorId = n.AuthorId,
+                CheepId = n.CheepId,
+                Content = n.Content,
+                Timestamp = n.TimeStamp
+            })
+            .ToListAsync();
+
+        return notifications;
     }
 
     public void UpdateMessage()
