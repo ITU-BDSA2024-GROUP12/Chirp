@@ -92,8 +92,13 @@ public class UserTimelineModel : PageModel
 		}
         page = pageNumber;
         GetCheeps(pageNumber, author);
-        GetNotifications(author);
-
+        if(User.Identity.IsAuthenticated)
+        {
+            GetNotifications(author);
+        } else{
+            Notifications = new List<NotificationDTO>(); //Empty instead of null
+        }
+        Notifications = new List<NotificationDTO>();
         return Page();
     }
 
@@ -110,9 +115,16 @@ public class UserTimelineModel : PageModel
     }
 
     private async void GetNotifications(string author){
-        
+        var notifications = await _cRepository.GetNotifications(author);
+
+        Notifications = notifications;
     }
     
+    /// <summary>
+    /// Method to to post, ensures proper lenght and checks for mentions, before passing it to the create cheep methods
+    /// </summary>
+    /// <param name="Cheep">The text to be cheeped</param>
+    /// <returns>A redirect to the same page, to update with the new cheep</returns>
     public async Task<IActionResult> OnPost(string Cheep)
     {
         // Do something with the text ...

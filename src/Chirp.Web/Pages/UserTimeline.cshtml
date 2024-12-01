@@ -6,9 +6,28 @@
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
 }
-
 <div>
-    <h2> @routeName's Timeline </h2>
+    <h2>@routeName's Timeline</h2>
+
+    @if (Model.Notifications.Any())
+    {
+        <div class="notifications">
+            <h3>Notifications:</h3>
+            <ul>
+                @foreach (var notification in Model.Notifications)
+                {
+                    <li>
+                        <p>
+                            @notification.Content
+                            <small>&mdash; @notification.Timestamp.ToShortTimeString()</small>
+                            <button onclick="dismissNotification(@notification.AuthorId)">Dismiss</button>
+                        </p>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+<div>
 
     @if (User.Identity.IsAuthenticated)
     {

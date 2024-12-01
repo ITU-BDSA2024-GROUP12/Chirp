@@ -110,11 +110,17 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
+    /// <summary>
+    /// Takes in the known author name and finds the author id to get notifications.
+    /// </summary>
+    /// <param name="username">The author who's notifications to get</param>
+    /// <returns>A list of notifications if present</returns>
     public async Task<List<NotificationDTO>> GetNotifications(string username)
     {
         // Fetch the AuthorId based on the provided username
         var author = await _cheepDbContext.Authors
         .FirstOrDefaultAsync(a => a.Name == username);
+        Console.WriteLine("the username is: "+ username + " and: " + author);
 
         if (author == null)
         {
@@ -123,7 +129,7 @@ public class CheepRepository : ICheepRepository
 
         // Use the AuthorId to filter notifications
         var notifications = await _cheepDbContext.Notifications
-            .Where(n => n.AuthorId == author.AuthorId) // Assuming RecipientAuthorId in Notifications
+            .Where(n => n.AuthorId == author.AuthorId) 
             .Select(n => new NotificationDTO
             {
                 AuthorId = n.AuthorId,
@@ -133,7 +139,7 @@ public class CheepRepository : ICheepRepository
             })
             .ToListAsync();
 
-        return notifications;
+        return notifications ?? new List<NotificationDTO>();
     }
 
     public void UpdateMessage()
