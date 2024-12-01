@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
+using Chirp.Core;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
@@ -32,7 +33,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ChirpUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly CheepDbContext _cheepDbContext;
+        private readonly IAuthorRepository _repository;
 
         public RegisterModel(
             UserManager<ChirpUser> userManager,
@@ -40,7 +41,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             SignInManager<ChirpUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            CheepDbContext cheepDbContext)
+            IAuthorRepository repository)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -48,7 +49,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _cheepDbContext = cheepDbContext;
+            _repository = repository;
         }
 
         /// <summary>
@@ -137,15 +138,11 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var author = new Author
+                    _repository.CreateAuthor(new AuthorDTO
                     {
                         Name = user.UserName,
                         Email = user.Email
-                    };
-                    _cheepDbContext.Authors.Add(author);
-                    await _cheepDbContext.SaveChangesAsync();
-                    Console.WriteLine("New author? " + author + "details: " + author.AuthorId);
-                    _logger.LogInformation("Author generated.");
+                    });
 
                     var claim = new Claim(ClaimTypes.Name, Input.UserName);
                     await _userManager.AddClaimAsync(user, claim);

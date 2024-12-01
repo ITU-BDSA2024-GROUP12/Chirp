@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Chirp.Infrastructure;
+using Chirp.Core;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
@@ -31,7 +32,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ChirpUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly CheepDbContext _cheepDbContext;
+        private readonly IAuthorRepository _repository;
 
 
         public ExternalLoginModel(
@@ -40,7 +41,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             IUserStore<ChirpUser> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender,
-            CheepDbContext cheepDbContext)
+            IAuthorRepository repository)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -48,7 +49,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
-            _cheepDbContext = cheepDbContext;
+            _repository = repository;
         }
 
         /// <summary>
@@ -158,13 +159,11 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                     if (loginResult.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                            var author = new Author
+                            _repository.CreateAuthor(new AuthorDTO
                             {
                                 Name = user.UserName,
                                 Email = user.Email
-                            };
-                            _cheepDbContext.Authors.Add(author);
-                            await _cheepDbContext.SaveChangesAsync();
+                            });
 
                             Console.WriteLine("Signing in and redirecting");
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
