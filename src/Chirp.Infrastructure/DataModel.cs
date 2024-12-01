@@ -2,10 +2,11 @@ using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
+
+using Chirp.Core;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-
-
+using System.Net.Mime;
 
 public class Cheep 
 {
@@ -44,8 +45,8 @@ public class CheepMention
 public class Notification
 {
     public int Id { get; set; } //primary key
-    public int AuthorId { get; set; }
-    public Author? Author { get; set; }
+    public required int AuthorId { get; set; }
+    public string? Content { get; set; }
     public int CheepId { get; set; }
     public Cheep? Cheep { get; set; }
     public DateTime Timestamp { get; set; }

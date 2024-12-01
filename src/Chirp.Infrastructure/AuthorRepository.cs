@@ -150,14 +150,19 @@ public class AuthorRepository : IAuthorRepository
         Console.WriteLine(r);
     }
 
-     public async Task<List<AuthorDTO>> GetValidUsernames(List<string> mentions) {
+    /// <summary>
+    /// Method checks a list of strings for possible matches in the names of the author table
+    /// </summary>
+    /// <param name="mentions"> The list of names to be validated</param>
+    /// <returns>a list of corresponding authors</returns>
+    public async Task<List<AuthorDTO>> GetValidUsernames(List<string> mentions) {
         var query = _cheepDbContext.Authors.Where(Author => mentions.Contains(Author.Name)).Select(Author => new AuthorDTO
         {
             AuthorId = Author.AuthorId,
             Name = Author.Name,
             Email = Author.Email,
-            });
-            var result = await query.ToListAsync();
-            return result;
-        }
+        });
+        var result = await query.ToListAsync();
+        return result;
+    }
 }

@@ -12,6 +12,8 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository _cRepository;
     private readonly IAuthorRepository _aRepository;
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
+    public List<NotificationDTO> Notifications { get; set; }
+
     public int page;
 
     public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository)

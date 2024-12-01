@@ -69,6 +69,7 @@ public class CheepRepository : ICheepRepository
                     AuthorId = mentioned.AuthorId,
                     Cheep = newCheep,
                     CheepId = newCheep.CheepId,
+                    Content = $"{author.Name} mentioned you in a Cheep!",
                     Timestamp = DateTime.Parse(time),
                 };
                 _cheepDbContext.Notifications.Add(notification);
@@ -78,7 +79,7 @@ public class CheepRepository : ICheepRepository
         //save changes to database
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
 
-        return (tsk.Result == 1);
+        return tsk.Result == 1;
     }
 
 
