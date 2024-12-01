@@ -98,7 +98,6 @@ public class UserTimelineModel : PageModel
         } else{
             Notifications = new List<NotificationDTO>(); //Empty instead of null
         }
-        Notifications = new List<NotificationDTO>();
         return Page();
     }
 

@@ -120,7 +120,6 @@ public class CheepRepository : ICheepRepository
         // Fetch the AuthorId based on the provided username
         var author = await _cheepDbContext.Authors
         .FirstOrDefaultAsync(a => a.Name == username);
-        Console.WriteLine("the username is: "+ username + " and: " + author);
 
         if (author == null)
         {
