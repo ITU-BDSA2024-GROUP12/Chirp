@@ -126,7 +126,7 @@ public class PublicModel : PageModel
         AuthorDTO author = new AuthorDTO()
         {
             Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.Identity.Name
+            Email = User.FindFirstValue(ClaimTypes.Email),
         };
         
         // Parsing mentions from the Cheep text (@username)
