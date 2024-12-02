@@ -49,7 +49,7 @@ public class PublicModel : PageModel
             var validUsernames = await _aRepository.GetValidUsernames(matches);
 
             // Break content into parts
-            var regex = new Regex(@"@(\w+)");
+            var regex = new Regex(@"@([A-Za-z0-9_\. -]+)");
             int lastIndex = 0;
             foreach (Match match in regex.Matches(content))
             {
