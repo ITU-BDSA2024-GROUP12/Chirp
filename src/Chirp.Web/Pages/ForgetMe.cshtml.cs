@@ -20,7 +20,7 @@ public class ForgetMe : PageModel
     
     public ActionResult OnGet()
     {
-        _repository.AnonymizeUser(User.FindFirstValue(ClaimTypes.Name),User.FindFirstValue(ClaimTypes.Email));
+        _repository.DeleteUser(User.FindFirstValue(ClaimTypes.Name),User.FindFirstValue(ClaimTypes.Email));
         _signInManager.SignOutAsync();
         return Redirect("/");
     }

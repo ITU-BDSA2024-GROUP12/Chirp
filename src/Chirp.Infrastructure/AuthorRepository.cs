@@ -131,9 +131,9 @@ public class AuthorRepository : IAuthorRepository
         return author;
     }
     
-    public async void AnonymizeUser(string name, string email)
+    public async void DeleteUser(string name, string email)
     {
-        AuthorDTO a = await GetAuthor(name, name);
+        AuthorDTO a = await GetAuthor(name, email);
         var r = _cheepDbContext.Users.Where(user => user.Email == email).ExecuteDeleteAsync().Result;
         var r2 = _cheepDbContext.Cheeps.Where(cheep => cheep.AuthorId == a.AuthorId)
             .ExecuteUpdateAsync(set => set.SetProperty(c => c.AuthorId, 0)).Result;
