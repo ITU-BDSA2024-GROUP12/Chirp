@@ -71,7 +71,6 @@ public class CheepRepository : ICheepRepository
                     TimeStamp = DateTime.Parse(time),
                 };
                 _cheepDbContext.Notifications.Add(notification);
-
             }   
         }
         //save changes to database

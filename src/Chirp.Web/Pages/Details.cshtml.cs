@@ -27,7 +27,6 @@ public class CheepDetailsModel : PageModel
 
     public async Task<IActionResult> OnPostDismissAsync(int notificationId)
     {
-        
         // Delete the notification
         await _repository.DeleteNotification(notificationId);
 

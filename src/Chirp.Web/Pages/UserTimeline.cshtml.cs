@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Chirp.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +37,6 @@ public class UserTimelineModel : PageModel
 
         if (matches.Count > 0)
         {
-
             // Validate the mentions
             var validUsernames = await _aRepository.GetValidUsernames(matches);
 
