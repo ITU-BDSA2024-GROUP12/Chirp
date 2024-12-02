@@ -181,4 +181,24 @@ public class CheepRepository : ICheepRepository
             await _cheepDbContext.SaveChangesAsync();
         } 
     }
+
+    public async Task ForgetMentions(string authorName)
+    {
+        const string deletedUserPlaceholder = "DeletedUser";
+
+         // Find mentions of the deleted user and update the username to "DeletedUser"
+        var mentionsToUpdate = _cheepDbContext.CheepMentions
+        .Where(m => m.MentionedUsername == authorName);
+
+        //Change the database
+        await mentionsToUpdate.ForEachAsync(m => m.MentionedUsername = deletedUserPlaceholder);
+        await _cheepDbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteNotificationsForUser(int userId)
+    {
+        var notifications = _cheepDbContext.Notifications.Where(n => n.AuthorId == userId);
+        _cheepDbContext.Notifications.RemoveRange(notifications);
+        await _cheepDbContext.SaveChangesAsync();
+    }
 }
