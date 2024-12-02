@@ -32,6 +32,12 @@
     <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
   </ItemGroup>
 
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\sql\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <_EnableMacOSCodeSign>false</_EnableMacOSCodeSign>
   </PropertyGroup>

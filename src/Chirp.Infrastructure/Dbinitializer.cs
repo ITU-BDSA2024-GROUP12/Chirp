@@ -11,7 +11,7 @@ public static class DbInitializer
         if (!(chirpContext.Authors.Any() && chirpContext.Cheeps.Any()))
         {
             Console.WriteLine("Seeding database...");
-            var a0 = new Author() { AuthorId = 571235, Name = "DeletedUser", Email = "DeletedUser", Cheeps = new List<Cheep>() };
+            var a0 = new Author() { AuthorId = 999, Name = "DeletedUser", Email = "DeletedUser", Cheeps = new List<Cheep>() };
             var a1 = new Author() { AuthorId = 1, Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
             var a2 = new Author() { AuthorId = 2, Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = new List<Cheep>() };
             var a3 = new Author() { AuthorId = 3, Name = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = new List<Cheep>() };
