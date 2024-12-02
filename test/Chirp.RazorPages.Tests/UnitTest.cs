@@ -19,8 +19,6 @@ public class UnitTest : IClassFixture<CustomWebApplicationFactory<Program>>
 	{
         // Use the factory to create a client
         _factory = factory;
-
-
         _client = factory.CreateClient();
 		_client.DefaultRequestHeaders.Accept.Clear();
 		_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html"));

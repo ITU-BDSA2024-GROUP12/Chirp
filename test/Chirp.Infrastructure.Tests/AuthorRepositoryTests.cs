@@ -33,11 +33,11 @@ public class AuthorRepositoryTests
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new AuthorRepository(dbContext);
-        var author = new Author { Name = "Jane Test", Email = "jane@test.com" };
+        var author = new Author {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
         dbContext.Authors.Add(author);
         dbContext.SaveChanges();
 
-        var authorDto = new AuthorDTO { Name = "Jane Test", Email = "jane@test.com" };
+        var authorDto = new AuthorDTO {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
 
         // Act & Assert
         var exception = Assert.Throws<Exception>(() => repository.CreateAuthor(authorDto));
@@ -50,7 +50,7 @@ public class AuthorRepositoryTests
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new AuthorRepository(dbContext);
-        var authorDto = new AuthorDTO { Name = "John Testman", Email = "john@test.com" };
+        var authorDto = new AuthorDTO {AuthorId = 999, Name = "John Testman", Email = "john@test.com" };
 
         // Act
         var result = repository.CreateAuthor(authorDto);
@@ -99,6 +99,7 @@ public class AuthorRepositoryTests
 
         AuthorDTO authorDto = new AuthorDTO()
         {
+            AuthorId = 999,
             Name = author,
             Email = email
         };
