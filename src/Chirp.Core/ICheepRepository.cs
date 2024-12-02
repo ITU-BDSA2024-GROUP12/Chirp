@@ -7,5 +7,7 @@ public interface ICheepRepository
     public Task<List<CheepDTO>> GetMessagesFromAuthor(string author, int page);
     public bool CreateCheep(AuthorDTO author, string text, List<AuthorDTO>? mentions, string time);
     public Task<List<NotificationDTO>> GetNotifications(string username);
+    public Task DeleteNotification(int notificationId);
+
     Task<CheepDTO> GetCheepById(int id);
 }

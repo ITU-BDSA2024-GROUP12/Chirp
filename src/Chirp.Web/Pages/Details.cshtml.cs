@@ -21,6 +21,16 @@ public class CheepDetailsModel : PageModel
         {
             return NotFound();
         }
+        
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostDismissAsync(int notificationId)
+    {
+        // Delete the notification
+        await _repository.DeleteNotification(notificationId);
+
+        // Redirect back to the user's timeline
+        return Redirect($"/{User.Identity.Name}");
     }
 }

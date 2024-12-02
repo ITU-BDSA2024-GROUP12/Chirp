@@ -131,6 +131,7 @@ public class CheepRepository : ICheepRepository
             .Where(n => n.AuthorId == author.AuthorId) 
             .Select(n => new NotificationDTO
             {
+                Id = n.Id,
                 AuthorId = n.AuthorId,
                 CheepId = n.CheepId,
                 Content = n.Content,
@@ -171,5 +172,19 @@ public class CheepRepository : ICheepRepository
         }
 
         return cheep;
+    }
+
+    public async Task DeleteNotification(int notificationId)
+    {
+        var notification = await _cheepDbContext.Notifications
+        .FirstOrDefaultAsync(n => n.Id == notificationId);
+        if (notification != null)
+        {
+            _cheepDbContext.Notifications.Remove(notification);
+            await _cheepDbContext.SaveChangesAsync();
+            Console.WriteLine($"Notification with ID {notificationId} deleted.");
+        } else{
+            Console.WriteLine("this should not display: " + notificationId);
+        }
     }
 }

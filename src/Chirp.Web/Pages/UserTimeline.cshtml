@@ -10,7 +10,6 @@
     <h2>@routeName's Timeline</h2>
     @if (Model.Notifications.Any())
     {
-        Console.WriteLine("There are notifications");
         <div class="notifications">
             <h3>Notifications:</h3>
             <ul>
@@ -19,7 +18,7 @@
                     <li>
                         <p>
                             <strong>Notification:</strong> @notification.Content
-                            <a href="/Cheeps/Details/@notification.CheepId">View Cheep</a>
+                            <a href="/Cheeps/Details/@notification.Id?notificationId=@notification.Id">View Cheep</a>
                         </p>
                     </li>
                 }

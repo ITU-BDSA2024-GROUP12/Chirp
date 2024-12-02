@@ -2,6 +2,15 @@
 @model Chirp.Web.Pages.CheepDetailsModel
 
 <div class="cheep-details">
+    @if (Request.Query["notificationId"].Count > 0)
+{
+    int notificationId = int.Parse(Request.Query["notificationId"]);
+    Console.WriteLine("this is the notificationId: " + notificationId);
+    <form method="post" asp-page-handler="Dismiss">
+        <input type="hidden" name="notificationId" value="@notificationId" />
+        <button type="submit" class="btn btn-warning">Dismiss Notification</button>
+    </form>
+}
     <h2>Cheep Details</h2>
     <p><strong>@Model.Cheep.Author:</strong> @Model.Cheep.Text</p>
     <small>Posted at: @Model.Cheep.TimeStamp.ToString("g")</small>
