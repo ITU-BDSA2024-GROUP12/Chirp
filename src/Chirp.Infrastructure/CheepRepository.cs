@@ -1,7 +1,5 @@
 using Chirp.Core;
-
 namespace Chirp.Infrastructure;
-
 using Microsoft.EntityFrameworkCore;
 
 public class CheepRepository : ICheepRepository
@@ -182,9 +180,6 @@ public class CheepRepository : ICheepRepository
         {
             _cheepDbContext.Notifications.Remove(notification);
             await _cheepDbContext.SaveChangesAsync();
-            Console.WriteLine($"Notification with ID {notificationId} deleted.");
-        } else{
-            Console.WriteLine("this should not display: " + notificationId);
-        }
+        } 
     }
 }

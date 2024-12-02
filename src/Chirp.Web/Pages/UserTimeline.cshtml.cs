@@ -92,7 +92,8 @@ public class UserTimelineModel : PageModel
 		}
         page = pageNumber;
         GetCheeps(pageNumber, author);
-        if(User.Identity.IsAuthenticated)
+        var userName = User.Identity.Name;
+        if(User.Identity.IsAuthenticated && author == userName)
         {
             GetNotifications(author);
         } else{
