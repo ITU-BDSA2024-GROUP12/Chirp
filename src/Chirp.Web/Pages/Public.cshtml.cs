@@ -44,7 +44,6 @@ public class PublicModel : PageModel
 
         if (matches.Count > 0)
         {
-
             // Validate the mentions
             var validUsernames = await _aRepository.GetValidUsernames(matches);
 
