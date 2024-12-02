@@ -6,9 +6,26 @@
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
 }
-
 <div>
-    <h2> @routeName's Timeline </h2>
+    <h2>@routeName's Timeline</h2>
+    @if (Model.Notifications.Any())
+    {
+        <div class="notifications">
+            <h3>Notifications:</h3>
+            <ul>
+                @foreach (var notification in Model.Notifications)
+                {
+                    <li>
+                        <p>
+                            <strong>Notification:</strong> @notification.Content
+                            <a href="/Cheeps/Details/@notification.CheepId?notificationId=@notification.Id">View Cheep</a>
+                        </p>
+                    </li>
+                }
+            </ul>
+        </div>
+    } 
+<div>
 
     @if (User.Identity.IsAuthenticated)
     {
@@ -38,7 +55,17 @@
                         <strong>
                             <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
-                        @cheep.Text 
+                        @foreach (var part in cheep.HighlightedParts) //Displaying text of cheeps
+                        {
+                            if (part.IsMention)
+                            {
+                                <a href="/@part.Text.TrimStart('@')">@part.Text</a>
+                            }
+                            else
+                            {
+                                @part.Text
+                            }
+                        } 
                         <small>&mdash; @cheep.DateTime()</small>
                     </p>
                 </li>

@@ -46,7 +46,17 @@
                                 <a href="/@cheep.Author">@cheep.Author</a>
                             }
                         </strong>
-                        @cheep.Text
+                        @foreach (var part in cheep.HighlightedParts) //Displaying text of cheeps
+                        {
+                            if (part.IsMention)
+                            {
+                                <a href="/@part.Text.TrimStart('@')">@part.Text</a>
+                            }
+                            else
+                            {
+                                @part.Text
+                            }
+                        }
                         <small>- @cheep.DateTime()</small>
                     </p>
                 </li>
