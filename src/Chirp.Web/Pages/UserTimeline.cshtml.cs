@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Chirp.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +11,17 @@ public class UserTimelineModel : PageModel
 {
     private readonly ICheepRepository _cRepository;
     private readonly IAuthorRepository _aRepository;
+    private readonly INotificationRepository _nRepository;
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
     public List<NotificationDTO> Notifications { get; set; }
 
     public int page;
 
-    public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository)
+    public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository, INotificationRepository nRepository)
     {
         _cRepository = cRepository;
         _aRepository = aRepository;
+        _nRepository = nRepository;
     }
 
     /// <summary>
@@ -114,7 +116,7 @@ public class UserTimelineModel : PageModel
     }
 
     private async void GetNotifications(string author){
-        var notifications = await _cRepository.GetNotifications(author);
+        var notifications = await _nRepository.GetNotifications(author);
 
         Notifications = notifications;
     }
