@@ -1,0 +1,8 @@
+@page "/Cheeps/Details/{id}"
+@model Chirp.Web.Pages.CheepDetailsModel
+
+<div class="cheep-details">
+    <h2>Cheep Details</h2>
+    <p><strong>@Model.Cheep.Author:</strong> @Model.Cheep.Text</p>
+    <small>Posted at: @Model.Cheep.TimeStamp.ToString("g")</small>
+</div>

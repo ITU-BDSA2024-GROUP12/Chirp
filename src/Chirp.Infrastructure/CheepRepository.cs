@@ -154,5 +154,22 @@ public class CheepRepository : ICheepRepository
         return dateTime.AddSeconds(unixTime);
     }
 
+    public async  Task<CheepDTO> GetCheepById(int id)
+    {
+        var cheep = await _cheepDbContext.Cheeps
+        .Where(c => c.CheepId == id)
+        .Select(c => new CheepDTO
+        {
+            Text = c.Text,
+            Author = c.Author.Name,
+            TimeStamp = ((DateTimeOffset)c.TimeStamp).ToUnixTimeSeconds()
+        })
+        .FirstOrDefaultAsync();
 
+        if(cheep == null){
+             throw new ArgumentException("Invalid cheepId: cheep " + id);
+        }
+
+        return cheep;
+    }
 }

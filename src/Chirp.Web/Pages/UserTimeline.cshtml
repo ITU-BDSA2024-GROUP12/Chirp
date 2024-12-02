@@ -18,9 +18,8 @@
                 {
                     <li>
                         <p>
-                            @notification.Content
-                            <small>&mdash; @notification.Timestamp.ToShortTimeString()</small>
-                            <button onclick="dismissNotification(@notification.AuthorId)">Dismiss</button>
+                            <strong>Notification:</strong> @notification.Content
+                            <a href="/Cheeps/Details/@notification.CheepId">View Cheep</a>
                         </p>
                     </li>
                 }
