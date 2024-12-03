@@ -14,11 +14,11 @@ static class Util {
     public static List<string> ExtractMentions(string cheep)
     {
         var mentions = new List<string>();
-        var regex = new Regex(@"@([A-Za-z0-9_\. -]+)");
+        var regex = new Regex(@"@([\w\s]+?)(?=\s|$)");
         var matches = regex.Matches(cheep);
         foreach (Match match in matches)
         {
-            mentions.Add(match.Groups[1].Value);
+            mentions.Add(match.Groups[1].Value.Trim());
         }
         return mentions;
     }

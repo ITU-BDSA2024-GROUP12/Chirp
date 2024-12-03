@@ -43,7 +43,7 @@ public class UserTimelineModel : PageModel
             var validUsernames = await _aRepository.GetValidUsernames(matches);
 
             // Break content into parts
-            var regex = new Regex(@"@([A-Za-z0-9_\. -]+)");
+            var regex = new Regex(@"@([\w\s]+?)(?=\s|$)");
             int lastIndex = 0;
             foreach (Match match in regex.Matches(content))
             {
