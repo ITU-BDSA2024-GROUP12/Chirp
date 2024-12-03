@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -32,6 +33,8 @@ public class Author
     public string? Email { get; set; }
     public ICollection<Cheep>? Cheeps { get; set; }
     public ICollection<Notification>? Notifications { get; set; }
+    [NotMapped]
+    public ICollection<int>? Following { get; set; }
 }
 
 public class CheepMention
@@ -40,6 +43,7 @@ public class CheepMention
     public int CheepId { get; set; }
     public Cheep? Cheep { get; set; }
     public string? MentionedUsername { get; set; } //the name of the Author
+    
 }
 
 public class Notification
@@ -52,6 +56,12 @@ public class Notification
     public DateTime TimeStamp { get; set; }
 }
 
+public class Following
+{
+    public int Id { get; set; } //primary key
+    public required int AuthorId { get; set; }
+}
+
 
 public class CheepDbContext : IdentityDbContext<ChirpUser>
 {
@@ -59,6 +69,8 @@ public class CheepDbContext : IdentityDbContext<ChirpUser>
     public DbSet<Author> Authors { get; set; }
     public DbSet<CheepMention> CheepMentions { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    
+    public DbSet<Following> Followings { get; set; }
 
     public CheepDbContext(DbContextOptions<CheepDbContext> options) : base(options) {}
     
