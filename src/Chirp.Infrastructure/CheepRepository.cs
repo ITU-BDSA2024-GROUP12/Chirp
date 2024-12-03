@@ -137,7 +137,7 @@ public class CheepRepository : ICheepRepository
         return cheep;
     }
 
-    public async Task<int> CheepsCount()
+    public async Task<int> CheepCount()
     {
         return await _cheepDbContext.Cheeps.CountAsync();
     }
