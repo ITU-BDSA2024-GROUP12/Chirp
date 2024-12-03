@@ -103,32 +103,17 @@ public class UserTimelineModel : PageModel
         }
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out page)) 
-		{
-			page = 1;
-		}
+        {
+            page = 1;
+        }
         
         await GetCheeps(page, author);
         var userName = User.Identity.Name;
         if(User.Identity.IsAuthenticated && author == userName)
         {
-            int pageNumber;
-            StringValues pageQuery = Request.Query["page"];
-            if (!Int32.TryParse(pageQuery, out pageNumber))
-            {
-                pageNumber = 1;
-            }
-
-            page = pageNumber;
-            GetCheeps(pageNumber, author);
-            var userName = User.Identity.Name;
-            if (User.Identity.IsAuthenticated && author == userName)
-            {
-                GetNotifications(author);
-            }
-            else
-            {
-                Notifications = new List<NotificationDTO>(); //Empty instead of null
-            }
+            GetNotifications(author);
+        } else{
+            Notifications = new List<NotificationDTO>(); //Empty instead of null
         }
 
         return Page();
