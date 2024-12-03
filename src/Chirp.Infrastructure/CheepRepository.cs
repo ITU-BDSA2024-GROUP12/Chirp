@@ -62,15 +62,15 @@ public class CheepRepository : ICheepRepository
     
     public async Task<List<CheepDTO>> GetMessages(int page)
     {
-        var query = _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
+        var result = await _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
-        }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
-        var result = query.ToList();
-       
-        return result;
+        }).AsQueryable<CheepDTO>().ToListAsync<CheepDTO>();
+
+        return result.AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32).ToList();
+        
     }
 
     public async Task<List<CheepDTO>> GetMessagesFromAuthor(string author, int page)
