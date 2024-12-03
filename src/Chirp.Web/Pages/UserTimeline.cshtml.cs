@@ -168,12 +168,34 @@ public class UserTimelineModel : PageModel
         Notifications = notifications;
     }
     
+    public async Task<IActionResult> OnPostFollow()
+    {
+        var following = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+        int authorname = Convert.ToInt32(Request.Form["author"]);
+        if (following != null)
+        {
+            if (following.Contains(authorname))
+            {
+                _cRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            }
+            else
+            {
+                _cRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            }
+        }
+        else
+        {
+            _cRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+        }
+        return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
+    }
+    
     /// <summary>
     /// Method to to post, ensures proper lenght and checks for mentions, before passing it to the create cheep methods
     /// </summary>
     /// <param name="Cheep">The text to be cheeped</param>
     /// <returns>A redirect to the same page, to update with the new cheep</returns>
-    public async Task<IActionResult> OnPost(string Cheep)
+    public async Task<IActionResult> OnPostCheep(string Cheep)
     {
         // Do something with the text ...
         if (Cheep.Length > 160)

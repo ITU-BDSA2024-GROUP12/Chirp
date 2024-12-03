@@ -31,7 +31,7 @@
     {
     <div class="cheepbox">
         <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
-        <form method="post">
+        <form method="post" asp-page-handler="Cheep">
             <input style="float: left" type="text" name="Cheep">
             <input type="submit" value="Share">
         </form>
@@ -53,7 +53,21 @@
                 <li>
                     <p>
                         <strong>
+                            @if(cheep.Author.Equals("DeletedUser"))
+                            {
+                            <a disabled="true">Deleted user</a>
+                            }
+                            else
+                            {
                             <a href="/@cheep.Author">@cheep.Author</a>
+                            }
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                            <form method="post" asp-page-handler="Follow">
+                                <input type="hidden" id="author" name="author" value=@cheep.AuthorId runat="server">
+                                <input type="submit" value="(Un)Follow">
+                            </form>
+                            }
                         </strong>
                         @foreach (var part in cheep.HighlightedParts) //Displaying text of cheeps
                         {

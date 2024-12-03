@@ -96,11 +96,6 @@ public class CheepRepository : ICheepRepository
     public bool UnfollowUser(int authorId, string userName)
     {
         AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
-        Following following = new()
-        {
-            FollowId = user.AuthorId,
-            AuthorId = authorId
-        };
         var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId && follow.AuthorId == authorId).Select(follow => new List<int>()
         {
             follow.FollowId,
