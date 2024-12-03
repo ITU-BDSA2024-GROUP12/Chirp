@@ -13,7 +13,7 @@
     {
         <div class="cheepbox">
             <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
-            <form method="post">
+            <form method="post" asp-page-handler="Cheep">
                 <input style="float: left" type="text" name="Cheep">
                 <input type="submit" value="Share">
             </form>
@@ -47,9 +47,8 @@
                             }
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <form method="post">
-                                    <input type="hidden" id="user" name="user" value=@(User.FindFirstValue("UserName"))>
-                                    <input type="hidden" id="author" name="author" value=@cheep.Author>
+                                <form method="post" asp-page-handler="Follow">
+                                    <input type="hidden" id="author" name="author" value=@cheep.Author runat="server">
                                     <input type="submit" value="Follow">
                                 </form>
                             }

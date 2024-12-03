@@ -5,6 +5,7 @@ using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.Primitives;
 
 namespace Chirp.Web.Pages;
@@ -111,33 +112,50 @@ public class PublicModel : PageModel
 
         Cheeps = cheeps;
     }
-    
-    public async Task<IActionResult> OnPost(string Cheep)
+
+    public async Task<IActionResult> OnPostFollow()
     {
-        if (Cheep.Length > 160)
-        {
-            ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            GetCheeps(1);
-            return Page();
-        }
-        
-        // Do something with the text ...
         AuthorDTO author = new AuthorDTO()
+        {
+            Name = Request.Form["author"],
+            Email = "",
+        };
+        AuthorDTO user = new AuthorDTO()
         {
             Name = User.FindFirstValue(ClaimTypes.Name),
             Email = User.FindFirstValue(ClaimTypes.Email),
         };
-        
-        // Parsing mentions from the Cheep text (@username)
-        var mentions = Util.ExtractMentions(Cheep);
-        
-        //only query if there are mentions
-        if(mentions.Count > 0) {
-            var validMentions =  await _aRepository.GetValidUsernames(mentions);
-            _cRepository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
-        }
-        else _cRepository.CreateCheep(author, Cheep, null, DateTimeOffset.UtcNow.ToString());
-        
+        _cRepository.FollowUser(author, user);
+        return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
+    }
+    
+    public async Task<IActionResult> OnPostCheep(string Cheep)
+    {
+            if (Cheep.Length > 160)
+            {
+                ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
+                GetCheeps(1);
+                return Page();
+            }
+
+            // Do something with the text ...
+            AuthorDTO author = new AuthorDTO()
+            {
+                Name = User.FindFirstValue(ClaimTypes.Name),
+                Email = User.FindFirstValue(ClaimTypes.Email),
+            };
+
+            // Parsing mentions from the Cheep text (@username)
+            var mentions = Util.ExtractMentions(Cheep);
+
+            //only query if there are mentions
+            if (mentions.Count > 0)
+            {
+                var validMentions = await _aRepository.GetValidUsernames(mentions);
+                _cRepository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
+            }
+            else _cRepository.CreateCheep(author, Cheep, null, DateTimeOffset.UtcNow.ToString());
+
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
 }

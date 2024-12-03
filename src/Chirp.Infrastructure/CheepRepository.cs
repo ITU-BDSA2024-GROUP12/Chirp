@@ -79,7 +79,15 @@ public class CheepRepository : ICheepRepository
         return tsk.Result == 1;
     }
 
-
+    public bool FollowUser(AuthorDTO authorName, AuthorDTO userName)
+    {
+        AuthorDTO author = _authorRepository.GetAuthorByName(authorName.Name).Result;
+        AuthorDTO user = _authorRepository.GetAuthor(userName.Name, userName.Email).Result;
+        
+        
+        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+        return tsk.Result == 1;
+    }
     
     
     public async Task<List<CheepDTO>> GetMessages(int page)
