@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text.RegularExpressions;
+
 using Chirp.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -85,14 +86,13 @@ public class UserTimelineModel : PageModel
 
     public async Task<ActionResult> OnGet(string author)
     {
-        int pageNumber;
         StringValues pageQuery = Request.Query["page"];
-        if(!Int32.TryParse(pageQuery, out pageNumber)) 
+        if(!Int32.TryParse(pageQuery, out page)) 
 		{
-			pageNumber = 1;
+			page = 1;
 		}
-        page = pageNumber;
-        GetCheeps(pageNumber, author);
+        
+        await GetCheeps(page, author);
         var userName = User.Identity.Name;
         if(User.Identity.IsAuthenticated && author == userName)
         {
@@ -100,10 +100,11 @@ public class UserTimelineModel : PageModel
         } else{
             Notifications = new List<NotificationDTO>(); //Empty instead of null
         }
+
         return Page();
     }
 
-    private async void GetCheeps(int page, string author)
+    private async Task GetCheeps(int page, string author)
     {
         var cheeps = await _cRepository.GetMessagesFromAuthor(author,page);
 
@@ -121,6 +122,7 @@ public class UserTimelineModel : PageModel
         Notifications = notifications;
     }
     
+
     /// <summary>
     /// Method to to post, ensures proper lenght and checks for mentions, before passing it to the create cheep methods
     /// </summary>
@@ -129,16 +131,22 @@ public class UserTimelineModel : PageModel
     public async Task<IActionResult> OnPost(string Cheep)
     {
         // Do something with the text ...
+        var name = User.FindFirstValue(ClaimTypes.Name);
+        var email = User.FindFirstValue(ClaimTypes.Email);
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            GetCheeps(1, User.FindFirstValue(ClaimTypes.Name));
-            return Page();
+            if (name is not null)
+            {
+                await GetCheeps(1, name);
+            }
+            return Page(); 
         }
+        
         AuthorDTO author = new AuthorDTO()
         {
-            Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.FindFirstValue(ClaimTypes.Email)
+            Name = name ?? "N/A",
+            Email = email ?? "N/A",
         };
 
         // Parsing mentions from the Cheep text (@username)
