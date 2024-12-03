@@ -16,6 +16,7 @@ public class UserTimelineModel : PageModel
 
     public int page;
 
+    public List<int> Follows;
     public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository)
     {
         _cRepository = cRepository;
@@ -85,6 +86,10 @@ public class UserTimelineModel : PageModel
 
     public async Task<ActionResult> OnGet(string author)
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            Follows = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+        }
         if (author == User.Identity.Name)
         {
             int pageNumber;

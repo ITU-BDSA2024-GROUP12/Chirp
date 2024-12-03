@@ -24,7 +24,7 @@ public class PublicModel : PageModel
 
     public int page;
 
-    public List<Following> Follows;
+    public List<int> Follows;
 
     public PublicModel(ICheepRepository cRepository, IAuthorRepository aRepository, SignInManager<ChirpUser> signInManager)
     {
@@ -94,6 +94,10 @@ public class PublicModel : PageModel
     
     public async Task<ActionResult> OnGet(int pageNumber = 1)
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            Follows = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+        }
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out pageNumber)) 
         {
@@ -135,6 +139,8 @@ public class PublicModel : PageModel
         {
             _cRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
         }
+
+        await OnGet();
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
     
