@@ -27,7 +27,8 @@
     } 
     <div>
 
-        @if (User.Identity.IsAuthenticated)
+
+        @if (User.Identity is not null && User.Identity.IsAuthenticated)
         {
             <div class="cheepbox">
                 <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
@@ -39,9 +40,13 @@
         }
         @if (!ModelState.IsValid)
         {
-            @foreach (var error in ModelState["Cheep"].Errors)
+            var cheepErrors = ModelState["Cheep"]?.Errors;
+            if (cheepErrors != null)
             {
-                <p>@error.ErrorMessage</p>
+                @foreach (var error in cheepErrors)
+                {
+                    <p>@error.ErrorMessage</p>
+                }
             }
         }
         @if (Model.Cheeps.Any())
@@ -72,6 +77,7 @@
                 }
             </ul>
             <div style="display: flex; justify-content: center;">
+
                 @if (Model.page > 1)
                 {
                     <button style="margin-right: 17px"><a href="/@routeName?page=@(Model.page - 1)">Previous Page</a></button>
@@ -79,6 +85,7 @@
                 <button><a href="/@routeName?page=@(Model.page + 1)">Next Page</a></button>
             </div>
             <div><p>Page @Model.page of @Model.pagesOfCheeps</p></div>
+
         }
         else
         {

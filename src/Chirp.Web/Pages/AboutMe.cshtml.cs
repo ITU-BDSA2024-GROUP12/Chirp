@@ -15,9 +15,18 @@ public class AboutMe : PageModel
     {
         _repository = repository;
     }
-    
-    public async void OnGet()
+
+    private async void GetCheeps(string? name)
     {
-        Cheeps = await _repository.GetMessagesFromAuthor(User.FindFirstValue(ClaimTypes.Name), 1);
+        if (string.IsNullOrEmpty(name))
+        {
+            return;
+        }
+        Cheeps = await _repository.GetMessagesFromAuthor(name, 1);
+    }
+    
+    public void OnGet()
+    {  
+        GetCheeps(User.FindFirstValue(ClaimTypes.Name));
     }
 }

@@ -65,7 +65,7 @@ public class AuthorRepository : IAuthorRepository
         {
             AuthorId = author.AuthorId,
             Name = author.Name,
-            Email = author.Email,
+            Email = author.Email ?? "N/A" // Provide a default value if Email is null
         });
         
         //There should only be one author returned, so return the first one.
@@ -90,7 +90,7 @@ public class AuthorRepository : IAuthorRepository
         {
             AuthorId = author.AuthorId,
             Name = author.Name,
-            Email = author.Email,
+            Email = author.Email ?? "N/A" // Provide a default value if Email is null
         });
         
         //There should only be one author returned, so return the first one.
@@ -122,7 +122,7 @@ public class AuthorRepository : IAuthorRepository
         {
             AuthorId = author.AuthorId,
             Name = author.Name,
-            Email = author.Email,
+            Email = author.Email ?? "N/A" // Provide a default value if Email is null
         });
         
         //There should only be one author returned, so return the first one.

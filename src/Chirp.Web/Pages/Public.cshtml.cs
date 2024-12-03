@@ -20,11 +20,13 @@ public class PublicModel : PageModel
     
     private SignInManager<ChirpUser> _signInManager;
 
+
     public int page;
     
     public int noOfCheeps;
 
     public decimal pagesOfCheeps;
+
 
     public PublicModel(ICheepRepository cRepository, IAuthorRepository aRepository, SignInManager<ChirpUser> signInManager)
     {
@@ -95,21 +97,22 @@ public class PublicModel : PageModel
     public async Task<ActionResult> OnGet(int pageNumber = 1)
     {
         StringValues pageQuery = Request.Query["page"];
-        if(!Int32.TryParse(pageQuery, out pageNumber)) 
+        if(!Int32.TryParse(pageQuery, out PageNumber)) 
         {
-            pageNumber = 1;
+            page = 1;
         }
-        page = pageNumber;
-        GetCheeps(pageNumber);
+
         
         noOfCheeps = _cRepository.CheepCount().Result;
 
         pagesOfCheeps = Math.Ceiling((decimal)noOfCheeps / (decimal)32.0);
         
+        await GetCheeps(page);
+
         return Page();
     }
 
-    private async void GetCheeps(int pageNumber)
+    private async Task GetCheeps(int pageNumber)
     {
         var cheeps = await _cRepository.GetMessages(pageNumber);
 
@@ -126,15 +129,22 @@ public class PublicModel : PageModel
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            GetCheeps(1);
+            await GetCheeps(1);
             return Page();
         }
-        
+        var name = User.FindFirstValue(ClaimTypes.Name);
+        var email = User.FindFirstValue(ClaimTypes.Email);
         // Do something with the text ...
+        if (name is not null && email is not null)
+        {
+            name = User.FindFirstValue(ClaimTypes.Name);
+            email = User.FindFirstValue(ClaimTypes.Email);
+        }
+        
         AuthorDTO author = new AuthorDTO()
         {
-            Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.FindFirstValue(ClaimTypes.Email),
+            Name = name ?? "N/A",
+            Email = email ?? "N/A"
         };
         
         // Parsing mentions from the Cheep text (@username)
