@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 using Chirp.Core;
@@ -105,7 +105,6 @@ public class UserTimelineModel : PageModel
         var userName = User.Identity.Name;
         if(User.Identity.IsAuthenticated && author == userName)
         {
-            
             GetNotifications(author);
         } else{
             Notifications = new List<NotificationDTO>(); //Empty instead of null
