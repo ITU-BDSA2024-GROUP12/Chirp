@@ -57,7 +57,7 @@ public class Notification
 
 public class Following
 {
-    public short Id { get; set; } //primary key
+    public int Id { get; set; } //primary key
     public int FollowId { get; set; }
     public int AuthorId { get; set; }
 }
