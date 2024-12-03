@@ -115,9 +115,23 @@ public class PublicModel : PageModel
 
     public async Task<IActionResult> OnPostFollow()
     {
+        var following = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
         int authorname = Convert.ToInt32(Request.Form["author"]);
-        Console.WriteLine(authorname);
-        _cRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+        if (following != null)
+        {
+            if (following.Contains(authorname))
+            {
+                _cRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            }
+            else
+            {
+                _cRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            }
+        }
+        else
+        {
+            _cRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+        }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
     

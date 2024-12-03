@@ -108,7 +108,6 @@ public class UserTimelineModel : PageModel
         }
         else
         {
-            Console.WriteLine("test2");
             int pageNumber;
             StringValues pageQuery = Request.Query["page"];
             if (!Int32.TryParse(pageQuery, out pageNumber))
