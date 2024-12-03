@@ -90,7 +90,6 @@ public class CheepRepository : ICheepRepository
         }).AsQueryable<CheepDTO>().ToListAsync<CheepDTO>();
 
         return result.AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32).ToList();
-        
     }
 
     public async Task<List<CheepDTO>> GetMessagesFromAuthor(string author, int page)

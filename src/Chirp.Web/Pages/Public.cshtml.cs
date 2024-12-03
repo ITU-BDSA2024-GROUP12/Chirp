@@ -11,7 +11,6 @@ namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
-
     private readonly ICheepRepository _cRepository;
     private readonly IAuthorRepository _aRepository;
     
@@ -127,7 +126,7 @@ public class PublicModel : PageModel
         {
             name = User.FindFirstValue(ClaimTypes.Name);
             email = User.FindFirstValue(ClaimTypes.Email);
-        };
+        }
         
         AuthorDTO author = new AuthorDTO()
         {
