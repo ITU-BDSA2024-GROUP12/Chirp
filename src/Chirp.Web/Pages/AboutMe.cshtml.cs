@@ -34,7 +34,6 @@ public class AboutMe : PageModel
     
     public void OnGet()
     {
-        
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out page)) 
         {
@@ -44,7 +43,6 @@ public class AboutMe : PageModel
         string name = User.FindFirstValue(ClaimTypes.Name);
         GetCheeps(page, name);
         noOfCheeps = _repository.CheepCountFromAuthor(name).Result;
-        
     }
     
     private async Task GetCheeps(int page, string author)
