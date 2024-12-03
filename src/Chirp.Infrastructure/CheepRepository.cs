@@ -117,17 +117,18 @@ public class CheepRepository : ICheepRepository
         return tsk.Result == 1;
     }
 
-    public async Task<List<int>> GetFollowerIds(string userName)
+    public async Task<List<List<int>>> GetFollowerIds(string userName)
     {
         AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
-        var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId).Select(follow => new List<int>()
-        {
-            follow.AuthorId
-        }).AsEnumerable();
+        var query = _cheepDbContext.Followings.Where(follow => follow.FollowId == user.AuthorId).Select(follow =>
+            new List<int>()
+            {
+                follow.AuthorId
+            });
         var result = query.ToList();
         if (result.Count > 0)
         {
-            return result.First();
+            return result;
 
         }
         return null;

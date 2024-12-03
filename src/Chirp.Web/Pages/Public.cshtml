@@ -49,7 +49,7 @@
                             {
                                 @if (Model.Follows != null && Model.Follows.Contains(cheep.AuthorId))
                                 {
-                                    <form method="post" asp-page-handler="Follow">
+                                    <form method="post" asp-page-handler="Unfollow">
                                         <input type="hidden" id="author" name="author" value=@cheep.AuthorId runat="server">
                                         <input type="submit" value="Unfollow">
                                     </form>
