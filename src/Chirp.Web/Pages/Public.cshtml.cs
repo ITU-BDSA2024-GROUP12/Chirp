@@ -126,6 +126,12 @@ public class PublicModel : PageModel
     
     public async Task<IActionResult> OnPost(string Cheep)
     {
+        if (Cheep is null)
+        {
+            ModelState.AddModelError("Cheep", "You have to cheep atleast something, this is too vague!");
+            await GetCheeps(1);
+            return Page();
+        }
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
