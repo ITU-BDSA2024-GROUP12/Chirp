@@ -43,7 +43,6 @@ public class CheepMention
     public int CheepId { get; set; }
     public Cheep? Cheep { get; set; }
     public string? MentionedUsername { get; set; } //the name of the Author
-    
 }
 
 public class Notification
