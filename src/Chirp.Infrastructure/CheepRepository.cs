@@ -135,4 +135,14 @@ public class CheepRepository : ICheepRepository
 
         return cheep;
     }
+
+    public async Task<int> CheepCount()
+    {
+        return await _cheepDbContext.Cheeps.CountAsync();
+    }
+
+    public async Task<int> CheepCountFromAuthor(string author)
+    {
+        return await _cheepDbContext.Cheeps.Where(cheep => cheep.Author.Name == author).CountAsync();
+    }
 }

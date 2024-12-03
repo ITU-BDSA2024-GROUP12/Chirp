@@ -20,7 +20,13 @@ public class PublicModel : PageModel
     
     private SignInManager<ChirpUser> _signInManager;
 
-    public int PageNumber;
+
+    public int page;
+    
+    public int noOfCheeps;
+
+    public decimal pagesOfCheeps;
+
 
     public PublicModel(ICheepRepository cRepository, IAuthorRepository aRepository, SignInManager<ChirpUser> signInManager)
     {
@@ -91,11 +97,18 @@ public class PublicModel : PageModel
     public async Task<ActionResult> OnGet(int pageNumber = 1)
     {
         StringValues pageQuery = Request.Query["page"];
-        if(!Int32.TryParse(pageQuery, out PageNumber)) 
+        if(!Int32.TryParse(pageQuery, out page)) 
         {
-            PageNumber = 1;
+            page = 1;
         }
-        await GetCheeps(PageNumber);
+
+        
+        noOfCheeps = _cRepository.CheepCount().Result;
+
+        pagesOfCheeps = Math.Ceiling((decimal)noOfCheeps / (decimal)32.0);
+        
+        await GetCheeps(page);
+
         return Page();
     }
 
@@ -113,6 +126,12 @@ public class PublicModel : PageModel
     
     public async Task<IActionResult> OnPost(string Cheep)
     {
+        if (Cheep is null)
+        {
+            ModelState.AddModelError("Cheep", "You have to cheep atleast something, this is too vague!");
+            await GetCheeps(1);
+            return Page();
+        }
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);

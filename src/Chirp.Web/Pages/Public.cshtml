@@ -67,8 +67,15 @@
             }
         </ul>
         <div style="display: flex; justify-content: center;">
-            <button><a href="/?page=@(Model.PageNumber+1)">Next Page</a></button>
+
+            @if (Model.page > 1)
+            {
+                <button style="margin-right: 17px"><a href="/?page=@(Model.page - 1)">Previous Page</a></button>
+            }
+            <button><a href="/?page=@(Model.page + 1)">Next Page</a></button>
+
         </div>
+        <div><p>Page @Model.page of @Model.pagesOfCheeps</p></div>
     }
     else
     {
