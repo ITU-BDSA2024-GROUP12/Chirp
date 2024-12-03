@@ -170,7 +170,14 @@ public class UserTimelineModel : PageModel
                 allCheeps.AddRange(cheeps);
             }
             allCheeps.AddRange(userCheeps);
-
+            foreach (var cheep in allCheeps)
+            {
+                cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
+            }
+        }
+        else if (userCheeps != null)
+        {
+            allCheeps.AddRange(userCheeps);
             foreach (var cheep in allCheeps)
             {
                 cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
