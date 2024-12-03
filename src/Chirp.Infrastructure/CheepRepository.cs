@@ -84,7 +84,7 @@ public class CheepRepository : ICheepRepository
     {
         var result = await _cheepDbContext.Cheeps.Select(cheep => new CheepDTO
         {
-            Author = cheep.Author.Name ?? "N/A",
+            Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
         }).AsQueryable<CheepDTO>().ToListAsync<CheepDTO>();
@@ -97,7 +97,7 @@ public class CheepRepository : ICheepRepository
     {
         var query = await _cheepDbContext.Cheeps.Where(cheep => cheep.Author.Name == author).Select(cheep => new CheepDTO
         {
-            Author = cheep.Author.Name ?? "N/A",
+            Author = cheep.Author.Name,
             Text = cheep.Text,
             TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
         }).AsQueryable().ToListAsync();
