@@ -115,17 +115,9 @@ public class PublicModel : PageModel
 
     public async Task<IActionResult> OnPostFollow()
     {
-        AuthorDTO author = new AuthorDTO()
-        {
-            Name = Request.Form["author"],
-            Email = "",
-        };
-        AuthorDTO user = new AuthorDTO()
-        {
-            Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.FindFirstValue(ClaimTypes.Email),
-        };
-        _cRepository.FollowUser(author, user);
+        int authorname = Convert.ToInt32(Request.Form["author"]);
+        Console.WriteLine(authorname);
+        _cRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
     

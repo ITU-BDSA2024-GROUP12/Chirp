@@ -79,14 +79,23 @@ public class CheepRepository : ICheepRepository
         return tsk.Result == 1;
     }
 
-    public bool FollowUser(AuthorDTO authorName, AuthorDTO userName)
+    public bool FollowUser(int authorId, string userName)
     {
-        AuthorDTO author = _authorRepository.GetAuthorByName(authorName.Name).Result;
-        AuthorDTO user = _authorRepository.GetAuthor(userName.Name, userName.Email).Result;
-        
+        AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
+        Following following = new()
+        {
+            FollowId = user.AuthorId,
+            AuthorId = authorId
+        };
+        _cheepDbContext.Followings.Add(following);
         
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
         return tsk.Result == 1;
+    }
+
+    public bool UnfollowUser(int authorId, string userName)
+    {
+        AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
     }
     
     
@@ -96,7 +105,8 @@ public class CheepRepository : ICheepRepository
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
-            TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
+            TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds(),
+            AuthorId = cheep.Author.AuthorId
         }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
         var result = query.ToList();
        
@@ -109,7 +119,8 @@ public class CheepRepository : ICheepRepository
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
-            TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
+            TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds(),
+            AuthorId = cheep.Author.AuthorId
         }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
         var result = query.ToList();
         return result;
@@ -168,7 +179,8 @@ public class CheepRepository : ICheepRepository
         {
             Text = c.Text,
             Author = c.Author.Name,
-            TimeStamp = ((DateTimeOffset)c.TimeStamp).ToUnixTimeSeconds()
+            TimeStamp = ((DateTimeOffset)c.TimeStamp).ToUnixTimeSeconds(),
+            AuthorId = c.Author.AuthorId
         })
         .FirstOrDefaultAsync();
 

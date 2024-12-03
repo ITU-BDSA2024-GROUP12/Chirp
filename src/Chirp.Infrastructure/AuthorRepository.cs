@@ -79,6 +79,26 @@ public class AuthorRepository : IAuthorRepository
         return author;
     }    
     
+    public async Task<AuthorDTO> GetAuthorById(int id)
+    {
+        var query = _cheepDbContext.Authors.Where(x => x.AuthorId == id).Select(author => new AuthorDTO
+        {
+            AuthorId = author.AuthorId,
+            Name = author.Name,
+            Email = author.Email,
+        });
+        
+        //There should only be one author returned, so return the first one.
+        AuthorDTO author = await query.FirstAsync();
+        
+        if (author == null)
+        {
+            throw new UserNotFoundException();
+        }
+
+        return author;
+    } 
+    
     /// <summary>
     /// Returns a author with the given name from the db.
     /// </summary>
