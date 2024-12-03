@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
+using Chirp.Core;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
@@ -32,13 +33,15 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ChirpUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IAuthorRepository _repository;
 
         public RegisterModel(
             UserManager<ChirpUser> userManager,
             IUserStore<ChirpUser> userStore,
             SignInManager<ChirpUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IAuthorRepository repository)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -46,6 +49,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _repository = repository;
         }
 
         /// <summary>
@@ -133,6 +137,12 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    _repository.CreateAuthor(new AuthorDTO
+                    {
+                        Name = user.UserName,
+                        Email = user.Email
+                    });
 
                     var claim = new Claim(ClaimTypes.Name, Input.UserName);
                     await _userManager.AddClaimAsync(user, claim);

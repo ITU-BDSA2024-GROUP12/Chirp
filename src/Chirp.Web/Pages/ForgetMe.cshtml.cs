@@ -10,24 +10,26 @@ namespace Chirp.Web.Pages;
 public class ForgetMe : PageModel
 {
     private IAuthorRepository _repository;
+    private INotificationRepository _nRepository;
     private SignInManager<ChirpUser> _signInManager;
     
-    public ForgetMe(IAuthorRepository repository, SignInManager<ChirpUser> signInManager)
+    public ForgetMe(IAuthorRepository repository, INotificationRepository notificationRepository, SignInManager<ChirpUser> signInManager)
     {
         _repository = repository;
+        _nRepository = notificationRepository;
         _signInManager = signInManager;
     }
     
     public ActionResult OnGet()
     {
-        var name = User.FindFirstValue(ClaimTypes.Name);
+        var username = User.FindFirstValue(ClaimTypes.Name);
         var email = User.FindFirstValue(ClaimTypes.Email);
-        if (name is null || email is null)
-        {
-            return RedirectToPage("/about-me");
+        if(username != null && email != null) {
+            _nRepository.ForgetMentions(username);
+            _nRepository.DeleteNotificationsForUser(_repository.GetAuthor(username, email).Id);
+            _repository.DeleteUser(username,email);
+            _signInManager.SignOutAsync();
         }
-        _repository.AnonymizeUser(name,email);
-        _signInManager.SignOutAsync();
         return Redirect("/");
     }
 }
