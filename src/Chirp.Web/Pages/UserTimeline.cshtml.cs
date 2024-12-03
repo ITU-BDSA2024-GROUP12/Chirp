@@ -125,9 +125,8 @@ public class UserTimelineModel : PageModel
         var cheeps = await _cRepository.GetMessagesFromAuthor(author,page);
 
         foreach (var cheep in cheeps)
-        {
             cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
-        }
+        
 
         Cheeps = cheeps;
     }
