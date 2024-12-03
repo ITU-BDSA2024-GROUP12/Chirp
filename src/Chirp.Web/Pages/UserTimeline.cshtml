@@ -25,72 +25,73 @@
             </ul>
         </div>
     } 
-<div>
+    <div>
 
-    @if (User.Identity.IsAuthenticated)
-    {
-    <div class="cheepbox">
-        <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
-        <form method="post" asp-page-handler="Cheep">
-            <input style="float: left" type="text" name="Cheep">
-            <input type="submit" value="Share">
-        </form>
-    </div>
-    }
-    @if (!ModelState.IsValid)
-    {
-    @foreach (var error in ModelState["Cheep"].Errors)
-    {
-    <p>@error.ErrorMessage</p>
-    }
-    }
-    @if (Model.Cheeps.Any())
-    {
-        <p>Showing @Model.Cheeps.Count() cheeps!</p>
-        <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="cheepbox">
+                <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
+                <form method="post" asp-page-handler="Cheep">
+                    <input style="float: left" type="text" name="Cheep">
+                    <input type="submit" value="Share">
+                </form>
+            </div>
+        }
+        @if (!ModelState.IsValid)
+        {
+            @foreach (var error in ModelState["Cheep"].Errors)
             {
-                <li>
-                    <p>
-                        <strong>
-                            @if(cheep.Author.Equals("DeletedUser"))
-                            {
-                            <a disabled="true">Deleted user</a>
-                            }
-                            else
-                            {
-                            <a href="/@cheep.Author">@cheep.Author</a>
-                            }
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                            <form method="post" asp-page-handler="Follow">
-                                <input type="hidden" id="author" name="author" value=@cheep.AuthorId runat="server">
-                                <input type="submit" value="(Un)Follow">
-                            </form>
-                            }
-                        </strong>
-                        @foreach (var part in cheep.HighlightedParts) //Displaying text of cheeps
-                        {
-                            if (part.IsMention)
-                            {
-                                <a href="/@part.Text.TrimStart('@')">@part.Text</a>
-                            }
-                            else
-                            {
-                                @part.Text
-                            }
-                        } 
-                        <small>&mdash; @cheep.DateTime()</small>
-                    </p>
-                </li>
+                <p>@error.ErrorMessage</p>
             }
-        </ul>
-        <div style="display: flex; justify-content: center;">
-            <button><a href="/@routeName?page=@(Model.page+1)">Next Page</a></button>
-        </div>
-    }
-    else
-    {
-        <em>There are no cheeps so far.</em>
-    }
+        }
+        @if (Model.Cheeps.Any())
+        {
+            <p>Showing @Model.Cheeps.Count() cheeps!</p>
+            <ul id="messagelist" class="cheeps">
+                @foreach (var cheep in Model.Cheeps)
+                {
+                    <li>
+                        <p>
+                            <strong>
+                                @if(cheep.Author.Equals("DeletedUser"))
+                                {
+                                    <a disabled="true">Deleted user</a>
+                                }
+                                else
+                                {
+                                    <a href="/@cheep.Author">@cheep.Author</a>
+                                }
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <form method="post" asp-page-handler="Follow">
+                                        <input type="hidden" id="author" name="author" value=@cheep.AuthorId runat="server">
+                                        <input type="submit" value="(Un)Follow">
+                                    </form>
+                                }
+                            </strong>
+                            @foreach (var part in cheep.HighlightedParts) //Displaying text of cheeps
+                            {
+                                if (part.IsMention)
+                                {
+                                    <a href="/@part.Text.TrimStart('@')">@part.Text</a>
+                                }
+                                else
+                                {
+                                    @part.Text
+                                }
+                            } 
+                            <small>&mdash; @cheep.DateTime()</small>
+                        </p>
+                    </li>
+                }
+            </ul>
+            <div style="display: flex; justify-content: center;">
+                <button><a href="/@routeName?page=@(Model.page+1)">Next Page</a></button>
+            </div>
+        }
+        else
+        {
+            <em>There are no cheeps so far.</em>
+        }
+    </div>
 </div>

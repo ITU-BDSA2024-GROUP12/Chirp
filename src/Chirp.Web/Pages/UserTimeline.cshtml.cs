@@ -147,18 +147,20 @@ public class UserTimelineModel : PageModel
     {
         var following = await _cRepository.GetFollowerIds(user);
         var allCheeps = new List<CheepDTO>();
-        foreach (int i in following)
+        if (following != null)
         {
-            AuthorDTO author = await _aRepository.GetAuthorById(i);
-            var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
-            allCheeps.AddRange(cheeps);
-        }
+            foreach (int i in following)
+            {
+                AuthorDTO author = await _aRepository.GetAuthorById(i);
+                var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
+                allCheeps.AddRange(cheeps);
+            }
 
-        foreach (var cheep in allCheeps)
-        {
-            cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
+            foreach (var cheep in allCheeps)
+            {
+                cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
+            }
         }
-
         Cheeps = allCheeps;
     }
 
