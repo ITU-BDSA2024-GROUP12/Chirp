@@ -80,24 +80,55 @@ public class UserTimelineModel : PageModel
 
         return result;
     }
+    
+    
 
     public async Task<ActionResult> OnGet(string author)
     {
-        int pageNumber;
-        StringValues pageQuery = Request.Query["page"];
-        if(!Int32.TryParse(pageQuery, out pageNumber)) 
-		{
-			pageNumber = 1;
-		}
-        page = pageNumber;
-        GetCheeps(pageNumber, author);
-        var userName = User.Identity.Name;
-        if(User.Identity.IsAuthenticated && author == userName)
+        if (author == User.Identity.Name)
         {
-            GetNotifications(author);
-        } else{
-            Notifications = new List<NotificationDTO>(); //Empty instead of null
+            int pageNumber;
+            StringValues pageQuery = Request.Query["page"];
+            if (!Int32.TryParse(pageQuery, out pageNumber))
+            {
+                pageNumber = 1;
+            }
+
+            page = pageNumber;
+            GetFollowedCheeps(pageNumber, User.Identity.Name);
+            var userName = User.Identity.Name;
+            if (User.Identity.IsAuthenticated && author == userName)
+            {
+                GetNotifications(author);
+            }
+            else
+            {
+                Notifications = new List<NotificationDTO>(); //Empty instead of null
+            }
         }
+        else
+        {
+            Console.WriteLine("test2");
+            int pageNumber;
+            StringValues pageQuery = Request.Query["page"];
+            if (!Int32.TryParse(pageQuery, out pageNumber))
+            {
+                pageNumber = 1;
+            }
+
+            page = pageNumber;
+            GetCheeps(pageNumber, author);
+            var userName = User.Identity.Name;
+            if (User.Identity.IsAuthenticated && author == userName)
+            {
+                GetNotifications(author);
+            }
+            else
+            {
+                Notifications = new List<NotificationDTO>(); //Empty instead of null
+            }
+        }
+
         return Page();
     }
 
@@ -111,6 +142,25 @@ public class UserTimelineModel : PageModel
         }
 
         Cheeps = cheeps;
+    }
+    
+    private async void GetFollowedCheeps(int page, string user)
+    {
+        var following = await _cRepository.GetFollowerIds(user);
+        var allCheeps = new List<CheepDTO>();
+        foreach (int i in following)
+        {
+            AuthorDTO author = await _aRepository.GetAuthorById(i);
+            var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
+            allCheeps.AddRange(cheeps);
+        }
+
+        foreach (var cheep in allCheeps)
+        {
+            cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
+        }
+
+        Cheeps = allCheeps;
     }
 
     private async void GetNotifications(string author){

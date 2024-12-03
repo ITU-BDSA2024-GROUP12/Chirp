@@ -96,8 +96,19 @@ public class CheepRepository : ICheepRepository
     public bool UnfollowUser(int authorId, string userName)
     {
         AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
+        return true;
     }
-    
+
+    public async Task<List<int>> GetFollowerIds(string userName)
+    {
+        AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
+        var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId).Select(follow => new List<int>()
+        {
+            follow.AuthorId
+        }).AsEnumerable();
+        var result = query.ToList();
+        return result.First();
+    }
     
     public async Task<List<CheepDTO>> GetMessages(int page)
     {
