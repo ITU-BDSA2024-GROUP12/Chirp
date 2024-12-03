@@ -13,9 +13,9 @@ using System.Net.Mime;
 public class Cheep 
 {
     public int CheepId { get; set; } //primary key
-    [Required] //Is this required when using inline Required keyword?
+    [Required] //Runtime validation
     [MaxLength(500)]
-    public required string Text { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
+    public required string Text { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types Compile time validation  
     public DateTime TimeStamp { get; set; }
     public int AuthorId { get; set; }
     [MaxLength(256)]

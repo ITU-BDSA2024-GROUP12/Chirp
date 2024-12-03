@@ -22,7 +22,7 @@ public class PublicModel : PageModel
     
     private SignInManager<ChirpUser> _signInManager;
 
-    public int page;
+    public int PageNumber;
 
     public List<int> Follows;
 
@@ -52,7 +52,7 @@ public class PublicModel : PageModel
             var validUsernames = await _aRepository.GetValidUsernames(matches);
 
             // Break content into parts
-            var regex = new Regex(@"@([A-Za-z0-9_\. -]+)");
+            var regex = new Regex(@"@([\w\s]+?)(?=\s|$)");
             int lastIndex = 0;
             foreach (Match match in regex.Matches(content))
             {
@@ -107,16 +107,15 @@ public class PublicModel : PageModel
             }
         }
         StringValues pageQuery = Request.Query["page"];
-        if(!Int32.TryParse(pageQuery, out pageNumber)) 
+        if(!Int32.TryParse(pageQuery, out PageNumber)) 
         {
-            pageNumber = 1;
+            PageNumber = 1;
         }
-        page = pageNumber;
-        GetCheeps(pageNumber);
+        await GetCheeps(PageNumber);
         return Page();
     }
 
-    private async void GetCheeps(int pageNumber)
+    private async Task GetCheeps(int pageNumber)
     {
         var cheeps = await _cRepository.GetMessages(pageNumber);
 
@@ -143,6 +142,32 @@ public class PublicModel : PageModel
         else
         {
             _cRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+            ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
+            await GetCheeps(1);
+            return Page();
+        }
+        var name = User.FindFirstValue(ClaimTypes.Name);
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        // Do something with the text ...
+        if (name is not null && email is not null)
+        {
+            name = User.FindFirstValue(ClaimTypes.Name);
+            email = User.FindFirstValue(ClaimTypes.Email);
+        }
+        
+        AuthorDTO author = new AuthorDTO()
+        {
+            Name = name ?? "N/A",
+            Email = email ?? "N/A"
+        };
+        
+        // Parsing mentions from the Cheep text (@username)
+        var mentions = Util.ExtractMentions(Cheep);
+        
+        //only query if there are mentions
+        if(mentions.Count > 0) {
+            var validMentions =  await _aRepository.GetValidUsernames(mentions);
+            _cRepository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
         }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }

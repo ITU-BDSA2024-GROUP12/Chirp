@@ -5,18 +5,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Chirp.Web.Pages;
 public class CheepDetailsModel : PageModel
 {
-    private readonly ICheepRepository _repository;
-
+    private readonly ICheepRepository _cRepository;
+    private readonly INotificationRepository _nRepository;
     public CheepDTO Cheep { get; set; }
 
-    public CheepDetailsModel(ICheepRepository repository)
+    public CheepDetailsModel(ICheepRepository cRepository, INotificationRepository nRepository)
     {
-        _repository = repository;
+        _cRepository = cRepository;
+        _nRepository = nRepository;
     }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        Cheep = await _repository.GetCheepById(id);
+        Cheep = await _cRepository.GetCheepById(id);
         if (Cheep == null)
         {
             return NotFound();
@@ -28,7 +29,7 @@ public class CheepDetailsModel : PageModel
     public async Task<IActionResult> OnPostDismissAsync(int notificationId)
     {
         // Delete the notification
-        await _repository.DeleteNotification(notificationId);
+        await _nRepository.DeleteNotification(notificationId);
 
         // Redirect back to the user's timeline
         return Redirect($"/{User.Identity.Name}");

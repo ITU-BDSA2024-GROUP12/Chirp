@@ -4,7 +4,7 @@
 @inject SignInManager<ChirpUser> SignInManager
 @inject UserManager<ChirpUser> UserManager
 <div class=navigation>
-    @if (User.Identity.IsAuthenticated)
+    @if (User.Identity is not null && User.Identity.IsAuthenticated)
     {
         <div>
             <a href="/@(User.FindFirstValue(ClaimTypes.Name))">my timeline</a> |

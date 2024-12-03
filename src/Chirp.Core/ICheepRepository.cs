@@ -11,6 +11,5 @@ public interface ICheepRepository
     public Task<List<List<int>>> GetFollowerIds(string userName);
     public Task<List<NotificationDTO>> GetNotifications(string username);
     public Task DeleteNotification(int notificationId);
-
     Task<CheepDTO> GetCheepById(int id);
 }

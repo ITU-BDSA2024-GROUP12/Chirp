@@ -1,5 +1,6 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.RegularExpressions;
+
 using Chirp.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,16 +12,18 @@ public class UserTimelineModel : PageModel
 {
     private readonly ICheepRepository _cRepository;
     private readonly IAuthorRepository _aRepository;
+    private readonly INotificationRepository _nRepository;
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
     public List<NotificationDTO> Notifications { get; set; }
 
     public int page;
 
     public List<int> Follows;
-    public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository)
+    public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository, INotificationRepository nRepository)
     {
         _cRepository = cRepository;
         _aRepository = aRepository;
+        _nRepository = nRepository;
     }
 
     /// <summary>
@@ -42,7 +45,7 @@ public class UserTimelineModel : PageModel
             var validUsernames = await _aRepository.GetValidUsernames(matches);
 
             // Break content into parts
-            var regex = new Regex(@"@([A-Za-z0-9_\. -]+)");
+            var regex = new Regex(@"@([\w\s]+?)(?=\s|$)");
             int lastIndex = 0;
             foreach (Match match in regex.Matches(content))
             {
@@ -98,28 +101,15 @@ public class UserTimelineModel : PageModel
                 }
             }
         }
-        if (author == User.Identity.Name)
-        {
-            int pageNumber;
-            StringValues pageQuery = Request.Query["page"];
-            if (!Int32.TryParse(pageQuery, out pageNumber))
-            {
-                pageNumber = 1;
-            }
-
-            page = pageNumber;
-            GetFollowedCheeps(pageNumber, User.Identity.Name);
-            var userName = User.Identity.Name;
-            if (User.Identity.IsAuthenticated && author == userName)
-            {
-                GetNotifications(author);
-            }
-            else
-            {
-                Notifications = new List<NotificationDTO>(); //Empty instead of null
-            }
-        }
-        else
+        StringValues pageQuery = Request.Query["page"];
+        if(!Int32.TryParse(pageQuery, out page)) 
+		{
+			page = 1;
+		}
+        
+        await GetCheeps(page, author);
+        var userName = User.Identity.Name;
+        if(User.Identity.IsAuthenticated && author == userName)
         {
             int pageNumber;
             StringValues pageQuery = Request.Query["page"];
@@ -144,7 +134,7 @@ public class UserTimelineModel : PageModel
         return Page();
     }
 
-    private async void GetCheeps(int page, string author)
+    private async Task GetCheeps(int page, string author)
     {
         var cheeps = await _cRepository.GetMessagesFromAuthor(author,page);
 
@@ -187,11 +177,12 @@ public class UserTimelineModel : PageModel
     }
 
     private async void GetNotifications(string author){
-        var notifications = await _cRepository.GetNotifications(author);
+        var notifications = await _nRepository.GetNotifications(author);
 
         Notifications = notifications;
     }
     
+
     public async Task<IActionResult> OnPostFollow()
     {
         var following = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
@@ -231,16 +222,22 @@ public class UserTimelineModel : PageModel
     public async Task<IActionResult> OnPostCheep(string Cheep)
     {
         // Do something with the text ...
+        var name = User.FindFirstValue(ClaimTypes.Name);
+        var email = User.FindFirstValue(ClaimTypes.Email);
         if (Cheep.Length > 160)
         {
             ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            GetCheeps(1, User.FindFirstValue(ClaimTypes.Name));
-            return Page();
+            if (name is not null)
+            {
+                await GetCheeps(1, name);
+            }
+            return Page(); 
         }
+        
         AuthorDTO author = new AuthorDTO()
         {
-            Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.FindFirstValue(ClaimTypes.Email)
+            Name = name ?? "N/A",
+            Email = email ?? "N/A",
         };
 
         // Parsing mentions from the Cheep text (@username)
