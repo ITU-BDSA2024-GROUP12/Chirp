@@ -141,7 +141,6 @@ public class UserTimelineModel : PageModel
         {
             foreach (List<int> i in following)
             {
-                
                 AuthorDTO author = await _aRepository.GetAuthorById(i[0]);
                 var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
                 allCheeps.AddRange(cheeps);
