@@ -87,12 +87,12 @@ public class UserTimelineModel : PageModel
     public async Task<ActionResult> OnGet(string author)
     {
         StringValues pageQuery = Request.Query["page"];
-        if(!Int32.TryParse(pageQuery, out PageNumber)) 
+        if(!Int32.TryParse(pageQuery, out page)) 
 		{
-			PageNumber = 1;
+			page = 1;
 		}
-        page = pageNumber;
-        await GetCheeps(pageNumber, author);
+        
+        await GetCheeps(page, author);
         var userName = User.Identity.Name;
         if(User.Identity.IsAuthenticated && author == userName)
         {
@@ -142,6 +142,12 @@ public class UserTimelineModel : PageModel
             }
             return Page(); 
         }
+        
+        AuthorDTO author = new AuthorDTO()
+        {
+            Name = name ?? "N/A",
+            Email = email ?? "N/A",
+        };
 
         // Parsing mentions from the Cheep text (@username)
         var mentions = Util.ExtractMentions(Cheep);

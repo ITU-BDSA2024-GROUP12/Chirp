@@ -125,8 +125,14 @@ public class PublicModel : PageModel
         // Do something with the text ...
         if (name is not null && email is not null)
         {
-            Name = User.FindFirstValue(ClaimTypes.Name),
-            Email = User.FindFirstValue(ClaimTypes.Email),
+            name = User.FindFirstValue(ClaimTypes.Name);
+            email = User.FindFirstValue(ClaimTypes.Email);
+        };
+        
+        AuthorDTO author = new AuthorDTO()
+        {
+            Name = name ?? "N/A",
+            Email = email ?? "N/A"
         };
         
         // Parsing mentions from the Cheep text (@username)
