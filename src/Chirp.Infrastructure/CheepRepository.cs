@@ -79,8 +79,6 @@ public class CheepRepository : ICheepRepository
         return tsk.Result == 1;
     }
 
-
-    
     
     public async Task<List<CheepDTO>> GetMessages(int page)
     {
@@ -105,38 +103,6 @@ public class CheepRepository : ICheepRepository
         }).AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32);
         var result = query.ToList();
         return result;
-    }
-
-    /// <summary>
-    /// Takes in the known author name and finds the author id to get notifications.
-    /// </summary>
-    /// <param name="username">The author who's notifications to get</param>
-    /// <returns>A list of notifications if present</returns>
-    public async Task<List<NotificationDTO>> GetNotifications(string username)
-    {
-        // Fetch the AuthorId based on the provided username
-        var author = await _cheepDbContext.Authors
-        .FirstOrDefaultAsync(a => a.Name == username);
-
-        if (author == null)
-        {
-            throw new ArgumentException("Invalid username: no author found.", nameof(username));
-        }
-
-        // Use the AuthorId to filter notifications
-        var notifications = await _cheepDbContext.Notifications
-            .Where(n => n.AuthorId == author.AuthorId) 
-            .Select(n => new NotificationDTO
-            {
-                Id = n.Id,
-                AuthorId = n.AuthorId,
-                CheepId = n.CheepId,
-                Content = n.Content,
-                Timestamp = n.TimeStamp
-            })
-            .ToListAsync();
-
-        return notifications ?? new List<NotificationDTO>();
     }
 
     public void UpdateMessage()
@@ -169,16 +135,5 @@ public class CheepRepository : ICheepRepository
         }
 
         return cheep;
-    }
-
-    public async Task DeleteNotification(int notificationId)
-    {
-        var notification = await _cheepDbContext.Notifications
-        .FirstOrDefaultAsync(n => n.Id == notificationId);
-        if (notification != null)
-        {
-            _cheepDbContext.Notifications.Remove(notification);
-            await _cheepDbContext.SaveChangesAsync();
-        } 
     }
 }
