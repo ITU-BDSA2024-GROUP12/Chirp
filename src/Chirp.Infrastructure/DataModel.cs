@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -33,8 +34,7 @@ public class Author
     public string? Email { get; set; }
     public ICollection<Cheep>? Cheeps { get; set; }
     public ICollection<Notification>? Notifications { get; set; }
-    [NotMapped]
-    public ICollection<int>? Following { get; set; }
+    public ICollection<Following> Followings { get; set; }
 }
 
 public class CheepMention
@@ -59,6 +59,7 @@ public class Notification
 public class Following
 {
     public int Id { get; set; } //primary key
+    public required int FollowId { get; set; }
     public required int AuthorId { get; set; }
 }
 

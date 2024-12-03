@@ -32,7 +32,7 @@ namespace Chirp.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<ICollection<int>>("Following")
+                    b.Property<ICollection<Following>>("Followings")
                         .HasColumnType("ICollection<int>");
 
                     b.HasKey("AuthorId");
