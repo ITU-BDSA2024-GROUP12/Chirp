@@ -63,6 +63,7 @@
                                 }
                                 @if (User.Identity.IsAuthenticated && cheep.Author != User.FindFirstValue(ClaimTypes.Name))
                                 {
+                                    
                                     <form method="post" asp-page-handler="Follow">
                                         <input type="hidden" id="author" name="author" value=@cheep.AuthorId runat="server">
                                         <input type="submit" value="(Un)Follow">

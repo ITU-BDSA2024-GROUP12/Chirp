@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Chirp.Core;
+using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,8 @@ public class PublicModel : PageModel
     private SignInManager<ChirpUser> _signInManager;
 
     public int page;
+
+    public List<Following> Follows;
 
     public PublicModel(ICheepRepository cRepository, IAuthorRepository aRepository, SignInManager<ChirpUser> signInManager)
     {
@@ -148,7 +151,7 @@ public class PublicModel : PageModel
             AuthorDTO author = new AuthorDTO()
             {
                 Name = User.FindFirstValue(ClaimTypes.Name),
-                Email = User.FindFirstValue(ClaimTypes.Email),
+                Email = User.FindFirstValue(ClaimTypes.Email)
             };
 
             // Parsing mentions from the Cheep text (@username)

@@ -146,6 +146,7 @@ public class UserTimelineModel : PageModel
     private async void GetFollowedCheeps(int page, string user)
     {
         var following = await _cRepository.GetFollowerIds(user);
+        var userCheeps = await _cRepository.GetMessagesFromAuthor(user,page);
         var allCheeps = new List<CheepDTO>();
         if (following != null)
         {
@@ -155,6 +156,7 @@ public class UserTimelineModel : PageModel
                 var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
                 allCheeps.AddRange(cheeps);
             }
+            allCheeps.AddRange(userCheeps);
 
             foreach (var cheep in allCheeps)
             {
