@@ -9,6 +9,5 @@ public interface ICheepRepository
     public bool FollowUser(int authorId, string userName);
     public bool UnfollowUser(int authorId, string userName);
     public Task<List<List<int>>> GetFollowerIds(string userName);
-    public Task<List<NotificationDTO>> GetNotifications(string username);
     Task<CheepDTO> GetCheepById(int id);
 }

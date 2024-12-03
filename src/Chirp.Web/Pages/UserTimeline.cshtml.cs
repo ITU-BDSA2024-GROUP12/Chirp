@@ -107,12 +107,13 @@ public class UserTimelineModel : PageModel
             page = 1;
         }
         
-        await GetCheeps(page, author);
         var userName = User.Identity.Name;
         if(User.Identity.IsAuthenticated && author == userName)
         {
+            await GetFollowedCheeps(page, author);
             GetNotifications(author);
         } else{
+            await GetCheeps(page, author);
             Notifications = new List<NotificationDTO>(); //Empty instead of null
         }
 
@@ -131,8 +132,9 @@ public class UserTimelineModel : PageModel
         Cheeps = cheeps;
     }
     
-    private async void GetFollowedCheeps(int page, string user)
+    private async Task GetFollowedCheeps(int page, string user)
     {
+        Console.WriteLine("test");
         var following = await _cRepository.GetFollowerIds(user);
         var userCheeps = await _cRepository.GetMessagesFromAuthor(user,page);
         var allCheeps = new List<CheepDTO>();
@@ -140,6 +142,7 @@ public class UserTimelineModel : PageModel
         {
             foreach (List<int> i in following)
             {
+                
                 AuthorDTO author = await _aRepository.GetAuthorById(i[0]);
                 var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
                 allCheeps.AddRange(cheeps);

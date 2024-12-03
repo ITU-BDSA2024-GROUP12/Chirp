@@ -142,32 +142,6 @@ public class PublicModel : PageModel
         else
         {
             _cRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
-            ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            await GetCheeps(1);
-            return Page();
-        }
-        var name = User.FindFirstValue(ClaimTypes.Name);
-        var email = User.FindFirstValue(ClaimTypes.Email);
-        // Do something with the text ...
-        if (name is not null && email is not null)
-        {
-            name = User.FindFirstValue(ClaimTypes.Name);
-            email = User.FindFirstValue(ClaimTypes.Email);
-        }
-        
-        AuthorDTO author = new AuthorDTO()
-        {
-            Name = name ?? "N/A",
-            Email = email ?? "N/A"
-        };
-        
-        // Parsing mentions from the Cheep text (@username)
-        var mentions = Util.ExtractMentions(Cheep);
-        
-        //only query if there are mentions
-        if(mentions.Count > 0) {
-            var validMentions =  await _aRepository.GetValidUsernames(mentions);
-            _cRepository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
         }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
