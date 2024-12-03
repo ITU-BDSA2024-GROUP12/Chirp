@@ -19,7 +19,7 @@ namespace Chirp.Infrastructure.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Following = table.Column<ICollection<int>(type: "LIST", nullable: true)
+                    
                 },
                 constraints: table =>
                 {
