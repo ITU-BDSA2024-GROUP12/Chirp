@@ -33,6 +33,8 @@ namespace Chirp.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+                    
+                    b.Property<ICollection<int>>("Following");
 
                     b.HasKey("AuthorId");
 
