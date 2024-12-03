@@ -3,6 +3,7 @@ using System;
 using Chirp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(CheepDbContext))]
-    partial class CheepDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113134214_genericAuthorEmail")]
+    partial class genericAuthorEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.20");
@@ -31,8 +34,6 @@ namespace Chirp.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
-                    
-                    b.Property<ICollection<int>>("Following");
 
                     b.HasKey("AuthorId");
 
@@ -64,25 +65,6 @@ namespace Chirp.Infrastructure.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Cheeps");
-                });
-
-            modelBuilder.Entity("Chirp.Infrastructure.CheepMention", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CheepId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("MentionedUsername")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CheepId");
-
-                    b.ToTable("CheepMentions");
                 });
 
             modelBuilder.Entity("Chirp.Infrastructure.Data.ChirpUser", b =>
@@ -147,33 +129,6 @@ namespace Chirp.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Chirp.Infrastructure.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CheepId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("CheepId");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -319,34 +274,6 @@ namespace Chirp.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Chirp.Infrastructure.CheepMention", b =>
-                {
-                    b.HasOne("Chirp.Infrastructure.Cheep", "Cheep")
-                        .WithMany("Mentions")
-                        .HasForeignKey("CheepId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cheep");
-                });
-
-            modelBuilder.Entity("Chirp.Infrastructure.Notification", b =>
-                {
-                    b.HasOne("Chirp.Infrastructure.Author", null)
-                        .WithMany("Notifications")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Chirp.Infrastructure.Cheep", "Cheep")
-                        .WithMany("Notifications")
-                        .HasForeignKey("CheepId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cheep");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -401,15 +328,6 @@ namespace Chirp.Infrastructure.Migrations
             modelBuilder.Entity("Chirp.Infrastructure.Author", b =>
                 {
                     b.Navigation("Cheeps");
-
-                    b.Navigation("Notifications");
-                });
-
-            modelBuilder.Entity("Chirp.Infrastructure.Cheep", b =>
-                {
-                    b.Navigation("Mentions");
-
-                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

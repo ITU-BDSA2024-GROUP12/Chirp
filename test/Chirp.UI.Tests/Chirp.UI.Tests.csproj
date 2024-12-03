@@ -10,17 +10,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="xunit" Version="2.5.3" />
-    <PackageReference Include="Xunit.Microsoft.DependencyInjection" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\Chirp.Core\Chirp.Core.csproj" />
+    <ProjectReference Include="..\..\src\Chirp.Infrastructure\Chirp.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Chirp.Web\Chirp.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="Xunit.Microsoft.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.48.0" />
+    <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.48.0" />
+    
   </ItemGroup>
 
   <ItemGroup>
@@ -29,12 +38,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SQLite" Version="7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Chirp.Core\Chirp.Core.csproj" />
-    <ProjectReference Include="..\..\src\Chirp.Infrastructure\Chirp.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\Chirp.Web\Chirp.Web.csproj" />
   </ItemGroup>
 
 </Project>

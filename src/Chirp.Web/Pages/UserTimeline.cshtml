@@ -6,21 +6,44 @@
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
 }
-
 <div>
-    <h2> @routeName's Timeline </h2>
+    <h2>@routeName's Timeline</h2>
+    @if (Model.Notifications.Any())
+    {
+        <div class="notifications">
+            <h3>Notifications:</h3>
+            <ul>
+                @foreach (var notification in Model.Notifications)
+                {
+                    <li>
+                        <p>
+                            <strong>Notification:</strong> @notification.Content
+                            <a href="/Cheeps/Details/@notification.CheepId?notificationId=@notification.Id">View Cheep</a>
+                        </p>
+                    </li>
+                }
+            </ul>
+        </div>
+    } 
+<div>
 
     @if (User.Identity.IsAuthenticated)
     {
     <div class="cheepbox">
-        <h3>What's on your mind @(User.FindFirstValue("UserName"))?</h3>
+        <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
         <form method="post">
             <input style="float: left" type="text" name="Cheep">
             <input type="submit" value="Share">
         </form>
     </div>
     }
-
+    @if (!ModelState.IsValid)
+    {
+    @foreach (var error in ModelState["Cheep"].Errors)
+    {
+    <p>@error.ErrorMessage</p>
+    }
+    }
     @if (Model.Cheeps.Any())
     {
         <p>Showing @Model.Cheeps.Count() cheeps!</p>
@@ -32,12 +55,25 @@
                         <strong>
                             <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
-                        @cheep.Text 
+                        @foreach (var part in cheep.HighlightedParts) //Displaying text of cheeps
+                        {
+                            if (part.IsMention)
+                            {
+                                <a href="/@part.Text.TrimStart('@')">@part.Text</a>
+                            }
+                            else
+                            {
+                                @part.Text
+                            }
+                        } 
                         <small>&mdash; @cheep.DateTime()</small>
                     </p>
                 </li>
             }
         </ul>
+        <div style="display: flex; justify-content: center;">
+            <button><a href="/@routeName?page=@(Model.page+1)">Next Page</a></button>
+        </div>
     }
     else
     {
