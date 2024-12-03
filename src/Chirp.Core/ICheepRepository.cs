@@ -8,5 +8,5 @@ public interface ICheepRepository
     public bool CreateCheep(AuthorDTO author, string text, List<AuthorDTO>? mentions, string time);
     Task<CheepDTO> GetCheepById(int id);
     public Task<int> CheepCount();
-    public Task<int> CheepCountFromAuthor(AuthorDTO author);
+    public Task<int> CheepCountFromAuthor(string author);
 }

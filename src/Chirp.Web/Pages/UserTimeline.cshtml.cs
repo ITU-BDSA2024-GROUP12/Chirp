@@ -17,6 +17,10 @@ public class UserTimelineModel : PageModel
 
     public int page;
 
+    public int noOfCheeps;
+
+    public decimal pagesOfCheeps;
+
     public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository, INotificationRepository nRepository)
     {
         _cRepository = cRepository;
@@ -93,9 +97,15 @@ public class UserTimelineModel : PageModel
 		}
         page = pageNumber;
         GetCheeps(pageNumber, author);
+
+        noOfCheeps = _cRepository.CheepCountFromAuthor(author).Result;
+
+        pagesOfCheeps = Math.Ceiling((decimal)noOfCheeps / (decimal)32.0);
+        
         var userName = User.Identity.Name;
         if(User.Identity.IsAuthenticated && author == userName)
         {
+            
             GetNotifications(author);
         } else{
             Notifications = new List<NotificationDTO>(); //Empty instead of null
@@ -122,7 +132,7 @@ public class UserTimelineModel : PageModel
     }
     
     /// <summary>
-    /// Method to to post, ensures proper lenght and checks for mentions, before passing it to the create cheep methods
+    /// Method to post, ensures proper lenght and checks for mentions, before passing it to the create cheep methods
     /// </summary>
     /// <param name="Cheep">The text to be cheeped</param>
     /// <returns>A redirect to the same page, to update with the new cheep</returns>

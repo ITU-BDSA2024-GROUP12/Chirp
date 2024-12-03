@@ -21,6 +21,10 @@ public class PublicModel : PageModel
     private SignInManager<ChirpUser> _signInManager;
 
     public int page;
+    
+    public int noOfCheeps;
+
+    public decimal pagesOfCheeps;
 
     public PublicModel(ICheepRepository cRepository, IAuthorRepository aRepository, SignInManager<ChirpUser> signInManager)
     {
@@ -97,6 +101,11 @@ public class PublicModel : PageModel
         }
         page = pageNumber;
         GetCheeps(pageNumber);
+        
+        noOfCheeps = _cRepository.CheepCount().Result;
+
+        pagesOfCheeps = Math.Ceiling((decimal)noOfCheeps / (decimal)32.0);
+        
         return Page();
     }
 
