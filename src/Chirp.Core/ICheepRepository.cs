@@ -10,4 +10,6 @@ public interface ICheepRepository
     public bool UnfollowUser(int authorId, string userName);
     public Task<List<List<int>>> GetFollowerIds(string userName);
     Task<CheepDTO> GetCheepById(int id);
+    public Task<int> CheepCount();
+    public Task<int> CheepCountFromAuthor(string author);
 }
