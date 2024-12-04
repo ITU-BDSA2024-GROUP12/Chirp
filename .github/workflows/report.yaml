@@ -8,4 +8,4 @@ jobs:
     steps:
       - uses: docker://pandoc/latex:3.5
         with:
-          args: "report.md -o 2024_itubdsa_group_<no>_report.pdf"
+          args: "docs/report.md -o 2024_itubdsa_group_12_report.pdf"
