@@ -6,7 +6,6 @@ jobs:
   convert_via_pandoc:
     runs-on: ubuntu-latest
     steps:
-      - run: cd docs
-      - uses: docker://pandoc/latex:3.5
+      - uses: docker://pandoc/latex
         with:
-          args: "report.md -o 2024_itubdsa_group_12_report.pdf"
+          args: "docs/report.md -o 2024_itubdsa_group_12_report.pdf"
