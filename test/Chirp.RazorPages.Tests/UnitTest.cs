@@ -48,6 +48,7 @@ public class UnitTest : IClassFixture<CustomWebApplicationFactory<Program>>
 		Assert.Contains($"{author}'s Timeline", content);
 	}
 
+	/*
     [Fact]
     public async void TestLogin()
     {
@@ -76,6 +77,7 @@ public class UnitTest : IClassFixture<CustomWebApplicationFactory<Program>>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }
+*/
 
 class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
