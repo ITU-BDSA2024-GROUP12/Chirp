@@ -1,10 +1,12 @@
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Chirp.Core;
+using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.Primitives;
 
 namespace Chirp.Web.Pages;
@@ -27,6 +29,8 @@ public class PublicModel : PageModel
 
     public decimal pagesOfCheeps;
 
+
+    public List<int> Follows;
 
     public PublicModel(ICheepRepository cRepository, IAuthorRepository aRepository, SignInManager<ChirpUser> signInManager)
     {
@@ -96,6 +100,18 @@ public class PublicModel : PageModel
     
     public async Task<ActionResult> OnGet(int pageNumber = 1)
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            Follows = new List<int>();
+            var initFollows = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+            if (initFollows != null)
+            {
+                foreach (var list in initFollows)
+                {
+                    Follows.Add(list[0]);
+                }
+            }
+        }
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out page)) 
         {
@@ -123,46 +139,66 @@ public class PublicModel : PageModel
 
         Cheeps = cheeps;
     }
-    
-    public async Task<IActionResult> OnPost(string Cheep)
+
+    public async Task<IActionResult> OnPostFollow()
     {
-        if (Cheep is null)
+        var following = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+        List<int> authorname = new List<int>();
+        authorname.Add(Convert.ToInt32(Request.Form["author"]));
+        if (following != null)
         {
-            ModelState.AddModelError("Cheep", "You have to cheep atleast something, this is too vague!");
-            await GetCheeps(1);
-            return Page();
+            if (!following.Contains(authorname))
+            {
+                _cRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+            }
         }
-        if (Cheep.Length > 160)
+        else
         {
-            ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
-            await GetCheeps(1);
-            return Page();
+            _cRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
-        var name = User.FindFirstValue(ClaimTypes.Name);
-        var email = User.FindFirstValue(ClaimTypes.Email);
-        // Do something with the text ...
-        if (name is not null && email is not null)
-        {
-            name = User.FindFirstValue(ClaimTypes.Name);
-            email = User.FindFirstValue(ClaimTypes.Email);
+        return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
+    }
+    
+    public async Task<IActionResult> OnPostUnfollow()
+    {
+        var following = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+        List<int> authorname = new List<int>();
+        authorname.Add(Convert.ToInt32(Request.Form["author"]));
+        if (following != null)
+        { 
+            _cRepository.UnfollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
-        
-        AuthorDTO author = new AuthorDTO()
-        {
-            Name = name ?? "N/A",
-            Email = email ?? "N/A"
-        };
-        
-        // Parsing mentions from the Cheep text (@username)
-        var mentions = Util.ExtractMentions(Cheep);
-        
-        //only query if there are mentions
-        if(mentions.Count > 0) {
-            var validMentions =  await _aRepository.GetValidUsernames(mentions);
-            _cRepository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
-        }
-        else _cRepository.CreateCheep(author, Cheep, null, DateTimeOffset.UtcNow.ToString());
-        
+        return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
+    }
+    
+    
+    public async Task<IActionResult> OnPostCheep(string Cheep)
+    {
+            if (Cheep.Length > 160)
+            {
+                ModelState.AddModelError("Cheep", "Cheep is too long, Max 160 Charecters, Your was " + Cheep.Length);
+                GetCheeps(1);
+                return Page();
+            }
+
+            // Do something with the text ...
+            AuthorDTO author = new AuthorDTO()
+            {
+                Name = User.FindFirstValue(ClaimTypes.Name),
+                Email = User.FindFirstValue(ClaimTypes.Email)
+            };
+
+            // Parsing mentions from the Cheep text (@username)
+            var mentions = Util.ExtractMentions(Cheep);
+
+            //only query if there are mentions
+            if (mentions.Count > 0)
+            {
+                var validMentions = await _aRepository.GetValidUsernames(mentions);
+                _cRepository.CreateCheep(author, Cheep, validMentions, DateTimeOffset.UtcNow.ToString());
+            }
+            else _cRepository.CreateCheep(author, Cheep, null, DateTimeOffset.UtcNow.ToString());
+
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
 }

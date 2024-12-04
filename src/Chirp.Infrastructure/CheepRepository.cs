@@ -79,6 +79,59 @@ public class CheepRepository : ICheepRepository
         return tsk.Result == 1;
     }
 
+    public bool FollowUser(int authorId, string userName)
+    {
+        AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
+        Following following = new()
+        {
+            FollowId = user.AuthorId,
+            AuthorId = authorId
+        };
+        _cheepDbContext.Followings.Add(following);
+        
+        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+        return tsk.Result == 1;
+    }
+
+    public bool UnfollowUser(int authorId, string userName)
+    {
+        AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
+        var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId && follow.AuthorId == authorId).Select(follow => new List<int>()
+        {
+            follow.FollowId,
+            follow.AuthorId,
+            follow.Id
+        }).AsEnumerable();
+        var result = query.ToList();
+        var unfollow = result.First();
+        Following unfollowing = new()
+        {
+            FollowId = unfollow[0],
+            AuthorId = unfollow[1],
+            Id = unfollow[2]
+        };
+        
+        _cheepDbContext.Followings.Remove(unfollowing);
+        
+        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+        return tsk.Result == 1;
+    }
+
+    public async Task<List<List<int>>> GetFollowerIds(string userName)
+    {
+        AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
+        var query = _cheepDbContext.Followings.Where(follow => follow.FollowId == user.AuthorId).Select(follow =>
+            new List<int>()
+            {
+                follow.AuthorId
+            });
+        var result = query.ToList();
+        if (result.Count > 0)
+        {
+            return result;
+        }
+        return null;
+    }
     
     public async Task<List<CheepDTO>> GetMessages(int page)
     {
@@ -86,7 +139,8 @@ public class CheepRepository : ICheepRepository
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
-            TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
+            TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds(),
+            AuthorId = cheep.Author.AuthorId
         }).AsQueryable<CheepDTO>().ToListAsync<CheepDTO>();
 
         return result.AsEnumerable().OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32).ToList();
@@ -98,7 +152,8 @@ public class CheepRepository : ICheepRepository
         {
             Author = cheep.Author.Name,
             Text = cheep.Text,
-            TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds()
+            TimeStamp = ((DateTimeOffset) cheep.TimeStamp).ToUnixTimeSeconds(),
+            AuthorId = cheep.Author.AuthorId
         }).AsQueryable().ToListAsync();
         
         return query.OrderByDescending(x => x.TimeStamp).Skip((page - 1) * 32).Take(32).ToList();
@@ -125,7 +180,8 @@ public class CheepRepository : ICheepRepository
         {
             Text = c.Text,
             Author = c.Author.Name,
-            TimeStamp = ((DateTimeOffset)c.TimeStamp).ToUnixTimeSeconds()
+            TimeStamp = ((DateTimeOffset)c.TimeStamp).ToUnixTimeSeconds(),
+            AuthorId = c.Author.AuthorId
         })
         .FirstOrDefaultAsync();
 

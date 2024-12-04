@@ -18,8 +18,8 @@ public class UserTimelineModel : PageModel
 
     public int page;
 
+    public List<int> Follows;
     public int noOfCheeps;
-
     public decimal pagesOfCheeps;
 
     public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository, INotificationRepository nRepository)
@@ -87,9 +87,23 @@ public class UserTimelineModel : PageModel
 
         return result;
     }
+    
+    
 
     public async Task<ActionResult> OnGet(string author)
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            Follows = new List<int>();
+            var initFollows = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+            if (initFollows != null)
+            {
+                foreach (var list in initFollows)
+                {
+                    Follows.Add(list[0]);
+                }
+            }
+        }
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out page)) 
 		    {
@@ -105,8 +119,10 @@ public class UserTimelineModel : PageModel
         var userName = User.Identity.Name;
         if(User.Identity.IsAuthenticated && author == userName)
         {
+            await GetFollowedCheeps(page, author);
             GetNotifications(author);
         } else{
+            await GetCheeps(page, author);
             Notifications = new List<NotificationDTO>(); //Empty instead of null
         }
 
@@ -118,11 +134,41 @@ public class UserTimelineModel : PageModel
         var cheeps = await _cRepository.GetMessagesFromAuthor(author,page);
 
         foreach (var cheep in cheeps)
-        {
             cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
-        }
+        
 
         Cheeps = cheeps;
+    }
+    
+    private async Task GetFollowedCheeps(int page, string user)
+    {
+        Console.WriteLine("test");
+        var following = await _cRepository.GetFollowerIds(user);
+        var userCheeps = await _cRepository.GetMessagesFromAuthor(user,page);
+        var allCheeps = new List<CheepDTO>();
+        if (following != null)
+        {
+            foreach (List<int> i in following)
+            {
+                AuthorDTO author = await _aRepository.GetAuthorById(i[0]);
+                var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
+                allCheeps.AddRange(cheeps);
+            }
+            allCheeps.AddRange(userCheeps);
+            foreach (var cheep in allCheeps)
+            {
+                cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
+            }
+        }
+        else if (userCheeps != null)
+        {
+            allCheeps.AddRange(userCheeps);
+            foreach (var cheep in allCheeps)
+            {
+                cheep.HighlightedParts = await HighlightMentionsAsync(cheep.Text);
+            }
+        }
+        Cheeps = allCheeps;
     }
 
     private async void GetNotifications(string author){
@@ -132,12 +178,43 @@ public class UserTimelineModel : PageModel
     }
     
 
+    public async Task<IActionResult> OnPostFollow()
+    {
+        var following = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+        List<int> authorname = new List<int>();
+        authorname.Add(Convert.ToInt32(Request.Form["author"]));
+        if (following != null)
+        {
+            if (!following.Contains(authorname))
+            {
+                _cRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+            }
+        }
+        else
+        {
+            _cRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+        }
+        return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
+    }
+    
+    public async Task<IActionResult> OnPostUnfollow()
+    {
+        var following = await _cRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+        List<int> authorname = new List<int>();
+        authorname.Add(Convert.ToInt32(Request.Form["author"]));
+        if (following != null)
+        { 
+            _cRepository.UnfollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+        }
+        return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
+    }
+    
     /// <summary>
     /// Method to post, ensures proper lenght and checks for mentions, before passing it to the create cheep methods
     /// </summary>
     /// <param name="Cheep">The text to be cheeped</param>
     /// <returns>A redirect to the same page, to update with the new cheep</returns>
-    public async Task<IActionResult> OnPost(string Cheep)
+    public async Task<IActionResult> OnPostCheep(string Cheep)
     {
         // Do something with the text ...
         var name = User.FindFirstValue(ClaimTypes.Name);
