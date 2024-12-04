@@ -75,9 +75,8 @@ public class UnitTest : IClassFixture<CustomWebApplicationFactory<Program>>
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    }
+    }*/
 }
-*/
 
 class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
