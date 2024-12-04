@@ -170,6 +170,14 @@ public class AuthorRepository : IAuthorRepository
         Console.WriteLine(r);
     }
 
+    public async void DeleteFollowing(string name)
+    {
+        AuthorDTO a = await GetAuthorByName(name);
+        var r = _cheepDbContext.Followings.Where(follow => follow.AuthorId == a.AuthorId).ExecuteDeleteAsync().Result;
+        var r2 = _cheepDbContext.Followings.Where(follow => follow.FollowId == a.AuthorId).ExecuteDeleteAsync().Result;
+        _cheepDbContext.SaveChanges();
+    }
+
     /// <summary>
     /// Method checks a list of strings for possible matches in the names of the author table
     /// </summary>
