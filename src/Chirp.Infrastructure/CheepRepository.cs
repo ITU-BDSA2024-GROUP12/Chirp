@@ -201,4 +201,19 @@ public class CheepRepository : ICheepRepository
     {
         return await _cheepDbContext.Cheeps.Where(cheep => cheep.Author.Name == author).CountAsync();
     }
+    
+    public async Task<List<AuthorDTO>> GetFollowers(string name)
+    {
+        var followers = await GetFollowerIds(name);
+        List<AuthorDTO> followerList = new List<AuthorDTO>();
+        foreach (var list in followers)
+        {
+            
+        }
+    }
+
+    public async Task<int> GetFollowsAmount(string name)
+    {
+        
+    }
 }

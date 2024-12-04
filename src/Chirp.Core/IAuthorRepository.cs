@@ -11,4 +11,5 @@ public interface IAuthorRepository
     public Task<List<AuthorDTO>> GetValidUsernames(List<string> mentions);
     public void DeleteUser(string name, string email);
     public void DeleteFollowing(string name);
+    
 }

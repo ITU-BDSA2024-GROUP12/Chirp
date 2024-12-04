@@ -18,6 +18,7 @@
     <div> <!-- NAME EMAIL; CHEEPS FOLLOWS  --> 
         <p>Name: @(User.FindFirstValue(ClaimTypes.Name))</p>
         <p>Email: @(User.FindFirstValue(ClaimTypes.Email))</p>
+        <p>You Are Currently Following:</p>
         <p>Cheeps written by you: @Model.noOfCheeps</p>
         <p>Cheeps: </p>
         @if (Model.Cheeps.Any())
@@ -49,7 +50,7 @@
         }
         
         
-        <p>Following: x</p>
+        
     </div>
     <button color="red"><a href="/forget-me">Forget me!</a></button>
 </div>
