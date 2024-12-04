@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Convert to pdf
         run: |
@@ -17,7 +17,7 @@ jobs:
             /workspace/docs/report.md -o /workspace/2024_itubdsa_group_12_report.pdf
             
       - name: Upload PDF as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: report-pdf
           path: 2024_itubdsa_group_12_report.pdf
