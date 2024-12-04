@@ -1,0 +1,11 @@
+name: Publish Report
+
+on: push
+
+jobs:
+  convert_via_pandoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker://pandoc/latex:3.5
+        with:
+          args: "report.md -o 2024_itubdsa_group_<no>_report.pdf"
