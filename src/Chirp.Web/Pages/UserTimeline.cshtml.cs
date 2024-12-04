@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 using Chirp.Core;
@@ -19,6 +19,9 @@ public class UserTimelineModel : PageModel
     public int page;
 
     public List<int> Follows;
+    public int noOfCheeps;
+    public decimal pagesOfCheeps;
+
     public UserTimelineModel(ICheepRepository cRepository, IAuthorRepository aRepository, INotificationRepository nRepository)
     {
         _cRepository = cRepository;
@@ -103,10 +106,16 @@ public class UserTimelineModel : PageModel
         }
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out page)) 
-        {
-            page = 1;
-        }
-        
+		    {
+			    page = 1;
+		    }
+
+        noOfCheeps = _cRepository.CheepCountFromAuthor(author).Result;
+
+        pagesOfCheeps = Math.Ceiling((decimal)noOfCheeps / (decimal)32.0);
+                
+        await GetCheeps(page, author);
+
         var userName = User.Identity.Name;
         if(User.Identity.IsAuthenticated && author == userName)
         {
@@ -201,7 +210,7 @@ public class UserTimelineModel : PageModel
     }
     
     /// <summary>
-    /// Method to to post, ensures proper lenght and checks for mentions, before passing it to the create cheep methods
+    /// Method to post, ensures proper lenght and checks for mentions, before passing it to the create cheep methods
     /// </summary>
     /// <param name="Cheep">The text to be cheeped</param>
     /// <returns>A redirect to the same page, to update with the new cheep</returns>

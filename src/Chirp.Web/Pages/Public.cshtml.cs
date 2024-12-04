@@ -22,7 +22,13 @@ public class PublicModel : PageModel
     
     private SignInManager<ChirpUser> _signInManager;
 
-    public int PageNumber;
+
+    public int page;
+    
+    public int noOfCheeps;
+
+    public decimal pagesOfCheeps;
+
 
     public List<int> Follows;
 
@@ -107,11 +113,18 @@ public class PublicModel : PageModel
             }
         }
         StringValues pageQuery = Request.Query["page"];
-        if(!Int32.TryParse(pageQuery, out PageNumber)) 
+        if(!Int32.TryParse(pageQuery, out page)) 
         {
-            PageNumber = 1;
+            page = 1;
         }
-        await GetCheeps(PageNumber);
+
+        
+        noOfCheeps = _cRepository.CheepCount().Result;
+
+        pagesOfCheeps = Math.Ceiling((decimal)noOfCheeps / (decimal)32.0);
+        
+        await GetCheeps(page);
+
         return Page();
     }
 
