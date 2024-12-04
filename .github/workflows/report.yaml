@@ -6,6 +6,12 @@ jobs:
   convert_via_pandoc:
     runs-on: ubuntu-latest
     steps:
-      - uses: docker://pandoc/latex
-        with:
-          args: "docs/report.md -o 2024_itubdsa_group_12_report.pdf"
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Convert to pdf
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            pandoc/latex \
+            /workspace/docs/report.md -o /workspace/2024_itubdsa_group_12_report.pdf
