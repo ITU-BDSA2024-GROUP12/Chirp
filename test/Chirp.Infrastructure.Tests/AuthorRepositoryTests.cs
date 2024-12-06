@@ -169,8 +169,49 @@ public class AuthorRepositoryTests
 
         //Assert
         Assert.Equal(author2.AuthorId, ids[0]);
+    }
+    
+    [Fact]
+    public async void UserCanFollowAuthorDouble(){
+        // Arrange
+        CheepDbContext dbContext = new CheepDbContext(_builder.Options);
+        await dbContext.Database.EnsureCreatedAsync();
+        IAuthorRepository repository = new AuthorRepository(dbContext);
+        
+        //Act
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
+        repository.CreateAuthor(author1);
+        repository.CreateAuthor(author2);
+        
+        //This is weird...
+        repository.FollowUser(author2.AuthorId, author1.Name);
+        repository.FollowUser(author2.AuthorId, author1.Name);
+        var ids = await repository.GetFollowerIds(author1.Name);
 
+        //Assert
+        Assert.Single(ids);
+    }
+    
+    [Fact]
+    public async void UserCanUnfollowAuthor(){
+        // Arrange
+        CheepDbContext dbContext = new CheepDbContext(_builder.Options);
+        await dbContext.Database.EnsureCreatedAsync();
+        IAuthorRepository repository = new AuthorRepository(dbContext);
+        
+        //Act
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
+        repository.CreateAuthor(author1);
+        repository.CreateAuthor(author2);
+        
+        //This is weird...
+        repository.FollowUser(author2.AuthorId, author1.Name);
+        repository.UnfollowUser(author2.AuthorId, author1.Name);
+        var ids = await repository.GetFollowerIds(author1.Name);
 
-
+        //Assert
+        Assert.Null(ids);
     }
 }
