@@ -165,8 +165,5 @@ public class AuthorRepositoryTests
         repository.FollowUser(author1.AuthorId, author2.Name);
 
         repository.GetFollowerIds(author1.Name);
-
-
-
     }
 }
