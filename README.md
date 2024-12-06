@@ -25,3 +25,7 @@ Co-authored-by: Rasmus <rsni@itu.dk>
 Co-authored-by: Mathias <bamj@itu.dk>
 Co-authored-by: Christian <cmol@itu.dk>
 Co-authored-by: Johannes <johje@itu.dk>
+
+# Report PDF
+
+To find the report artifact: click the Actions tab -> Click the "Publish Report" workflow on the lefthand side -> Click on the newest workflow.
