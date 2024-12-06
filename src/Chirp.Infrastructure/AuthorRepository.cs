@@ -224,15 +224,14 @@ public class AuthorRepository : IAuthorRepository
         return tsk.Result == 1;
     }
 
-    public async Task<List<List<int>>> GetFollowerIds(string userName)
+    public async Task<List<int>> GetFollowerIds(string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
-        var query = _cheepDbContext.Followings.Where(follow => follow.FollowId == user.AuthorId).Select(follow =>
-            new List<int>()
-            {
-                follow.AuthorId
-            });
-        var result = query.ToList();
+        var query = _cheepDbContext.Followings.Where(follow => follow.FollowId == user.AuthorId)
+            .Select(follow => follow.AuthorId);
+        
+        var result = await query.ToListAsync();
+        
         if (result.Count > 0)
         {
             return result;

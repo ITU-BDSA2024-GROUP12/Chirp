@@ -98,9 +98,9 @@ public class UserTimelineModel : PageModel
             var initFollows = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
             if (initFollows != null)
             {
-                foreach (var list in initFollows)
+                foreach (var id in initFollows)
                 {
-                    Follows.Add(list[0]);
+                    Follows.Add(id);
                 }
             }
         }
@@ -143,14 +143,14 @@ public class UserTimelineModel : PageModel
     private async Task GetFollowedCheeps(int page, string user)
     {
         Console.WriteLine("test");
-        var following = await _aRepository.GetFollowerIds(user);
+        List<int> following = await _aRepository.GetFollowerIds(user);
         var userCheeps = await _cRepository.GetMessagesFromAuthor(user,page);
         var allCheeps = new List<CheepDTO>();
         if (following != null)
         {
-            foreach (List<int> i in following)
+            foreach (int id in following)
             {
-                AuthorDTO author = await _aRepository.GetAuthorById(i[0]);
+                AuthorDTO author = await _aRepository.GetAuthorById(id);
                 var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
                 allCheeps.AddRange(cheeps);
             }
@@ -180,19 +180,19 @@ public class UserTimelineModel : PageModel
 
     public async Task<IActionResult> OnPostFollow()
     {
-        var following = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
-        List<int> authorname = new List<int>();
-        authorname.Add(Convert.ToInt32(Request.Form["author"]));
+        List<int> following = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+        //List<int> authorname = new List<int>();
+        int authorname = Convert.ToInt32(Request.Form["author"]);
         if (following != null)
         {
             if (!following.Contains(authorname))
             {
-                _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+                _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
             }
         }
         else
         {
-            _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
@@ -200,11 +200,12 @@ public class UserTimelineModel : PageModel
     public async Task<IActionResult> OnPostUnfollow()
     {
         var following = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
-        List<int> authorname = new List<int>();
-        authorname.Add(Convert.ToInt32(Request.Form["author"]));
+        //List<int> authorname = new List<int>();
+        //authorname.Add(Convert.ToInt32(Request.Form["author"]));
+        int authorname = Convert.ToInt32(Request.Form["author"]);
         if (following != null)
         { 
-            _aRepository.UnfollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
