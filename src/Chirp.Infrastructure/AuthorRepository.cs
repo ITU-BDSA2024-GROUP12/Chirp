@@ -185,4 +185,57 @@ public class AuthorRepository : IAuthorRepository
         var result = await query.ToListAsync();
         return result;
     }
+    
+    public bool FollowUser(int authorId, string userName)
+    {
+        AuthorDTO user = GetAuthorByName(userName).Result;
+        Following following = new()
+        {
+            FollowId = user.AuthorId,
+            AuthorId = authorId
+        };
+        _cheepDbContext.Followings.Add(following);
+        
+        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+        return tsk.Result == 1;
+    }
+
+    public bool UnfollowUser(int authorId, string userName)
+    {
+        AuthorDTO user = GetAuthorByName(userName).Result;
+        var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId && follow.AuthorId == authorId).Select(follow => new List<int>()
+        {
+            follow.FollowId,
+            follow.AuthorId,
+            follow.Id
+        }).AsEnumerable();
+        var result = query.ToList();
+        var unfollow = result.First();
+        Following unfollowing = new()
+        {
+            FollowId = unfollow[0],
+            AuthorId = unfollow[1],
+            Id = unfollow[2]
+        };
+        
+        _cheepDbContext.Followings.Remove(unfollowing);
+        
+        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
+        return tsk.Result == 1;
+    }
+
+    public async Task<List<int>> GetFollowerIds(string userName)
+    {
+        AuthorDTO user = GetAuthorByName(userName).Result;
+        var query = _cheepDbContext.Followings.Where(follow => follow.FollowId == user.AuthorId)
+            .Select(follow => follow.AuthorId);
+        
+        var result = await query.ToListAsync();
+        
+        if (result.Count > 0)
+        {
+            return result;
+        }
+        return null;
+    }
 }
