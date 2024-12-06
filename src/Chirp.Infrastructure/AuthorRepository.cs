@@ -185,7 +185,12 @@ public class AuthorRepository : IAuthorRepository
         var result = await query.ToListAsync();
         return result;
     }
-    
+    /// <summary>
+    /// Follows a given author
+    /// </summary>
+    /// <param name="authorId">Id of the author, to follow</param>
+    /// <param name="userName">Name of currently logged in user</param>
+    /// <returns>True or false</returns>
     public bool FollowUser(int authorId, string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
@@ -199,11 +204,17 @@ public class AuthorRepository : IAuthorRepository
         Task<int> tsk = _cheepDbContext.SaveChangesAsync();
         return tsk.Result == 1;
     }
-
+    /// <summary>
+    /// Unfollows a followed author
+    /// </summary>
+    /// <param name="authorId">Id of the author, to follow</param>
+    /// <param name="userName">Name of currently logged in user</param>
+    /// <returns>True or false</returns>
     public bool UnfollowUser(int authorId, string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
-        var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId && follow.AuthorId == authorId).Select(follow => new List<int>()
+        var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId && follow.AuthorId == authorId)
+            .Select(follow => new List<int>()
         {
             follow.FollowId,
             follow.AuthorId,
@@ -224,6 +235,11 @@ public class AuthorRepository : IAuthorRepository
         return tsk.Result == 1;
     }
 
+    /// <summary>
+    /// Returns a list of follower Ids for the given author
+    /// </summary>
+    /// <param name="userName">Name of the author</param>
+    /// <returns>List<int> of follower ids</returns>
     public async Task<List<int>> GetFollowerIds(string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
