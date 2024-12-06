@@ -1,5 +1,7 @@
+using System.Threading.Channels;
 using Chirp.Core;
 using Chirp.Infrastructure;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
@@ -162,9 +164,11 @@ public class AuthorRepositoryTests
         repository.CreateAuthor(author2);
         
         //This is weird...
-        repository.FollowUser(author1.AuthorId, author2.Name);
+        repository.FollowUser(author2.AuthorId, author1.Name);
+        var ids = await repository.GetFollowerIds(author1.Name);
 
-        repository.GetFollowerIds(author1.Name);
+        //Assert
+        Assert.Equal(author2.AuthorId, ids[0]);
 
 
 
