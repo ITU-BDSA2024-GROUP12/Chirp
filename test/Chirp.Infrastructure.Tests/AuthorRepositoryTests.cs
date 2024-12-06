@@ -142,6 +142,31 @@ public class AuthorRepositoryTests
         DbInitializer.SeedDatabase(context);
         IAuthorRepository repository = new AuthorRepository(context);
         
+        //Assert
         await Assert.ThrowsAsync<UserNotFoundException>(() => repository.GetAuthor(author,email));
+    }
+
+    //FollowUser()
+    [Fact]
+    public async void UserCanFollowAuthor()
+    {
+        // Arrange
+        CheepDbContext dbContext = new CheepDbContext(_builder.Options);
+        await dbContext.Database.EnsureCreatedAsync();
+        IAuthorRepository repository = new AuthorRepository(dbContext);
+        
+        //Act
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
+        repository.CreateAuthor(author1);
+        repository.CreateAuthor(author2);
+        
+        //This is weird...
+        repository.FollowUser(author1.AuthorId, author2.Name);
+
+        repository.GetFollowerIds(author1.Name);
+
+
+
     }
 }
