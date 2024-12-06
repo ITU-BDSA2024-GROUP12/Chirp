@@ -151,6 +151,11 @@ public class AuthorRepository : IAuthorRepository
         return author;
     }
     
+    /// <summary>
+    /// Deletes the given author from the database.
+    /// </summary>
+    /// <param name="name">Name of the author</param>
+    /// <param name="email">email of the author</param>
     public async void DeleteUser(string name, string email)
     {
         AuthorDTO a = await GetAuthor(name, email);
