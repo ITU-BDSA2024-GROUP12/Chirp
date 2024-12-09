@@ -47,8 +47,7 @@ public class AboutMe : PageModel
         GetCheeps(page, name);
         noOfCheeps = _repository.CheepCountFromAuthor(name).Result;
 
-        noOfFollowers = _repository.GetFollowersAmount(name).Result;
-        noOfFollows = _repository.GetFollowsAmount(name).Result;
+        noOfFollows = _repository.GetFollowersAmount(name).Result;
         GetFollowers(name);
     }
     
@@ -64,7 +63,7 @@ public class AboutMe : PageModel
         Cheeps = cheeps;
     }
 
-    private async Task GetFollowers(string author)
+    private void GetFollowers(string author)
     {
         
     }

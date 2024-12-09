@@ -8,10 +8,10 @@ public interface ICheepRepository
     public bool CreateCheep(AuthorDTO author, string text, List<AuthorDTO>? mentions, string time);
     public bool FollowUser(int authorId, string userName);
     public bool UnfollowUser(int authorId, string userName);
-    public Task<List<List<int>>> GetFollowerIds(string userName);
+    public Task<List<List<int>>> GetFollowIds(string userName);
     Task<CheepDTO> GetCheepById(int id);
     public Task<int> CheepCount();
     public Task<int> CheepCountFromAuthor(string author);
-    public Task<List<AuthorDTO>> GetFollowers(string name);
-    public Task<int> GetFollowsAmount(string name);
+    public Task<List<AuthorDTO>> GetFollows(string name);
+    public Task<int> GetFollowersAmount(string name);
 }

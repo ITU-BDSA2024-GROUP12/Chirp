@@ -117,7 +117,7 @@ public class CheepRepository : ICheepRepository
         return tsk.Result == 1;
     }
 
-    public async Task<List<List<int>>> GetFollowerIds(string userName)
+    public async Task<List<List<int>>> GetFollowIds(string userName)
     {
         AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;
         var query = _cheepDbContext.Followings.Where(follow => follow.FollowId == user.AuthorId).Select(follow =>
@@ -202,19 +202,32 @@ public class CheepRepository : ICheepRepository
         return await _cheepDbContext.Cheeps.Where(cheep => cheep.Author.Name == author).CountAsync();
     }
     
-    public async Task<List<AuthorDTO>> GetFollowers(string name)
+    public async Task<List<AuthorDTO>> GetFollows(string name)
     {
-        var followers = await GetFollowerIds(name);
-        List<AuthorDTO> followerList = new List<AuthorDTO>();
-        foreach (var list in followers)
+        var follows = await GetFollowIds(name);
+        List<AuthorDTO> followsList = new List<AuthorDTO>();
+        foreach (var list in follows)
         {
             var id = list[0];
-            AuthorDTO newFollower = 
+            AuthorDTO follow = await _authorRepository.GetAuthorById(id);
+            followsList.Add(follow);
         }
+        return followsList;
     }
 
-    public async Task<int> GetFollowsAmount(string name)
+    public async Task<int> GetFollowersAmount(string name)
     {
-        
+        AuthorDTO user = _authorRepository.GetAuthorByName(name).Result;
+        var query = _cheepDbContext.Followings.Where(follow => follow.AuthorId == user.AuthorId).Select(follow =>
+            new List<int>()
+            {
+                follow.AuthorId
+            });
+        var result = query.ToList();
+        if (result.Count > 0)
+        {
+            return result.Count;
+        }
+        return 0;
     }
 }
