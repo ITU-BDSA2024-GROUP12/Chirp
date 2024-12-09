@@ -14,7 +14,7 @@ public class AboutMe : PageModel
     private readonly IAuthorRepository _authorRepository;
     
     public List<CheepDTO> Cheeps { get; set; } = new List<CheepDTO>();
-    public List<AuthorDTO> Authors { get; set; } = new List<AuthorDTO>();
+    public List<AuthorDTO> Follows { get; set; } = new List<AuthorDTO>();
 
     public int noOfCheeps;
     public int noOfFollows;
@@ -47,8 +47,8 @@ public class AboutMe : PageModel
         GetCheeps(page, name);
         noOfCheeps = _repository.CheepCountFromAuthor(name).Result;
 
-        noOfFollows = _repository.GetFollowersAmount(name).Result;
-        GetFollowers(name);
+        noOfFollowers = _repository.GetFollowersAmount(name).Result;
+        noOfFollows = _repository.GetFollowsAmount(name).Result;
     }
     
     private async Task GetCheeps(int page, string author)
@@ -61,11 +61,6 @@ public class AboutMe : PageModel
         }
 
         Cheeps = cheeps;
-    }
-
-    private void GetFollowers(string author)
-    {
-        
     }
     
     /// <summary>

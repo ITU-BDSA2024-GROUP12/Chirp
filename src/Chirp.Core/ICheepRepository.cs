@@ -12,6 +12,6 @@ public interface ICheepRepository
     Task<CheepDTO> GetCheepById(int id);
     public Task<int> CheepCount();
     public Task<int> CheepCountFromAuthor(string author);
-    public Task<List<AuthorDTO>> GetFollows(string name);
+    public Task<int> GetFollowsAmount(string name);
     public Task<int> GetFollowersAmount(string name);
 }

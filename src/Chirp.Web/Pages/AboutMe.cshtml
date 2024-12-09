@@ -18,7 +18,8 @@
     <div> <!-- NAME EMAIL; CHEEPS FOLLOWS  --> 
         <p>Name: @(User.FindFirstValue(ClaimTypes.Name))</p>
         <p>Email: @(User.FindFirstValue(ClaimTypes.Email))</p>
-        <p>You Are Currently Following:</p>
+        <p>This Many People Are Following You: @Model.noOfFollowers</p>
+        <p>You Are Currently Following: @Model.noOfFollows</p>
         <p>Cheeps written by you: @Model.noOfCheeps</p>
         <p>Cheeps: </p>
         @if (Model.Cheeps.Any())
