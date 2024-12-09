@@ -208,7 +208,8 @@ public class CheepRepository : ICheepRepository
         List<AuthorDTO> followerList = new List<AuthorDTO>();
         foreach (var list in followers)
         {
-            
+            var id = list[0];
+            AuthorDTO newFollower = 
         }
     }
 
