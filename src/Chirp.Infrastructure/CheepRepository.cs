@@ -206,7 +206,11 @@ public class CheepRepository : ICheepRepository
     public async Task<int> GetFollowsAmount(string name)
     {
         var follows = await GetFollowIds(name);
-        return follows.Count;
+        if (follows != null)
+        {
+            return follows.Count;
+        }
+        return 0;
     }
 
     public async Task<int> GetFollowersAmount(string name)

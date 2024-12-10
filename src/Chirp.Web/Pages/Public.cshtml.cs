@@ -109,7 +109,7 @@ public class PublicModel : PageModel
             {
                 foreach (var list in initFollows)
                 {
-                    Follows.Add(list);
+                    Follows.Add(list[0]);
                 }
             }
         }
@@ -150,12 +150,12 @@ public class PublicModel : PageModel
         {
             if (!following.Contains(authorname))
             {
-                _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+                _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
             }
         }
         else
         {
-            _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
@@ -167,7 +167,7 @@ public class PublicModel : PageModel
         authorname.Add(Convert.ToInt32(Request.Form["author"]));
         if (following != null)
         { 
-            _aRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.UnfollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }

@@ -100,15 +100,15 @@ public class UserTimelineModel : PageModel
             {
                 foreach (var id in initFollows)
                 {
-                    Follows.Add(id);
+                    Follows.Add(id[0]);
                 }
             }
         }
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out page)) 
-		    {
-			    page = 1;
-		    }
+        {
+            page = 1; 
+        }
 
         noOfCheeps = _cRepository.CheepCountFromAuthor(author).Result;
 
@@ -147,9 +147,9 @@ public class UserTimelineModel : PageModel
         var allCheeps = new List<CheepDTO>();
         if (following != null)
         {
-            foreach (int id in following)
+            foreach (var id in following)
             {
-                AuthorDTO author = await _aRepository.GetAuthorById(id);
+                AuthorDTO author = await _aRepository.GetAuthorById(id[0]);
                 var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
                 allCheeps.AddRange(cheeps);
             }
@@ -186,12 +186,12 @@ public class UserTimelineModel : PageModel
         {
             if (!following.Contains(authorname))
             {
-                _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+                _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
             }
         }
         else
         {
-            _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
@@ -203,7 +203,7 @@ public class UserTimelineModel : PageModel
         authorname.Add(Convert.ToInt32(Request.Form["author"]));
         if (following != null)
         { 
-            _aRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.UnfollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
