@@ -203,6 +203,15 @@ public class AuthorRepository : IAuthorRepository
             FollowId = user.AuthorId,
             AuthorId = authorId
         };
+        
+        
+        bool alreadyFollowed = GetFollowerIds(userName).Result.Contains(authorId);
+
+        if (alreadyFollowed)
+        {
+            throw new Exception($"Author {userName} is already being followed!");
+        }
+        
         _cheepDbContext.Followings.Add(following);
         
         int chgs = _cheepDbContext.SaveChanges();
@@ -226,7 +235,7 @@ public class AuthorRepository : IAuthorRepository
     }
 
     /// <summary>
-    /// Returns a list of follower Ids for the given author
+    /// Returns a list of author Ids, that the given author follows
     /// </summary>
     /// <param name="userName">Name of the author</param>
     /// <returns>List<int> of follower ids</returns>
@@ -242,6 +251,6 @@ public class AuthorRepository : IAuthorRepository
         {
             return result;
         }
-        return null;
+        return new List<int>(); //return an empty list
     }
 }
