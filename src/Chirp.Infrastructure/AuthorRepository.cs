@@ -21,7 +21,7 @@ public class AuthorRepository : IAuthorRepository
     /// <param name="email">E-mail of the author</param>
     /// <returns>True: if the author is created successfully</returns>
     /// <exception cref="Exception">Throws if the author already exists</exception>
-    public bool CreateAuthor(AuthorDTO author)
+    public async Task<int> CreateAuthor(AuthorDTO author)
     {
         if (DoesAuthorExist(author.Name))
         {
@@ -36,8 +36,7 @@ public class AuthorRepository : IAuthorRepository
         };
         
         _cheepDbContext.Authors.Add(auth);
-        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-        return (tsk.Result == 1);
+        return await _cheepDbContext.SaveChangesAsync();
     }
     
     /// <summary>
@@ -171,7 +170,7 @@ public class AuthorRepository : IAuthorRepository
             .SetProperty(e => e.NormalizedEmail, "TEST@SOMETEST.TEST")
             .SetProperty(n => n.UserName, "")
             .SetProperty(n => n.NormalizedUserName, "")).Result;*/
-        _cheepDbContext.SaveChanges();
+        await _cheepDbContext.SaveChangesAsync();
         Console.WriteLine(r);
     }
 
@@ -206,8 +205,8 @@ public class AuthorRepository : IAuthorRepository
         };
         _cheepDbContext.Followings.Add(following);
         
-        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-        return tsk.Result == 1;
+        int chgs = _cheepDbContext.SaveChanges();
+        return chgs == 1;
     }
     /// <summary>
     /// Unfollows a followed author
@@ -236,8 +235,8 @@ public class AuthorRepository : IAuthorRepository
         
         _cheepDbContext.Followings.Remove(unfollowing);
         
-        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-        return tsk.Result == 1;
+        int chgs = _cheepDbContext.SaveChanges();
+        return chgs == 1;
     }
 
     /// <summary>
