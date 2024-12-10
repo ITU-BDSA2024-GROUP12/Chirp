@@ -226,12 +226,23 @@ public class AuthorRepository : IAuthorRepository
     public async Task<bool> UnfollowUser(int authorId, string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
-        var query = await _cheepDbContext.Followings
-            .Where(follow => follow.FollowId == user.AuthorId)
+        /*var query = await _cheepDbContext.Followings
+            .FirstOrDefault(follow => follow.FollowId == user.AuthorId)
             .ExecuteDeleteAsync();
+        */
         
-        int chgs = await _cheepDbContext.SaveChangesAsync();
-        return chgs == 1; //Should only delete one
+        var following = await _cheepDbContext.Followings
+            .SingleOrDefaultAsync(f => f.FollowId == user.AuthorId && f.AuthorId == authorId); //Should only delete one entry at maximum.
+
+        if (following != null) //If there were a match then...
+        {
+            _cheepDbContext.Followings.Remove(following);
+            await _cheepDbContext.SaveChangesAsync();
+            int chgs = await _cheepDbContext.SaveChangesAsync();
+            return chgs == 1; 
+        }
+        
+        return false; //Otherwise return that no deletion has occured.
     }
 
     /// <summary>
