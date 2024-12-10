@@ -79,6 +79,7 @@ public class CheepRepository : ICheepRepository
         return tsk.Result == 1;
     }
 
+
     public bool FollowUser(int authorId, string userName)
     {
         AuthorDTO user = _authorRepository.GetAuthorByName(userName).Result;

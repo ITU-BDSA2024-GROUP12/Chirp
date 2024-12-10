@@ -104,11 +104,12 @@ public class PublicModel : PageModel
         {
             Follows = new List<int>();
             var initFollows = await _cRepository.GetFollowIds(User.FindFirstValue(ClaimTypes.Name));
+
             if (initFollows != null)
             {
                 foreach (var list in initFollows)
                 {
-                    Follows.Add(list[0]);
+                    Follows.Add(list);
                 }
             }
         }
@@ -149,12 +150,12 @@ public class PublicModel : PageModel
         {
             if (!following.Contains(authorname))
             {
-                _cRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+                _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
             }
         }
         else
         {
-            _cRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
@@ -166,7 +167,7 @@ public class PublicModel : PageModel
         authorname.Add(Convert.ToInt32(Request.Form["author"]));
         if (following != null)
         { 
-            _cRepository.UnfollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
