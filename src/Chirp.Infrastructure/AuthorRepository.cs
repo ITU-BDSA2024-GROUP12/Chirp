@@ -218,7 +218,7 @@ public class AuthorRepository : IAuthorRepository
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
         var query = await _cheepDbContext.Followings
-            .Where(follow => follow.FollowId == user.AuthorId && follow.AuthorId == authorId)
+            .Where(follow => follow.FollowId == user.AuthorId)
             .ExecuteDeleteAsync();
         
         int chgs = await _cheepDbContext.SaveChangesAsync();
@@ -237,13 +237,6 @@ public class AuthorRepository : IAuthorRepository
             .Select(follow => follow.AuthorId);
         
         var result = await query.ToListAsync();
-
-        Console.WriteLine("No. of followings: "+result.Count);
-        
-        foreach (var i in result)
-        {
-            Console.WriteLine("AuthorId: "+i);
-        }
         
         if (result.Count > 0)
         {
