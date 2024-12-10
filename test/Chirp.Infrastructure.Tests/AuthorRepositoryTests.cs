@@ -17,6 +17,7 @@ public class AuthorRepositoryTests
         SqliteConnection connection = new SqliteConnection("Filename=:memory:");
         connection.OpenAsync();
         _builder = new DbContextOptionsBuilder<CheepDbContext>().UseSqlite(connection);
+        _builder.EnableSensitiveDataLogging();
     }
 
     private CheepDbContext GetInMemoryDbContext()
@@ -42,8 +43,8 @@ public class AuthorRepositoryTests
         var authorDto = new AuthorDTO {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() => repository.CreateAuthor(authorDto));
-        Assert.Equal("Author Jane Test already exists", exception.Message);
+        var tsk = Assert.ThrowsAsync<Exception>(() => repository.CreateAuthor(authorDto));
+        Assert.Equal("Author Jane Test already exists", tsk.Exception.Message);
     }
     
     [Fact]
@@ -58,7 +59,7 @@ public class AuthorRepositoryTests
         var result = repository.CreateAuthor(authorDto);
 
         // Assert
-        Assert.True(result);
+        Assert.Equal(result.Result,1);
         var authorInDb = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == "John Testman");
         Assert.NotNull(authorInDb);
         Assert.Equal("john@test.com", authorInDb.Email);
@@ -84,7 +85,7 @@ public class AuthorRepositoryTests
         };
 
         // Act & Assert
-        Assert.Throws<Exception>(() => repository.CreateAuthor(authorDto));
+        Assert.ThrowsAsync<Exception>(async () => await repository.CreateAuthor(authorDto));
     }
     [Theory]
     [InlineData("Johannes", "johje@itu.dk")]
@@ -107,9 +108,9 @@ public class AuthorRepositoryTests
         };
 
         // Act & Assert
-        bool result = repository.CreateAuthor(authorDto);
+        var result = await repository.CreateAuthor(authorDto);
 
-        Assert.True(result);
+        Assert.Equal(1,result);
     }
 
     //GetAuthorByEmail
@@ -160,8 +161,8 @@ public class AuthorRepositoryTests
         //Act
         AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
         AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
-        repository.CreateAuthor(author1);
-        repository.CreateAuthor(author2);
+        await repository.CreateAuthor(author1);
+        await repository.CreateAuthor(author2);
         
         //This is weird...
         repository.FollowUser(author2.AuthorId, author1.Name);
@@ -181,8 +182,8 @@ public class AuthorRepositoryTests
         //Act
         AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
         AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
-        repository.CreateAuthor(author1);
-        repository.CreateAuthor(author2);
+        await repository.CreateAuthor(author1);
+        await repository.CreateAuthor(author2);
         
         //This is weird...
         repository.FollowUser(author2.AuthorId, author1.Name);
@@ -194,7 +195,7 @@ public class AuthorRepositoryTests
     }
     
     [Fact]
-    public async void UserCanUnfollowAuthor(){
+    public async Task UserCanUnfollowAuthor(){
         // Arrange
         CheepDbContext dbContext = new CheepDbContext(_builder.Options);
         await dbContext.Database.EnsureCreatedAsync();
@@ -203,8 +204,8 @@ public class AuthorRepositoryTests
         //Act
         AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
         AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
-        repository.CreateAuthor(author1);
-        repository.CreateAuthor(author2);
+        await repository.CreateAuthor(author1);
+        await repository.CreateAuthor(author2);
         
         //This is weird...
         repository.FollowUser(author2.AuthorId, author1.Name);
