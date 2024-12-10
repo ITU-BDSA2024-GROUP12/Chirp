@@ -214,29 +214,15 @@ public class AuthorRepository : IAuthorRepository
     /// <param name="authorId">Id of the author, to follow</param>
     /// <param name="userName">Name of currently logged in user</param>
     /// <returns>True or false</returns>
-    public bool UnfollowUser(int authorId, string userName)
+    public async Task<bool> UnfollowUser(int authorId, string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
-        var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId && follow.AuthorId == authorId)
-            .Select(follow => new List<int>()
-        {
-            follow.FollowId,
-            follow.AuthorId,
-            follow.Id
-        }).AsEnumerable();
-        var result = query.ToList();
-        var unfollow = result.First();
-        Following unfollowing = new()
-        {
-            FollowId = unfollow[0],
-            AuthorId = unfollow[1],
-            Id = unfollow[2]
-        };
+        var query = await _cheepDbContext.Followings
+            .Where(follow => follow.FollowId == user.AuthorId && follow.AuthorId == authorId)
+            .ExecuteDeleteAsync();
         
-        _cheepDbContext.Followings.Remove(unfollowing);
-        
-        int chgs = _cheepDbContext.SaveChanges();
-        return chgs == 1;
+        int chgs = await _cheepDbContext.SaveChangesAsync();
+        return chgs == 1; //Should only delete one
     }
 
     /// <summary>
@@ -251,6 +237,13 @@ public class AuthorRepository : IAuthorRepository
             .Select(follow => follow.AuthorId);
         
         var result = await query.ToListAsync();
+
+        Console.WriteLine("No. of followings: "+result.Count);
+        
+        foreach (var i in result)
+        {
+            Console.WriteLine("AuthorId: "+i);
+        }
         
         if (result.Count > 0)
         {
