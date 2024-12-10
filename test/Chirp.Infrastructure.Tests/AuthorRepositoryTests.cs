@@ -31,20 +31,20 @@ public class AuthorRepositoryTests
     
     //CreateAuthor
     [Fact]
-    public void CreateAuthorExistingAuthor()
+    public async Task CreateAuthorExistingAuthor()
     {
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new AuthorRepository(dbContext);
         var author = new Author {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
-        dbContext.Authors.Add(author);
-        dbContext.SaveChanges();
+        await dbContext.Authors.AddAsync(author);
+        await dbContext.SaveChangesAsync();
 
         var authorDto = new AuthorDTO {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
 
         // Act & Assert
-        var tsk = Assert.ThrowsAsync<Exception>(() => repository.CreateAuthor(authorDto));
-        Assert.Equal("Author Jane Test already exists", tsk.Exception.Message);
+        var tsk = await Assert.ThrowsAsync<Exception>( async () => await repository.CreateAuthor(authorDto));
+        Assert.Equal("Author Jane Test already exists", tsk.Message);
     }
     
     [Fact]
@@ -56,10 +56,10 @@ public class AuthorRepositoryTests
         var authorDto = new AuthorDTO {AuthorId = 999, Name = "John Testman", Email = "john@test.com" };
 
         // Act
-        var result = repository.CreateAuthor(authorDto);
+        var result = await repository.CreateAuthor(authorDto);
 
         // Assert
-        Assert.Equal(result.Result,1);
+        Assert.Equal(1,result);
         var authorInDb = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == "John Testman");
         Assert.NotNull(authorInDb);
         Assert.Equal("john@test.com", authorInDb.Email);
@@ -202,8 +202,8 @@ public class AuthorRepositoryTests
         IAuthorRepository repository = new AuthorRepository(dbContext);
         
         //Act
-        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
-        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "User1", Email = "user1@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "User2", Email = "user2@test.com" };
         await repository.CreateAuthor(author1);
         await repository.CreateAuthor(author2);
         
