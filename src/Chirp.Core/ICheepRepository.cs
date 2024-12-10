@@ -6,7 +6,12 @@ public interface ICheepRepository
     public void UpdateMessage();
     public Task<List<CheepDTO>> GetMessagesFromAuthor(string author, int page);
     public bool CreateCheep(AuthorDTO author, string text, List<AuthorDTO>? mentions, string time);
+    public bool FollowUser(int authorId, string userName);
+    public bool UnfollowUser(int authorId, string userName);
+    public Task<List<List<int>>> GetFollowIds(string userName);
     Task<CheepDTO> GetCheepById(int id);
     public Task<int> CheepCount();
     public Task<int> CheepCountFromAuthor(string author);
+    public Task<int> GetFollowsAmount(string name);
+    public Task<int> GetFollowersAmount(string name);
 }

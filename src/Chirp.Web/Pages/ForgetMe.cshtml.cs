@@ -28,6 +28,7 @@ public class ForgetMe : PageModel
             _nRepository.ForgetMentions(username);
             _nRepository.DeleteNotificationsForUser(_repository.GetAuthor(username, email).Id);
             _repository.DeleteUser(username,email);
+            _repository.DeleteFollowing(username);
             _signInManager.SignOutAsync();
         }
         return Redirect("/");
