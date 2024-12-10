@@ -6,7 +6,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
 
-namespace Chirp.RazorPages.Tests;
+namespace Chirp.Infrastructure.Tests;
 
 public class AuthorRepositoryTests
 {
@@ -85,7 +85,7 @@ public class AuthorRepositoryTests
         };
 
         // Act & Assert
-        Assert.ThrowsAsync<Exception>(async () => await repository.CreateAuthor(authorDto));
+       await Assert.ThrowsAsync<Exception>(async () => await repository.CreateAuthor(authorDto));
     }
     [Theory]
     [InlineData("Johannes", "johje@itu.dk")]
@@ -185,9 +185,11 @@ public class AuthorRepositoryTests
         await repository.CreateAuthor(author1);
         await repository.CreateAuthor(author2);
         
-        //This is weird...
-        repository.FollowUser(author2.AuthorId, author1.Name);
-        repository.FollowUser(author2.AuthorId, author1.Name);
+        for (int i = 0; i < 2; i++) //Follow author2 2 times
+        {
+            repository.FollowUser(author2.AuthorId, author1.Name);
+        }
+        
         var ids = await repository.GetFollowerIds(author1.Name);
 
         //Assert
@@ -207,9 +209,8 @@ public class AuthorRepositoryTests
         await repository.CreateAuthor(author1);
         await repository.CreateAuthor(author2);
         
-        //This is weird...
         repository.FollowUser(author2.AuthorId, author1.Name);
-        repository.UnfollowUser(author2.AuthorId, author1.Name);
+        await repository.UnfollowUser(author2.AuthorId, author1.Name);
         var ids = await repository.GetFollowerIds(author1.Name);
 
         //Assert
