@@ -214,4 +214,24 @@ public class AuthorRepositoryTests
         //Assert
         Assert.Empty(ids);
     }
+    
+    [Fact]
+    public async Task UserCanUnfollowNonFollowedAuthor(){
+        // Arrange
+        CheepDbContext dbContext = new CheepDbContext(_builder.Options);
+        await dbContext.Database.EnsureCreatedAsync();
+        IAuthorRepository repository = new AuthorRepository(dbContext);
+        
+        //Act
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "User1", Email = "user1@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "User2", Email = "user2@test.com" };
+        await repository.CreateAuthor(author1);
+        await repository.CreateAuthor(author2);
+        
+        await repository.UnfollowUser(author2.AuthorId, author1.Name);
+        var ids = await repository.GetFollowerIds(author1.Name);
+
+        //Assert
+        Assert.Empty(ids);
+    }
 }
