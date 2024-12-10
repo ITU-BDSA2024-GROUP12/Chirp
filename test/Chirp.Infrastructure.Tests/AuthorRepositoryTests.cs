@@ -185,15 +185,13 @@ public class AuthorRepositoryTests
         await repository.CreateAuthor(author1);
         await repository.CreateAuthor(author2);
         
-        for (int i = 0; i < 2; i++) //Follow author2 2 times
-        {
-            repository.FollowUser(author2.AuthorId, author1.Name);
-        }
         
-        var ids = await repository.GetFollowerIds(author1.Name);
+        repository.FollowUser(author2.AuthorId, author1.Name);
+        
 
         //Assert
-        Assert.Single(ids);
+        var tsk = Assert.Throws<Exception>(() => repository.FollowUser(author2.AuthorId, author1.Name));
+        Assert.Equal("Author Jane Test is already being followed!", tsk.Message);
     }
     
     [Fact]
@@ -214,6 +212,6 @@ public class AuthorRepositoryTests
         var ids = await repository.GetFollowerIds(author1.Name);
 
         //Assert
-        Assert.Null(ids);
+        Assert.Empty(ids);
     }
 }
