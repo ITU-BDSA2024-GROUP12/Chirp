@@ -2,7 +2,7 @@ namespace Chirp.Core;
 
 public interface IAuthorRepository
 {
-    public bool CreateAuthor(AuthorDTO author);
+    public Task<int> CreateAuthor(AuthorDTO author);
     public Task<AuthorDTO> GetAuthorByEmail(string email);
     public Task<AuthorDTO> GetAuthorById(int id);
 
