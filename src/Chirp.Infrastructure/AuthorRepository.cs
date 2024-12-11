@@ -21,7 +21,7 @@ public class AuthorRepository : IAuthorRepository
     /// <param name="email">E-mail of the author</param>
     /// <returns>True: if the author is created successfully</returns>
     /// <exception cref="Exception">Throws if the author already exists</exception>
-    public bool CreateAuthor(AuthorDTO author)
+    public async Task<int> CreateAuthor(AuthorDTO author)
     {
         if (DoesAuthorExist(author.Name))
         {
@@ -36,8 +36,7 @@ public class AuthorRepository : IAuthorRepository
         };
         
         _cheepDbContext.Authors.Add(auth);
-        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-        return (tsk.Result == 1);
+        return await _cheepDbContext.SaveChangesAsync();
     }
     
     /// <summary>
@@ -151,6 +150,11 @@ public class AuthorRepository : IAuthorRepository
         return author;
     }
     
+    /// <summary>
+    /// Deletes the given author from the database.
+    /// </summary>
+    /// <param name="name">Name of the author</param>
+    /// <param name="email">email of the author</param>
     public async void DeleteUser(string name, string email)
     {
         AuthorDTO a = await GetAuthor(name, email);
@@ -166,7 +170,7 @@ public class AuthorRepository : IAuthorRepository
             .SetProperty(e => e.NormalizedEmail, "TEST@SOMETEST.TEST")
             .SetProperty(n => n.UserName, "")
             .SetProperty(n => n.NormalizedUserName, "")).Result;*/
-        _cheepDbContext.SaveChanges();
+        await _cheepDbContext.SaveChangesAsync();
         Console.WriteLine(r);
     }
 
@@ -185,7 +189,12 @@ public class AuthorRepository : IAuthorRepository
         var result = await query.ToListAsync();
         return result;
     }
-    
+    /// <summary>
+    /// Follows a given author
+    /// </summary>
+    /// <param name="authorId">Id of the author, to follow</param>
+    /// <param name="userName">Name of currently logged in user</param>
+    /// <returns>True or false</returns>
     public bool FollowUser(int authorId, string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
@@ -194,36 +203,53 @@ public class AuthorRepository : IAuthorRepository
             FollowId = user.AuthorId,
             AuthorId = authorId
         };
+        
+        
+        bool alreadyFollowed = GetFollowerIds(userName).Result.Contains(authorId);
+
+        if (alreadyFollowed)
+        {
+            throw new Exception($"Author {userName} is already being followed!");
+        }
+        
         _cheepDbContext.Followings.Add(following);
         
-        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-        return tsk.Result == 1;
+        int chgs = _cheepDbContext.SaveChanges();
+        return chgs == 1;
     }
-
-    public bool UnfollowUser(int authorId, string userName)
+    /// <summary>
+    /// Unfollows a followed author
+    /// </summary>
+    /// <param name="authorId">Id of the author, to follow</param>
+    /// <param name="userName">Name of currently logged in user</param>
+    /// <returns>True or false</returns>
+    public async Task<bool> UnfollowUser(int authorId, string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
-        var query = _cheepDbContext.Followings.Where(follow =>  follow.FollowId == user.AuthorId && follow.AuthorId == authorId).Select(follow => new List<int>()
-        {
-            follow.FollowId,
-            follow.AuthorId,
-            follow.Id
-        }).AsEnumerable();
-        var result = query.ToList();
-        var unfollow = result.First();
-        Following unfollowing = new()
-        {
-            FollowId = unfollow[0],
-            AuthorId = unfollow[1],
-            Id = unfollow[2]
-        };
+        /*var query = await _cheepDbContext.Followings
+            .FirstOrDefault(follow => follow.FollowId == user.AuthorId)
+            .ExecuteDeleteAsync();
+        */
         
-        _cheepDbContext.Followings.Remove(unfollowing);
+        var following = await _cheepDbContext.Followings
+            .SingleOrDefaultAsync(f => f.FollowId == user.AuthorId && f.AuthorId == authorId); //Should only delete one entry at maximum.
+
+        if (following != null) //If there were a match then...
+        {
+            _cheepDbContext.Followings.Remove(following);
+            await _cheepDbContext.SaveChangesAsync();
+            int chgs = await _cheepDbContext.SaveChangesAsync();
+            return chgs == 1; 
+        }
         
-        Task<int> tsk = _cheepDbContext.SaveChangesAsync();
-        return tsk.Result == 1;
+        return false; //Otherwise return that no deletion has occured.
     }
 
+    /// <summary>
+    /// Returns a list of author Ids, that the given author follows
+    /// </summary>
+    /// <param name="userName">Name of the author</param>
+    /// <returns>List<int> of follower ids</returns>
     public async Task<List<int>> GetFollowerIds(string userName)
     {
         AuthorDTO user = GetAuthorByName(userName).Result;
@@ -236,6 +262,6 @@ public class AuthorRepository : IAuthorRepository
         {
             return result;
         }
-        return null;
+        return new List<int>(); //return an empty list
     }
 }
