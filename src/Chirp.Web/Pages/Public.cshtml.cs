@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Chirp.Core;
@@ -167,7 +168,7 @@ public class PublicModel : PageModel
         authorname.Add(Convert.ToInt32(Request.Form["author"]));
         if (following != null)
         { 
-            _aRepository.UnfollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
+            await _aRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }

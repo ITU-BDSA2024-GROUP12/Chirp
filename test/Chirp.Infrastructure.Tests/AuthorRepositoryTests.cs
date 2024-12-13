@@ -1,10 +1,12 @@
+using System.Threading.Channels;
 using Chirp.Core;
 using Chirp.Infrastructure;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
 
-namespace Chirp.RazorPages.Tests;
+namespace Chirp.Infrastructure.Tests;
 
 public class AuthorRepositoryTests
 {
@@ -15,6 +17,7 @@ public class AuthorRepositoryTests
         SqliteConnection connection = new SqliteConnection("Filename=:memory:");
         connection.OpenAsync();
         _builder = new DbContextOptionsBuilder<CheepDbContext>().UseSqlite(connection);
+        _builder.EnableSensitiveDataLogging();
     }
 
     private CheepDbContext GetInMemoryDbContext()
@@ -28,20 +31,20 @@ public class AuthorRepositoryTests
     
     //CreateAuthor
     [Fact]
-    public void CreateAuthorExistingAuthor()
+    public async Task CreateAuthorExistingAuthor()
     {
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new AuthorRepository(dbContext);
         var author = new Author {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
-        dbContext.Authors.Add(author);
-        dbContext.SaveChanges();
+        await dbContext.Authors.AddAsync(author);
+        await dbContext.SaveChangesAsync();
 
         var authorDto = new AuthorDTO {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() => repository.CreateAuthor(authorDto));
-        Assert.Equal("Author Jane Test already exists", exception.Message);
+        var tsk = await Assert.ThrowsAsync<Exception>( async () => await repository.CreateAuthor(authorDto));
+        Assert.Equal("Author Jane Test already exists", tsk.Message);
     }
     
     [Fact]
@@ -53,10 +56,10 @@ public class AuthorRepositoryTests
         var authorDto = new AuthorDTO {AuthorId = 999, Name = "John Testman", Email = "john@test.com" };
 
         // Act
-        var result = repository.CreateAuthor(authorDto);
+        var result = await repository.CreateAuthor(authorDto);
 
         // Assert
-        Assert.True(result);
+        Assert.Equal(1,result);
         var authorInDb = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == "John Testman");
         Assert.NotNull(authorInDb);
         Assert.Equal("john@test.com", authorInDb.Email);
@@ -82,7 +85,7 @@ public class AuthorRepositoryTests
         };
 
         // Act & Assert
-        Assert.Throws<Exception>(() => repository.CreateAuthor(authorDto));
+       await Assert.ThrowsAsync<Exception>(async () => await repository.CreateAuthor(authorDto));
     }
     [Theory]
     [InlineData("Johannes", "johje@itu.dk")]
@@ -105,9 +108,9 @@ public class AuthorRepositoryTests
         };
 
         // Act & Assert
-        bool result = repository.CreateAuthor(authorDto);
+        var result = await repository.CreateAuthor(authorDto);
 
-        Assert.True(result);
+        Assert.Equal(1,result);
     }
 
     //GetAuthorByEmail
@@ -158,12 +161,77 @@ public class AuthorRepositoryTests
         //Act
         AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
         AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
-        repository.CreateAuthor(author1);
-        repository.CreateAuthor(author2);
+        await repository.CreateAuthor(author1);
+        await repository.CreateAuthor(author2);
         
         //This is weird...
-        repository.FollowUser(author1.AuthorId, author2.Name);
+        repository.FollowUser(author2.AuthorId, author1.Name);
+        var ids = await repository.GetFollowerIds(author1.Name);
 
-        repository.GetFollowerIds(author1.Name);
+        //Assert
+        Assert.Equal(author2.AuthorId, ids[0]);
+    }
+    
+    [Fact]
+    public async void UserCanFollowAuthorDouble(){
+        // Arrange
+        CheepDbContext dbContext = new CheepDbContext(_builder.Options);
+        await dbContext.Database.EnsureCreatedAsync();
+        IAuthorRepository repository = new AuthorRepository(dbContext);
+        
+        //Act
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
+        await repository.CreateAuthor(author1);
+        await repository.CreateAuthor(author2);
+        
+        
+        repository.FollowUser(author2.AuthorId, author1.Name);
+        
+
+        //Assert
+        var tsk = Assert.Throws<Exception>(() => repository.FollowUser(author2.AuthorId, author1.Name));
+        Assert.Equal("Author Jane Test is already being followed!", tsk.Message);
+    }
+    
+    [Fact]
+    public async Task UserCanUnfollowAuthor(){
+        // Arrange
+        CheepDbContext dbContext = new CheepDbContext(_builder.Options);
+        await dbContext.Database.EnsureCreatedAsync();
+        IAuthorRepository repository = new AuthorRepository(dbContext);
+        
+        //Act
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "User1", Email = "user1@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "User2", Email = "user2@test.com" };
+        await repository.CreateAuthor(author1);
+        await repository.CreateAuthor(author2);
+        
+        repository.FollowUser(author2.AuthorId, author1.Name);
+        await repository.UnfollowUser(author2.AuthorId, author1.Name);
+        var ids = await repository.GetFollowerIds(author1.Name);
+
+        //Assert
+        Assert.Empty(ids);
+    }
+    
+    [Fact]
+    public async Task UserCanUnfollowNonFollowedAuthor(){
+        // Arrange
+        CheepDbContext dbContext = new CheepDbContext(_builder.Options);
+        await dbContext.Database.EnsureCreatedAsync();
+        IAuthorRepository repository = new AuthorRepository(dbContext);
+        
+        //Act
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "User1", Email = "user1@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "User2", Email = "user2@test.com" };
+        await repository.CreateAuthor(author1);
+        await repository.CreateAuthor(author2);
+        
+        await repository.UnfollowUser(author2.AuthorId, author1.Name);
+        var ids = await repository.GetFollowerIds(author1.Name);
+
+        //Assert
+        Assert.Empty(ids);
     }
 }
