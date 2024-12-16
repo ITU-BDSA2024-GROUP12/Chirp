@@ -140,7 +140,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    _repository.CreateAuthor(new AuthorDTO
+                    await _repository.CreateAuthor(new AuthorDTO
                     {
                         Name = user.UserName,
                         Email = user.Email
