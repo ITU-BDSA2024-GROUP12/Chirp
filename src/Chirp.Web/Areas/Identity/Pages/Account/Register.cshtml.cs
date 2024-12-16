@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Core;
+using Validation.Username;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
@@ -93,6 +94,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Username")]
+            [GitHubUsername]
             public string UserName { get; set; }
 
             /// <summary>
