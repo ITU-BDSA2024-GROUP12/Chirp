@@ -104,12 +104,13 @@ public class PublicModel : PageModel
         if (User.Identity.IsAuthenticated)
         {
             Follows = new List<int>();
-            List<int> initFollows = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+            var initFollows = await _cRepository.GetFollowIds(User.FindFirstValue(ClaimTypes.Name));
+
             if (initFollows != null)
             {
                 foreach (var list in initFollows)
                 {
-                    Follows.Add(list);
+                    Follows.Add(list[0]);
                 }
             }
         }
@@ -143,30 +144,28 @@ public class PublicModel : PageModel
 
     public async Task<IActionResult> OnPostFollow()
     {
-        var following = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
-        //List<int> authorname = new List<int>();
-        //authorname.Add(Convert.ToInt32(Request.Form["author"]));
-        int authorname = Convert.ToInt32(Request.Form["author"]);
+        var following = await _cRepository.GetFollowIds(User.FindFirstValue(ClaimTypes.Name));
+        List<int> authorname = new List<int>();
+        authorname.Add(Convert.ToInt32(Request.Form["author"]));
         if (following != null)
         {
             if (!following.Contains(authorname))
             {
-                _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+                _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
             }
         }
         else
         {
-            _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("Public"); // it is good practice to redirect the user after a post request
     }
     
     public async Task<IActionResult> OnPostUnfollow()
     {
-        var following = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
-        //List<int> authorname = new List<int>();
-        //authorname.Add(Convert.ToInt32(Request.Form["author"]));
-        int authorname = Convert.ToInt32(Request.Form["author"]);
+        var following = await _cRepository.GetFollowIds(User.FindFirstValue(ClaimTypes.Name));
+        List<int> authorname = new List<int>();
+        authorname.Add(Convert.ToInt32(Request.Form["author"]));
         if (following != null)
         { 
             await _aRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));

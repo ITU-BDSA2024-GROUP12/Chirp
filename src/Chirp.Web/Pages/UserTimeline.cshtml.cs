@@ -95,20 +95,20 @@ public class UserTimelineModel : PageModel
         if (User.Identity.IsAuthenticated)
         {
             Follows = new List<int>();
-            var initFollows = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
+            var initFollows = await _cRepository.GetFollowIds(User.FindFirstValue(ClaimTypes.Name));
             if (initFollows != null)
             {
                 foreach (var id in initFollows)
                 {
-                    Follows.Add(id);
+                    Follows.Add(id[0]);
                 }
             }
         }
         StringValues pageQuery = Request.Query["page"];
         if(!Int32.TryParse(pageQuery, out page)) 
-		    {
-			    page = 1;
-		    }
+        {
+            page = 1; 
+        }
 
         noOfCheeps = _cRepository.CheepCountFromAuthor(author).Result;
 
@@ -142,15 +142,14 @@ public class UserTimelineModel : PageModel
     
     private async Task GetFollowedCheeps(int page, string user)
     {
-        Console.WriteLine("test");
-        List<int> following = await _aRepository.GetFollowerIds(user);
+        var following = await _cRepository.GetFollowIds(user);
         var userCheeps = await _cRepository.GetMessagesFromAuthor(user,page);
         var allCheeps = new List<CheepDTO>();
         if (following != null)
         {
-            foreach (int id in following)
+            foreach (var id in following)
             {
-                AuthorDTO author = await _aRepository.GetAuthorById(id);
+                AuthorDTO author = await _aRepository.GetAuthorById(id[0]);
                 var cheeps = await _cRepository.GetMessagesFromAuthor(author.Name,page);
                 allCheeps.AddRange(cheeps);
             }
@@ -180,32 +179,31 @@ public class UserTimelineModel : PageModel
 
     public async Task<IActionResult> OnPostFollow()
     {
-        List<int> following = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
-        //List<int> authorname = new List<int>();
-        int authorname = Convert.ToInt32(Request.Form["author"]);
+        var following = await _cRepository.GetFollowIds(User.FindFirstValue(ClaimTypes.Name));
+        List<int> authorname = new List<int>();
+        authorname.Add(Convert.ToInt32(Request.Form["author"]));
         if (following != null)
         {
             if (!following.Contains(authorname))
             {
-                _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+                _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
             }
         }
         else
         {
-            _aRepository.FollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.FollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
     
     public async Task<IActionResult> OnPostUnfollow()
     {
-        var following = await _aRepository.GetFollowerIds(User.FindFirstValue(ClaimTypes.Name));
-        //List<int> authorname = new List<int>();
-        //authorname.Add(Convert.ToInt32(Request.Form["author"]));
-        int authorname = Convert.ToInt32(Request.Form["author"]);
+        var following = await _cRepository.GetFollowIds(User.FindFirstValue(ClaimTypes.Name));
+        List<int> authorname = new List<int>();
+        authorname.Add(Convert.ToInt32(Request.Form["author"]));
         if (following != null)
         { 
-            _aRepository.UnfollowUser(authorname, User.FindFirstValue(ClaimTypes.Name));
+            _aRepository.UnfollowUser(authorname[0], User.FindFirstValue(ClaimTypes.Name));
         }
         return RedirectToPage("UserTimeline"); // it is good practice to redirect the user after a post request
     }
