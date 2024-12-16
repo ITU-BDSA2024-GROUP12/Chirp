@@ -72,7 +72,7 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "register" }).IsVisibleAsync());
 		await page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
 		await page.GetByPlaceholder("name@example.com").FillAsync("TestUser@example.com");
-		await page.GetByPlaceholder("John Doe").FillAsync("TestUser");
+		await page.GetByPlaceholder("John-Doe").FillAsync("TestUser");
 		await page.GetByLabel("Password", new() { Exact = true }).FillAsync("Password123!");
 		await page.GetByLabel("Confirm Password").FillAsync("Password123!");
 		await page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
