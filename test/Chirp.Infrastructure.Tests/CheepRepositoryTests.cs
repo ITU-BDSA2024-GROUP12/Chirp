@@ -85,7 +85,7 @@ public class CheepRepositoryTests
     }
     
     [Theory]
-    [InlineData("John John","jojo@itu.dk","Hi everyone!, this is a test!","2024-10-22 13:27:18")]
+    [InlineData("John-John","jojo@itu.dk","Hi everyone!, this is a test!","2024-10-22 13:27:18")]
     [InlineData("Adrian","adho@itu.dk","This is starting to look like something...","2024-10-22 13:34:53")]
     public async void CanCreateCheep(string author, string email, string text, string time)
     {
@@ -135,7 +135,7 @@ public class CheepRepositoryTests
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new CheepRepository(dbContext,new AuthorRepository(dbContext));
-        var author = new Author { Name = "John Testman" };
+        var author = new Author { Name = "John-Testman", Email = "temp@mail.com" };
         dbContext.Authors.Add(author);
 
         dbContext.Cheeps.Add(new Cheep { Author = author, Text = "Hello World!", TimeStamp = DateTime.UtcNow });
@@ -170,14 +170,14 @@ public class CheepRepositoryTests
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new CheepRepository(dbContext,new AuthorRepository(dbContext));
-        var author = new Author { Name = "John Testman" };
+        var author = new Author { Name = "John-Testman" , Email = "temp@mail.com"};
         dbContext.Authors.Add(author);
 
         dbContext.Cheeps.Add(new Cheep { Author = author, Text = "Hello from John!", TimeStamp = DateTime.UtcNow });
         await dbContext.SaveChangesAsync();
 
         // Act
-        var result = await repository.GetMessagesFromAuthor("John Testman", 1);
+        var result = await repository.GetMessagesFromAuthor("John-Testman", 1);
 
         // Assert
         Assert.Single(result);
