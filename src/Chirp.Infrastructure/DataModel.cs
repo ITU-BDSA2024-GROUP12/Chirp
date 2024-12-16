@@ -30,7 +30,8 @@ public class Author
     public int AuthorId { get; set; } //primary key
     [MaxLength(256)]
     public required string Name { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
-    [MaxLength(256)]
+    [MaxLength(39)]
+    [RegularExpression(@"^[a-zA-Z0-9-]{1,39}$")] //backend validation
     public string? Email { get; set; }
     public ICollection<Cheep>? Cheeps { get; set; }
     public ICollection<Notification>? Notifications { get; set; }
