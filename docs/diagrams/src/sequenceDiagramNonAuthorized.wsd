@@ -1,0 +1,31 @@
+@startuml
+actor User 
+participant Browser
+participant Client
+participant Server
+database DbContext
+
+User -> Browser : Navigates to "\"
+Browser -> Client : HTTP Get request to "\"
+
+activate Client
+Client -> Client : GetCheeps()
+
+activate Client
+Client -> Server : GetMessages()
+
+activate Server
+Server -> DbContext : SELECT * Cheeps
+activate DbContext
+DbContext -> Server : Return CheepDTOs
+deactivate DbContext
+Server -> Client : Return List<CheepDTO>
+deactivate Server
+Client -> Client : HighlightMentionsAsync()
+Client -> Client
+deactivate Client
+Client -> Browser : HTML Page response
+deactivate Client
+
+
+@enduml 
