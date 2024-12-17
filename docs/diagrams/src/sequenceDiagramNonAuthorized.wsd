@@ -5,8 +5,8 @@ participant Client
 participant Server
 database DbContext
 
-User -> Browser : Navigates to "\"
-Browser -> Client : HTTP Get request to "\"
+User -> Browser : Navigates to "/"
+Browser -> Client : GET "/"
 
 activate Client
 Client ->> Client : GetCheeps()

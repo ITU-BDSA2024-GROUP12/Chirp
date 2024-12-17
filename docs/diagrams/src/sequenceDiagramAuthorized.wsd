@@ -1,0 +1,39 @@
+@startuml
+actor User 
+participant Browser
+participant Client
+participant Server
+database DbContext
+
+User -> Browser : Navigates to "/"
+Browser -> Client : GET "/"
+
+activate Client
+Client ->> Client : GetCheeps()
+
+activate Client
+Client ->> Server : GetMessages()
+
+activate Server
+Server ->> DbContext : SELECT * Cheeps
+activate DbContext
+DbContext --> Server : Return CheepDTOs
+deactivate DbContext
+Server --> Client : Return List<CheepDTO>
+deactivate Server
+Client ->> Client : HighlightMentionsAsync()
+Client -> Client
+deactivate Client
+Client --> Browser : HTML Page response
+deactivate Client
+
+User -> Browser : Navigates to "/Identity/Account/Login"
+Browser ->> Client : GET "/Identity/Account/Login"
+note right 
+Built-in Identity 
+Razor page
+end note
+activate Client
+Client --> Browser : HTML Page response
+
+@enduml 
