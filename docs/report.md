@@ -38,6 +38,30 @@ Here comes a description of our domain model.
 ## Team work
 
 ## How to make _Chirp!_ work locally
+To make _Chirp!_ work locally, you have to first have to install prerequisites
+
+- dotnet 7 sdk
+- git
+- **other?** **is this even nessesary**
+
+
+ clone the repository
+
+```bash
+git clone https://github.com/ITU-BDSA2024-GROUP12/Chirp.git
+```
+
+Change directory to `Chirp.Web`
+```bash
+cd Chirp/src/Chirp.Web
+```
+
+Start the application with `dotnet run` **skal man ikke sætte clientID og clientSecret?**
+```bash
+dotnet run
+```
+
+Your application should now run on localhost port 7102 `https://localhost:7102`
 
 ## How to run test suite locally
 
