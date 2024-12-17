@@ -72,7 +72,7 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         Assert.True(await page.GetByRole(AriaRole.Link, new() { Name = "register" }).IsVisibleAsync());
 		await page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
 		await page.GetByPlaceholder("name@example.com").FillAsync("TestUser@example.com");
-		await page.GetByPlaceholder("John Doe").FillAsync("TestUser");
+		await page.GetByPlaceholder("John-Doe").FillAsync("TestUser");
 		await page.GetByLabel("Password", new() { Exact = true }).FillAsync("Password123!");
 		await page.GetByLabel("Confirm Password").FillAsync("Password123!");
 		await page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
@@ -168,16 +168,16 @@ public class PlaywrightTests : IClassFixture<CustomWebApplicationFactory>
         //Follow author
         await page.GotoAsync(_baseUrl); //Public timeline
         // Verify Jacqualine Gilcoine exists in the public timeline
-        Assert.True(await page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine" }).First.IsVisibleAsync());
-        var li = page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine" }).First;
+        Assert.True(await page.Locator("li").Filter(new() { HasText = "Jacqualine-Gilcoine" }).First.IsVisibleAsync());
+        var li = page.Locator("li").Filter(new() { HasText = "Jacqualine-Gilcoine" }).First;
         await li.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync(); //Follow Author 
         //Check timeline for message from followed author
         await page.GetByRole(AriaRole.Link, new() { Name = "my timeline" }).ClickAsync();
         Assert.True(await page.GetByRole(AriaRole.Heading, new() { Name = "TestUser's Timeline" }).IsVisibleAsync());
-        Assert.True(await page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine" }).First.IsVisibleAsync());
+        Assert.True(await page.Locator("li").Filter(new() { HasText = "Jacqualine-Gilcoine" }).First.IsVisibleAsync());
         Assert.True(await page.GetByText("Unfollow").First.IsVisibleAsync());
         await page.GetByText("Unfollow").First.ClickAsync();
-        Assert.False(await page.Locator("li").Filter(new() { HasText = "Jacqualine Gilcoine" }).First.IsVisibleAsync());
+        Assert.False(await page.Locator("li").Filter(new() { HasText = "Jacqualine-Gilcoine" }).First.IsVisibleAsync());
         
         await browser.CloseAsync();
     }

@@ -14,7 +14,7 @@ static class Util {
     public static List<string> ExtractMentions(string cheep)
     {
         var mentions = new List<string>();
-        var regex = new Regex(@"@([\w\s]+?)(?=\s|$)");
+        var regex = new Regex(@"@([a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)?)(?=\s|$)");
         var matches = regex.Matches(cheep);
         foreach (Match match in matches)
         {

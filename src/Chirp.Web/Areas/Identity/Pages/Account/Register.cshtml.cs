@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Core;
+using Validation.Username;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
@@ -93,6 +94,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Username")]
+            [GitHubUsername]
             public string UserName { get; set; }
 
             /// <summary>
@@ -138,7 +140,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    _repository.CreateAuthor(new AuthorDTO
+                    await _repository.CreateAuthor(new AuthorDTO
                     {
                         Name = user.UserName,
                         Email = user.Email
