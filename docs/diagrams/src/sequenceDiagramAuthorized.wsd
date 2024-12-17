@@ -5,8 +5,6 @@ participant Client
 participant Server
 database DbContext
 
-
-
 User -> Browser : Navigates to "/"
 Browser -> Client : GET "/"
 
