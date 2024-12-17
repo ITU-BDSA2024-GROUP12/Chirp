@@ -1,4 +1,9 @@
 @startuml
+actor User 
+participant Browser
+participant Client
+participant Server
+database DbContext
 
 User -> Browser : Navigates to "/<UserName>"
 Browser -> Client : GET "/<UserName>"
