@@ -1,0 +1,70 @@
+@startuml 1
+start
+group PublicTimeLine 
+    -> User entry point;
+    if (Is user logged in?) then (yes)
+        :Display public timeline __and__ cheepbox,\nalong with navigation to private timeline and logout;
+    else (no)
+        :Display public timeline,\nalong with navigation to login/register;
+    endif
+end group
+group private timeline
+    -> Accesses a timeline;
+    if(Is user logged in?) then (no)
+        'The first two labels are only used as spacers'
+        label spacer1
+        label spacer2
+        label NonUserTimeline
+        :Display selected users timeline and cheeps;
+    else (yes)
+  if(Is user timeline?) then (no)
+            :Display Cheepbox;
+            goto NonUserTimeline
+        else (yes)
+            if(User has notifications?) then (no)
+            else (yes)
+            :Display notifications individually along with option to view;
+            endif
+            if(Does the user follow users) then (no)
+            else (yes)
+            :Display cheeps from followed users;
+            endif
+            :Display users own cheeps;
+        endif
+    endif
+end group
+end
+start
+partition Authorization {
+    -> Authorization;
+    if(Is user logged in?) then (yes)
+    else (no)
+    if() then (register)
+        :register page;
+        repeat
+        if(external register) then (yes)
+        :Github Authorization;
+        else (no)
+        :Create credentials;
+        endif
+        repeat while (__Register__ Success) is (no) not (yes)
+    else (Login)
+        :login page;
+        repeat
+        if(external login) then (yes)
+        :Github Authorization;
+        else (no)
+        :Enter credentials;
+        endif
+        repeat while (__login__ Success) is (no) not (yes)
+    endif
+    endif
+    }
+    -> public timeline;
+end
+@enduml
+
+
+
+
+

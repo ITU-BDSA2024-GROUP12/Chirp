@@ -1,0 +1,81 @@
+@startuml
+actor User 
+participant Browser
+participant Client
+participant Server
+database DbContext
+
+User -> Browser : Navigates to "/"
+Browser -> Client : GET "/"
+
+activate Client
+Client ->> Client : GetCheeps()
+
+activate Client
+Client ->> Server : GetMessages()
+
+activate Server
+Server ->> DbContext : SELECT * Cheeps
+activate DbContext
+DbContext --> Server : Return CheepDTOs
+deactivate DbContext
+Server --> Client : Return List<CheepDTO>
+deactivate Server
+Client ->> Client : HighlightMentionsAsync()
+Client -> Client
+deactivate Client
+Client --> Browser : HTML Page response
+deactivate Client
+
+== Login using Github OAuth ==
+
+User -> Browser : Navigates to "/Identity/Account/Login"
+Browser ->> Client : GET "/Identity/Account/Login"
+note right 
+Built-in Identity 
+Razor page
+end note
+activate Client
+Client --> Browser : HTML Page response
+deactivate Client
+
+
+User -> Browser : Clicking "Github"
+activate Browser
+autonumber
+Browser -> Client : POST
+activate Client
+note left: External Login provider
+
+
+Client --> Browser : Redirect to Github
+User -> Browser : Logs in via Github
+note over Browser, Client: redirect back from Github
+Browser ->> Client : GET 
+
+
+
+Client ->> Server : CreateAsync()
+activate Server
+Server --> Client : result
+Client ->> Server : AddLoginAsync()
+Server --> Client : result
+Client ->> Server : CreateAuthor()
+Server -> DbContext : Add new Author
+activate DbContext
+Server ->> DbContext : SaveChangesAsync()
+DbContext --> Server : Number of affected lines
+deactivate DbContext
+Server --> Client : Number of affected lines
+deactivate Server
+Client --> Browser : Set Authorization cookies 
+Client --> Browser : Redirect to "/"
+deactivate Client
+note over Browser
+User is now authorized 
+With Github OAuth
+end note
+deactivate Browser
+autonumber stop
+
+@enduml 

@@ -1,0 +1,33 @@
+@startuml
+
+
+
+
+package Server {
+    artifact Azure {
+        database SQLite [
+        SQLite Database
+        ]
+
+        component Webapp
+
+        component Webapi
+    }
+}
+
+package Client {
+    actor actor
+    
+    artifact browser {
+    
+    }
+}
+
+
+actor -> browser : Interacts
+browser -> Webapp : HTTP request
+Webapp -> Webapi : Repository calls
+Webapi -> SQLite : Read / Write
+
+
+@enduml

@@ -1,0 +1,124 @@
+@startuml
+actor User 
+participant Browser
+participant Client
+participant Server
+database DbContext
+
+User -> Browser : Navigates to "/<UserName>"
+Browser -> Client : GET "/<UserName>"
+note right: With authentication cookie if user is logged in
+activate Client
+
+
+alt User is authenticated
+    Client ->> Server : GetFollowerIds()
+    activate Server
+    Server -> Server : GetAuthorByName()
+    activate Server
+    Server --> Server : AuthorDTO
+    deactivate Server
+    Server ->> DbContext : SELECT * Followings
+    activate DbContext
+    DbContext --> Server : Return List<int>
+    deactivate DbContext
+    Server --> Client : Return List<int>
+    deactivate Server
+    
+    Client -> Server : CheepCountFromAuthor()
+    activate Server
+
+    Server ->> DbContext : CountAsync()
+    activate DbContext
+    DbContext --> Server : Return count
+    deactivate DbContext
+
+    Server --> Client : Return count
+    deactivate Server
+    Client ->> Client : GetCheeps()
+    activate Client
+    Client ->> Server : GetMessagesFromAuthor()
+    activate Server
+    Server ->> DbContext : SELECT Cheeps
+    activate DbContext
+    note over DbContext: Selects Cheeps with the given author
+    DbContext --> Server : Return List<CheepDTO>
+    deactivate DbContext
+    Server --> Client : Return List<CheepDTO>
+    deactivate Server
+    deactivate Client
+
+    Client -> Client : GetFollowedCheeps()
+    activate Client
+
+    Client ->> Server : GetFollowerIds()
+    activate Server
+    Server -> Server : GetAuthorByName()
+    activate Server
+    Server --> Server : Return AuthorDTO
+    deactivate Server
+    Server ->> DbContext : SELECT * Followings
+    activate DbContext
+    DbContext --> Server : Return List<int>
+    deactivate DbContext
+    Server --> Client : Return List<int>
+    deactivate Server
+
+    loop for each followed author
+        note over Client, Server: Gets cheeps from followed authors
+        Client ->> Server: GetAuthorById()
+        activate Server
+
+        Server ->> DbContext : SELECT Author
+        note over DbContext
+        Selects an author 
+        with the given id
+        end note
+        activate DbContext
+        DbContext --> Server : Return AuthorDTO
+        deactivate DbContext
+        Server --> Client : Return AuthorDTO
+        deactivate Server
+        Client ->> Server : GetMessagesFromAuthor()
+        activate Server
+        Server ->> DbContext : SELECT Cheeps
+        activate DbContext 
+        note over DbContext: Selects Cheeps with the given author
+        DbContext --> Server : Return List<CheepDTO>
+        deactivate DbContext
+        Server --> Client : Return List<CheepDTO>
+        deactivate Server
+        Client --> Client : Return List<CheepDTO>
+        deactivate Client
+        Client --> Browser : HTML Page response
+    end
+
+    
+
+
+else User is not authenticated
+    Client -> Server : CheepCountFromAuthor()
+    activate Server
+    Server ->> DbContext : CountAsync()
+    activate DbContext
+    DbContext --> Server : Return count
+    deactivate DbContext
+    deactivate Server
+    Server --> Client : Return count
+
+    Client ->> Client : GetCheeps()
+    activate Client
+    Client ->> Server : GetMessagesFromAuthor()
+    activate Server
+    Server ->> DbContext : SELECT Cheeps
+    activate DbContext
+    note over DbContext: Selects Cheeps with the given author
+    DbContext --> Server : Return List<CheepDTO>
+    deactivate DbContext
+    Server --> Client : Return List<CheepDTO>
+    deactivate Server
+    Client --> Browser : HTML Page response
+    deactivate Client
+end
+
+@enduml
