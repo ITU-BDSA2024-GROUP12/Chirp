@@ -16,16 +16,16 @@ numbersections: true
 
 Here comes a description of our domain model.
 
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/DomainModel.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](./images/DomainModel.png)
 
 ## Architecture — In the small
 
-![Onion Diagram](images/Onion.drawio.svg)
+![Onion Diagram](./images/Onion.drawio.svg)
 
 ## Architecture of deployed application
 
-![Deployed Application](images/DeployedApplicationDiagram.png)
-![CSharp Middleware](images/cSharp_middleware_pipeline.svg)
+![Deployed Application](./images/DeployedApplication.png)
+![CSharp Middleware](./images/cSharp_middleware_pipeline.svg)
 
 ## User activities
 
