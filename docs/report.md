@@ -61,9 +61,26 @@ Start the application with `dotnet run` **skal man ikke sætte clientID og clien
 dotnet run
 ```
 
-Your application should now run on localhost port 7102 `https://localhost:7102`
+Your application should start listening on two ports, you should open the `https` one. which, if not changed directly should be localhost port 7102 `https://localhost:7102`
 
 ## How to run test suite locally
+
+To test the application locally, first change director back to root
+```bash
+cd ../../
+```
+You should now be in `C:/YOURPC/SOMEWHERE/Chirp`
+
+if playwright is not installed, you should install it with
+```bash
+**Somehow install playwright**
+```
+
+You can now test the whole project with `dotnet test`
+```bash 
+dotnet test
+```
+
 
 # Ethics
 
