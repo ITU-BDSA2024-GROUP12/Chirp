@@ -20,7 +20,7 @@ Here comes a description of our domain model.
 
 ## Architecture — In the small
 
-![Alt text here](diagrams/src/Onion.drawio.svg)
+![Onion Diagram](diagrams/src/Onion.drawio.svg)
 
 ## Architecture of deployed application
 
