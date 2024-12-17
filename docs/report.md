@@ -56,7 +56,17 @@ Change directory to `Chirp.Web`
 cd Chirp/src/Chirp.Web
 ```
 
-Start the application with `dotnet run` **skal man ikke sætte clientID og clientSecret?**
+Add user secrets by typing:
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "authentication_github_clientId" "Ov23liDE0T7SBaQRUByB"
+dotnet user-secrets set "authentication_github_clientSecret" "0c6877a3701918d0def7b409dac6efd53b5b15f3"
+```
+(These secrets have been generated specifically for use in the exam)
+
+GitHub OAuth has been configured to the Chirp! application running on <https://localhost:7102/>
+
+Start the application with `dotnet run` 
 ```bash
 dotnet run
 ```
