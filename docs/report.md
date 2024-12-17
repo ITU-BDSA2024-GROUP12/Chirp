@@ -66,7 +66,7 @@ dotnet user-secrets set "authentication_github_clientSecret" "0c6877a3701918d0de
 
 GitHub OAuth has been configured to the Chirp! application running on <https://localhost:7102/>
 
-Start the application with `dotnet run` **skal man ikke sætte clientID og clientSecret?**
+Start the application with `dotnet run` 
 ```bash
 dotnet run
 ```
