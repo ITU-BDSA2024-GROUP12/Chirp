@@ -28,12 +28,18 @@ Here comes a description of our domain model.
 ![CSharp Middleware](./images/cSharp_middleware_pipeline.svg)
 
 ## User activities
+![User activities](./images/ActivityDiagram.png)
+
 
 ## Sequence of functionality/calls trough _Chirp!_
+![Sequence Diagram Authorized](./images/sequenceDiagramAuthorized.png)
+![Sequence Diagram NonAuthorized](./images/sequenceDiagramNonAuthorized.png)
+![Sequence Diagram Private Timeline](./images/sequenceDiagramPrivateTimeline.png)
 
 # Process
 
 ## Build, test, release, and deployment
+![Build, test, release, and deployment](./images/BDT.jpg)
 
 ## Team work
 
@@ -42,7 +48,7 @@ To make _Chirp!_ work locally, you have to first have to install prerequisites
 
 - dotnet 7 sdk
 - git
-- **other?** **is this even nessesary**
+- pwsh
 
 
  clone the repository
@@ -108,4 +114,4 @@ Even though some of the promts did not yield the correct response/result, some o
 
 Other LLMs like build in intellisense, with codecompletions has also been used, to speed up typing. This did also come with downsides, such as it opscuring the intended completion with other, and sometimes wrong code.
 
-The LLMs summed up, sped up our work, by **some** factor.
+The LLMs summed up, sped up our work, by a small factor.
