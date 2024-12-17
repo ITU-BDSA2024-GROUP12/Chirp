@@ -43,13 +43,20 @@ partition Authorization {
         :register page;
         repeat
         if(external register) then (yes)
-        -> Github Authorization;
+        :Github Authorization;
+        else (no)
+        :Create credentials;
+        endif
+        repeat while (__Register__ Success) is (no) not (yes)
+    else (Login)
+        :login page;
+        repeat
+        if(external login) then (yes)
+        :Github Authorization;
         else (no)
         :Enter credentials;
         endif
-        repeat while (Register Success) is (no) not (yes)
-    else (Login)
-        :login page;
+        repeat while (__login__ Success) is (no) not (yes)
     endif
     endif
     }
