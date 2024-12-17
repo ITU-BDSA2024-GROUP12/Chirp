@@ -1,4 +1,4 @@
-@startuml
+@startuml 1
 start
 group PublicTimeLine 
     -> User entry point;
@@ -9,6 +9,7 @@ group PublicTimeLine
     endif
 end group
 group private timeline
+    -> Accesses a timeline;
     if(Is user logged in?) then (no)
         'The first two labels are only used as spacers'
         label spacer1
@@ -32,12 +33,31 @@ group private timeline
         endif
     endif
 end group
+end
+start
 partition Authorization {
     -> Authorization;
+    if(Is user logged in?) then (yes)
+    else (no)
     if() then (register)
         :register page;
+        repeat
+        if(external register) then (yes)
+        -> Github Authorization;
+        else (no)
+        :Enter credentials;
+        endif
+        repeat while (Register Success) is (no) not (yes)
     else (Login)
         :login page;
     endif
+    endif
     }
+    -> public timeline;
+end
 @enduml
+
+
+
+
+
