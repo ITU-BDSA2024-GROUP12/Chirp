@@ -38,4 +38,5 @@ Following "0..*" -- "1" Author
 CheepMention "0..*" --> "1" Cheep
 Notification "0..*" -- "1" Author
 Notification "0..*" --> "1" Cheep
+
 @enduml
