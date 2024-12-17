@@ -8,8 +8,29 @@ group PublicTimeLine
         :Display public timeline,\nalong with navigation to login/register;
     endif
 end group
-group private timelined
-
+group private timeline
+    if(Is user logged in?) then (no)
+        'The first two labels are only used as spacers'
+        label spacer1
+        label spacer2
+        label NonUserTimeline
+        :Display selected users timeline and cheeps;
+    else (yes)
+  if(Is user timeline?) then (no)
+            :Display Cheepbox;
+            goto NonUserTimeline
+        else (yes)
+            if(User has notifications?) then (no)
+            else (yes)
+            :Display notifications individually along with option to view;
+            endif
+            if(Does the user follow users) then (no)
+            else (yes)
+            :Display cheeps from followed users;
+            endif
+            :Display users own cheeps;
+        endif
+    endif
 end group
 partition Authorization {
     -> Authorization;
