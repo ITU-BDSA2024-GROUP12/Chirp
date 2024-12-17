@@ -1,5 +1,5 @@
 @startuml
-object Author
+Class Author
 Author : +AuthorId <int>
 Author : +Name <string>
 Author : +Email <string>
@@ -7,20 +7,20 @@ Author : +Cheeps <List<Cheep>>
 Author : +Notifications <List<Notification>>
 Author : +Followings <List<Followings>>
 
-object Cheep
+Class Cheep
 Cheep : +CheepId <int>
 Cheep : +Text <string>
 Cheep : +TimeStamp <DateTime>
 Cheep : +AuthorId <int>
 Cheep : +Author <Author>
 
-object CheepMention
+Class CheepMention
 CheepMention : +Id <int>
 CheepMention : +CheepId <int>
 CheepMention : +Cheep <Cheep>
 CheepMention : +MentionedUsername <string>
 
-object Notification
+Class Notification
 Notification : +Id <int>
 Notification : +AuthorId <int>
 Notification : +Content <string>
@@ -28,7 +28,7 @@ Notification : +CheepId <int>
 Notification : +Cheep <Cheep>
 Notification : +TimeStamp <DateTime>
 
-object Following
+Class Following
 Following : +Id <int>
 Following : +FollowId <int>
 Following : +AuthorId <int>
