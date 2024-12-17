@@ -73,11 +73,13 @@ You should now be in `C:/YOURPC/SOMEWHERE/Chirp`
 
 if playwright is not installed, you should install it with
 ```bash
-**Somehow install playwright**
+pwsh test/Chirp.UI.Tests/bin/Debug/net7.0/playwright.ps1 install --with-deps
 ```
 
+(OBS. since the application uses dotnet 7, newer versions of powershell might be incompatible)
+
 You can now test the whole project with `dotnet test`
-```bash 
+```bash
 dotnet test
 ```
 
