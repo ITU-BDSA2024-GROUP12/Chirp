@@ -1,3 +1,22 @@
 @startuml
+start
+group PublicTimeLine 
+    -> User entry point;
+    if (Is user logged in?) then (yes)
+        :Display public timeline __and__ cheepbox,\nalong with navigation to private timeline and logout;
+    else (no)
+        :Display public timeline,\nalong with navigation to login/register;
+    endif
+end group
+group private timelined
 
+end group
+partition Authorization {
+    -> Authorization;
+    if() then (register)
+        :register page;
+    else (Login)
+        :login page;
+    endif
+    }
 @enduml
