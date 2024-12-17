@@ -25,7 +25,7 @@ Here comes a description of our domain model.
 ## Architecture of deployed application
 
 ![Deployed Application](diagrams/src/DeployedApplication.png)
-![CSharp Middelware](diagrams/src/cSharp_middleware_pipeline.svg)
+![CSharp Middleware](diagrams/src/cSharp_middleware_pipeline.svg)
 
 ## User activities
 
