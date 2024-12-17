@@ -16,30 +16,30 @@ numbersections: true
 
 Here comes a description of our domain model.
 
-![Illustration of the _Chirp!_ data model as UML class diagram.](./images/DomainModel.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](./Images/DomainModel.png)
 
 ## Architecture — In the small
 
-![Onion Diagram](./images/Onion.drawio.svg)
+![Onion Diagram](./Images/Onion.drawio.svg)
 
 ## Architecture of deployed application
 
-![Deployed Application](./images/DeployedApplication.png)
-![CSharp Middleware](./images/cSharp_middleware_pipeline.svg)
+![Deployed Application](./Images/DeployedApplication.png)
+![CSharp Middleware](./Images/cSharp_middleware_pipeline.svg)
 
 ## User activities
-![User activities](./images/ActivityDiagram.png)
+![User activities](./Images/ActivityDiagram.png)
 
 
 ## Sequence of functionality/calls trough _Chirp!_
-![Sequence Diagram Authorized](./images/sequenceDiagramAuthorized.png)
-![Sequence Diagram NonAuthorized](./images/sequenceDiagramNonAuthorized.png)
-![Sequence Diagram Private Timeline](./images/sequenceDiagramPrivateTimeline.png)
+![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
+![Sequence Diagram NonAuthorized](./Images/sequenceDiagramNonAuthorized.png)
+![Sequence Diagram Private Timeline](./Images/sequenceDiagramPrivateTimeline.png)
 
 # Process
 
 ## Build, test, release, and deployment
-![Build, test, release, and deployment](./images/BDT.jpg)
+![Build, test, release, and deployment](./Images/BDT.jpg)
 
 ## Team work
 
