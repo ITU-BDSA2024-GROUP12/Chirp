@@ -88,6 +88,8 @@ Whenever this issue was solved in the branch, a pull request would be sent to ma
 The pull request would need to pass a build test, and pass all of our own written tests and finally get recommended code changes through Code Factor, and merge conflicts would have to be solved by the group member that sent the pull request.
 Once all of this has been sorted, the branch would be merged with main and would no longer be in use, if another issue were to be made that revolved around the same feature a separate branch would be created from main to solve the new issue.
 
+![Issue to Production](Images/Issue%20to%20production%20Workflow.png)
+
 ### How to make _Chirp!_ work locally
 
 To make _Chirp!_ work locally, you have to first have to install prerequisites
