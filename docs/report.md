@@ -36,6 +36,22 @@ Here comes a description of our domain model.
 ## Build, test, release, and deployment
 
 ## Team work
+At the current time in our development of _Chirp!_, all the wanted features are implemented in the application, 
+but not all of them are working completely as intended and we have run into some bugs and issues that currently remain unfixed. 
+Some examples of this is our private timeline is displaying cheeps in an order that isnt chronological. 
+If you go to the next page on any timeline and there is no more cheeps to display, you get sent to an empty page with no option to go back. 
+There is also some refactoring we would like to get done to remove unnecessary references and foreign keys in different places, 
+we thought we needed these at a point in development and didn't get to put in the time to go back and clean it up. 
+Below is a picture of our current project board that shows all of the issues we didnt finish at the current time.  
+
+![Screenshot of our project board on github.](docs/images/ProjectBoardChirp.png)
+
+Whenever a new issue was created in our project, we would assign it to one of multiple people. 
+These people would be tasked with handling and solving this issue, to do this we would create a new branch from main for them to work on said issue.
+Whenever this issue was solved in the branch, a pull request would be sent to main and a merge would be attempted, this pull request would require at least one review from another member of the group.
+The pull request would need to pass a build test, and pass all of our own written tests and finally get recommended code changes through Code Factor, and merge conflicts would have to be solved by the group member that sent the pull request.
+Once all of this has been sorted, the branch would be merged with main and would no longer be in use, if another issue were to be made that revolved around the same feature a seperate branch would be created from main to solve the new issue.
+
 
 ## How to make _Chirp!_ work locally
 To make _Chirp!_ work locally, you have to first have to install prerequisites
