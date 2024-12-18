@@ -161,22 +161,22 @@ dotnet test
 
 The project includes a number of tests which cover functionality at different levels, ensuring the application is reliable from backend logic to user interactions. Where applicable these tests use in-memory database setups to simulate actual database behavior as well as an in-memory test server for front-end testing. The test suites are as follows:
 
-Author Repository Tests. Tests the functionality of repository methods for managing authors. Examåples:
+**Author Repository Tests**. Tests the functionality of repository methods for managing authors. Examåples:
 * CreateAuthor: Ensures authors can be added to the database or throws exceptions for duplicates. 
 * GetAuthorByEmail: Retrieves an author by email. 
 * FollowUser/UnfollowUser: Verifies that users can follow and unfollow authors, handling edge cases (e.g., already following).  
 
-Cheep Repository Tests. Tests methods for managing Cheeps. Examples:
+**Cheep Repository Tests**. Tests methods for managing Cheeps. Examples:
 * CreateCheep: Ensures a Cheep can be created if the author exists and validates character limits.
 * GetMessages: Tests pagination for retrieving Cheeps.
 * GetMessagesFromAuthor: Retrieves messages by a specific author.
 
-Integration Tests. Tests end-to-end interactions within the application. Examples:
+**Integration Tests**. Tests end-to-end interactions within the application. Examples:
 * Public Timeline Access: Ensures users can view the public timeline.
 * Private Timeline Access: Verifies restricted timelines for specific users.
 
 
-UI Tests. Testing the front-end of the application via playwright. Examples:
+**UI Tests**. Testing the front-end of the application via playwright. Examples:
 * RegisterTest: Verifies user registration works.
 * LoginAndOutTest: Tests login and logout functionality.
 * PostCheep: Ensures users can create Cheeps
