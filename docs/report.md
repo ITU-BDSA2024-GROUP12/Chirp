@@ -34,7 +34,7 @@ Organizing the project this way, helps to control the flow of dependencies using
 
 This leads to better testability and maintainability.[^2]
 
-Onion architecture of _Chirp!_
+Onion architecture of _Chirp!_:
 
 ![Onion Diagram](./Images/OnionDiagram.png)
 
@@ -49,7 +49,7 @@ Clients interacts with _Chirp!_ through an web browser of the users choice.
 
 _Chirp!_ is meant to be deployed to an Platform-as-a-Service (PaaS) like Azure App Service, which will run and host the _Chirp!_ application. [^5]
 
-Client and server components in a UML Deployment diagram
+Client and server components in a UML Deployment diagram:
 
 ![Deployed Application](./Images/DeployedApplication.png)
 
@@ -57,15 +57,15 @@ Client and server components in a UML Deployment diagram
 
 ## User activities
 
-An activity diagram helps to display the flow of execution when a user navigates the application. In this case showcasing differences between authorized and non authorized users. 
+An activity diagram helps to display the flow of execution when a user navigates the application. In this case showcasing differences between authorized and non authorized users.
 
-Activity diagram over user activities
+UML Activity diagram over user activities:
 
 ![User activities](./Images/ActivityDiagram.png)
 
 ## Sequence of functionality/calls trough _Chirp!_¨
 
-Sequence diagrams describe the interactions in our application, brought about by the actions of users, by clearly displaying the transfer of messages between services.
+Sequence diagrams describe the interactions in our application, brought about by the actions of users, by clearly displaying the transfer of messages and function calls between services.
 
 Sequence diagrams for authorized and non Authorized users, and private timeline.
 
@@ -96,16 +96,18 @@ Sequence diagram of navigating the private timeline, dependent on if the user is
 
 ## Team work
 
-At the current time in our development of _Chirp!_, all the wanted features are implemented in the application,
-but not all of them are working completely as intended and we have run into some bugs and issues that currently remain unfixed.
-Some examples of this is our private timeline is displaying cheeps in an order that is not chronological.
+At this point in time, of the development of _Chirp!_, all the planned features are implemented in the application,
+but not all are working completely as intended. Several bugs and issues, have been found, that currently remain unfixed.
+Some examples of this is that, the private timeline is not displaying cheeps in a chronological order.
 If you go to the next page on any timeline and there is no more cheeps to display, you get sent to an empty page with no option to go back.
-There is also some refactoring we would like to get done to remove unnecessary references and foreign keys in different places,
-we thought we needed these at a point in development and didn't get to put in the time to go back and clean it up.
-Below is a picture of our current project board that shows all of the issues we did not finish at the current time.  
+Some refactoring could be done like, remove unnecessary references and foreign keys in different places.
+At the time of development this was needed and didn't get to removed when it was discovered to be unnecessary.
+
+Below is a picture of our current project board that shows all of the unfinished issues we had at the current time.  
 
 ![Screenshot of our project board on github.](Images/ProjectBoardChirp.png)
 
+### Workflow
 Whenever a new issue was created in our project, we would assign it to one of multiple people.
 These people would be tasked with handling and solving this issue, to do this we would create a new branch from main for them to work on said issue.
 Whenever this issue was solved in the branch, a pull request would be sent to main and a merge would be attempted, this pull request would require at least one review from another member of the group.
