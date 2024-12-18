@@ -16,6 +16,8 @@ numbersections: true
 
 The domain model of _Chirp!_ describes the conceptual design of the application, and visualize how the different entities interacts in the application.
 
+An author can write and read cheeps, and follow/unfollow other authors. Authors can mention other authors in their cheep by using @<<Name>Name> tag, the author that has been mentioned then receive an notification.
+
 A UML Class diagram of our Domain model.
 
 ![Illustration of the _Chirp!_ data model as UML class diagram.](./Images/DomainModel.png)
@@ -65,8 +67,13 @@ Sequence diagrams describe the interactions in our application, brought about by
 
 Sequence diagrams for authorized and non Authorized users, and private timeline.
 
-![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
+Sequence diagram of a non-authorized user:
 ![Sequence Diagram NonAuthorized](./Images/sequenceDiagramNonAuthorized.png)
+
+Sequence diagram of a authorized user:
+![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
+
+Sequence diagram of navigating the private timeline, dependent on if the user is authorized or not.
 ![Sequence Diagram Private Timeline](./Images/sequenceDiagramPrivateTimeline.png)
 
 ## Process
