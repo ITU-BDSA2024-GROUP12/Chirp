@@ -2,11 +2,11 @@
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group 12
 author:
-- "Johannes johje@itu.dk"
-- "Christian cmol@itu.dk"
-- "Mathias bamj@itu.dk"
-- "Rasmus rsni@itu.dk"
-- "Peter pblo@itu.dk"
+- "Johannes Jensen johje@itu.dk"
+- "Christian Klingenberg Molusson cmol@itu.dk"
+- "Mathias Badram Jonbeck bamj@itu.dk"
+- "Rasmus Streubel Nielsen rsni@itu.dk"
+- "Peter Christen Bloch pblo@itu.dk"
 numbersections: true
 ---
 
@@ -177,8 +177,7 @@ This will delete all information about the user from the _Chirp!_ system includi
 [^4]: <https://gdpr-info.eu/>
 
 ## License
-
-The MIT License
+We chose the MIT License for our project since it is highly permissive, allowing users to modify and distribute it freely as long as proper attribution is done, thus making it easier for other to integrate our code into their own projects. It is also compatible with many other open-source licenses.
 
 ## LLMs, ChatGPT, CoPilot, and others
 
