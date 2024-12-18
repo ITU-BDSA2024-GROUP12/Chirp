@@ -14,26 +14,23 @@ public class Cheep
 {
     public int CheepId { get; set; } //primary key
     [Required] //Runtime validation
-    [MaxLength(500)]
+    [MaxLength(160)]
     public required string Text { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types Compile time validation  
     public DateTime TimeStamp { get; set; }
     public int AuthorId { get; set; }
-    [MaxLength(256)]
     public Author? Author { get; set; } //Duplicate author reference, maybe remove??
-
-    public ICollection<CheepMention>? Mentions { get; set; }
-    public ICollection<Notification>? Notifications { get; set; }
 }
 
 public class Author
 {
-    public int AuthorId { get; set; } //primary key
     [MaxLength(256)]
-    public required string Name { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
+    public int AuthorId { get; set; } //primary key
     [Required]
     [MaxLength(39)]
     [RegularExpression(@"^[a-zA-Z0-9-]{1,39}$")] //backend validation
-    public string? Email { get; set; }
+    public required string Name { get; set; } //Required keyword from https://learn.microsoft.com/da-dk/ef/core/miscellaneous/nullable-reference-types
+    [MaxLength(254)] //https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
+    public string? Email { get; set; } 
     public ICollection<Cheep>? Cheeps { get; set; }
     public ICollection<Notification>? Notifications { get; set; }
     public ICollection<Following>? Followings { get; set; }
@@ -44,7 +41,9 @@ public class CheepMention
     public int Id { get; set; } //primary key
     public int CheepId { get; set; }
     public Cheep? Cheep { get; set; }
-    public string? MentionedUsername { get; set; } //the name of the Author
+    [Required]
+    [MaxLength(39)]
+    public string MentionedUsername { get; set; } //the name of the Author
 }
 
 public class Notification
