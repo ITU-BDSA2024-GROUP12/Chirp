@@ -10,9 +10,9 @@ author:
 numbersections: true
 ---
 
-## Design and Architecture of _Chirp!_
+# Design and Architecture of _Chirp!_
 
-### Domain model
+## Domain model
 
 The domain model of _Chirp!_ describes the conceptual design of the application, and visualize how the different entities interacts in the application.
 
@@ -22,7 +22,7 @@ A UML Class diagram of our Domain model.
 
 ![Illustration of the _Chirp!_ data model as UML class diagram.](./Images/DomainModel.png)
 
-### Architecture — In the small
+## Architecture — In the small
 
 _Chirp!_ has been developed using the Onion architecture, which splits the project into 3 distinct layers:
 
@@ -41,7 +41,7 @@ Onion architecture of _Chirp!_
 [^1]: <https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_07/Slides.md>
 [^2]: <https://www.codeguru.com/csharp/understanding-onion-architecture/>
 
-### Architecture of deployed application
+## Architecture of deployed application
 
 _Chirp!_ application is designed to work as a ASP.NET Core Razor Pages web app, which utilizes an SQLite database in the backend.
 
@@ -55,7 +55,7 @@ Client and server components in a UML Deployment diagram
 
 [^5]: <https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_04/Slides.md>
 
-### User activities
+## User activities
 
 An activity diagram helps to display the flow of execution when a user navigates the application. In this case showcasing differences between authorized and non authorized users. 
 
@@ -63,7 +63,7 @@ Activity diagram over user activities
 
 ![User activities](./Images/ActivityDiagram.png)
 
-### Sequence of functionality/calls trough _Chirp!_¨
+## Sequence of functionality/calls trough _Chirp!_¨
 
 Sequence diagrams describe the interactions in our application, brought about by the actions of users, by clearly displaying the transfer of messages between services.
 
@@ -81,9 +81,9 @@ Sequence diagram of navigating the private timeline, dependent on if the user is
 
 ![Sequence Diagram Private Timeline](./Images/sequenceDiagramPrivateTimeline.png)
 
-## Process
+# Process
 
-### Build, test, release, and deployment
+## Build, test, release, and deployment
 
 ![Build, test, release, and deployment](./Images/BDTshorter2.png)
 
@@ -94,7 +94,7 @@ Sequence diagram of navigating the private timeline, dependent on if the user is
 3. A GitHub Release is created when a new tag is pushed.  The application is built for multiple platforms (Linux, Windows, macOS) using `dotnet publish`. Each build is packaged into `.zip` archives. A versioned release entry is created on github and the packaged binaries are attached to the GitHub Release, making them available for download.
 4. Deployment to Azure Web App occurs after a successful build. The previously uploaded build artifacts are retrieved and secure login to Azure is established. The application is then deployed to the production environment.
 
-### Team work
+## Team work
 
 At the current time in our development of _Chirp!_, all the wanted features are implemented in the application,
 but not all of them are working completely as intended and we have run into some bugs and issues that currently remain unfixed.
@@ -114,7 +114,7 @@ Once all of this has been sorted, the branch would be merged with main and would
 
 ![Issue to Production](Images/IssueToProductionWorkflow.png)
 
-### How to make _Chirp!_ work locally
+## How to make _Chirp!_ work locally
 
 To make _Chirp!_ work locally, you have to first have to install prerequisites
 
@@ -161,7 +161,7 @@ Your application should start listening on two ports, you should open the `https
 
 GitHub OAuth has been configured to the Chirp! application running on <https://localhost:7102/>
 
-### How to run test suite locally
+## How to run test suite locally
 
 **Description of test**
 
@@ -188,7 +188,7 @@ You can now test the whole project with `dotnet test`
 dotnet test
 ```
 
-#### Test descriptions
+### Test descriptions
 
 The project includes a number of tests which cover functionality at different levels, ensuring the application is reliable from backend logic to user interactions. Where applicable these tests use in-memory database setups to simulate actual database behavior as well as an in-memory test server for front-end testing. The test suites are as follows:
 
