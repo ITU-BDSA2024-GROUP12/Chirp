@@ -159,7 +159,7 @@ You can now test the whole project with `dotnet test`
 dotnet test
 ```
 
-The project includes a number of tests which cover functionality at different levels, ensuring the application is reliable from backend logic to user interactions. Where applicable these tests use in-memory database setups to simulate actual database behavior as well as an in-memory test server for front-end testing.
+The project includes a number of tests which cover functionality at different levels, ensuring the application is reliable from backend logic to user interactions. Where applicable these tests use in-memory database setups to simulate actual database behavior as well as an in-memory test server for front-end testing. The test suites are as follows:
 
 Author Repository Tests. Tests the functionality of repository methods for managing authors. Examåples:
 * CreateAuthor: Ensures authors can be added to the database or throws exceptions for duplicates. 
