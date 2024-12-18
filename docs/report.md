@@ -16,7 +16,7 @@ numbersections: true
 
 The domain model of _Chirp!_ describes the conceptual design of the application, and visualize how the different entities interacts in the application.
 
-An author can write and read cheeps, and follow/unfollow other authors. Authors can mention other authors in their cheep by using @<<Name>Name> tag, the author that has been mentioned then receive an notification.
+An author can write and read cheeps, and follow/unfollow other authors. Authors can mention other authors in their cheep by using `@authorName` tag, the author that has been mentioned then receive an notification.
 
 A UML Class diagram of our Domain model.
 
