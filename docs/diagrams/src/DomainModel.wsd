@@ -1,0 +1,42 @@
+@startuml
+Class Author
+Author : +AuthorId <int>
+Author : +Name <string>
+Author : +Email <string>
+Author : +Cheeps <List<Cheep>>
+Author : +Notifications <List<Notification>>
+Author : +Followings <List<Followings>>
+
+Class Cheep
+Cheep : +CheepId <int>
+Cheep : +Text <string>
+Cheep : +TimeStamp <DateTime>
+Cheep : +AuthorId <int>
+Cheep : +Author <Author>
+
+Class CheepMention
+CheepMention : +Id <int>
+CheepMention : +CheepId <int>
+CheepMention : +Cheep <Cheep>
+CheepMention : +MentionedUsername <string>
+
+Class Notification
+Notification : +Id <int>
+Notification : +AuthorId <int>
+Notification : +Content <string>
+Notification : +CheepId <int>
+Notification : +Cheep <Cheep>
+Notification : +TimeStamp <DateTime>
+
+Class Following
+Following : +Id <int>
+Following : +FollowId <int>
+Following : +AuthorId <int>
+
+Author "1" --> "0..*" Cheep
+Following "0..*" -- "1" Author
+CheepMention "0..*" --> "1" Cheep
+Notification "0..*" -- "1" Author
+Notification "0..*" --> "1" Cheep
+
+@enduml

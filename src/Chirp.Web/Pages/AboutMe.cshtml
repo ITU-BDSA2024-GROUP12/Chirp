@@ -1,0 +1,57 @@
+﻿@page "/about-me"
+@using System.Security.Claims
+@model Chirp.Web.Pages.Shared.AboutMe
+
+@{
+    ViewData["Title"] = "Chirp - About me!";
+    Layout = "Shared/_Layout";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div>
+    <div> <!-- NAME EMAIL; CHEEPS FOLLOWS  --> 
+        <p>Name: @(User.FindFirstValue(ClaimTypes.Name))</p>
+        <p>Email: @(User.FindFirstValue(ClaimTypes.Email))</p>
+        <p>Cheeps written by you: @Model.noOfCheeps</p>
+        <p>Cheeps: </p>
+        @if (Model.Cheeps.Any())
+        {
+            <ul id="messagelist" class="cheeps">
+                @foreach (var cheep in Model.Cheeps)
+                {
+                    <li>
+                        <p>
+                            @cheep.Text
+                            <small>- @cheep.DateTime()</small>
+                        </p>
+                    </li>
+                }
+            </ul>
+            
+            <div style="display: flex; justify-content: center;">
+
+                @if (Model.page > 1)
+                {
+                    <button style="margin-right: 17px"><a href="/about-me?page=@(Model.page - 1)">Previous Page</a></button>
+                }
+                <button><a href="/about-me?page=@(Model.page + 1)">Next Page</a></button>
+            </div>
+        }
+        else
+        {
+            <p>None</p>
+        }
+        
+        
+        <p>Following: x</p>
+    </div>
+    <button color="red"><a href="/forget-me">Forget me!</a></button>
+</div>
+</body>
+</html>

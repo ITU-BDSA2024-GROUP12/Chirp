@@ -4,12 +4,13 @@
 @inject SignInManager<ChirpUser> SignInManager
 @inject UserManager<ChirpUser> UserManager
 <div class=navigation>
-    @if (User.Identity.IsAuthenticated)
+    @if (User.Identity is not null && User.Identity.IsAuthenticated)
     {
         <div>
             <a href="/@(User.FindFirstValue(ClaimTypes.Name))">my timeline</a> |
             <a href="/">public timeline</a> |
-            <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">logout [@(User.FindFirstValue(ClaimTypes.Name))]</a>
+            <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">logout [@(User.FindFirstValue(ClaimTypes.Name))]</a> |
+            <a href="/about-me">about me</a>
         </div>
     }
     else

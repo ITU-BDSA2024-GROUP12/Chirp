@@ -1,0 +1,135 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0" version="25.0.3" pages="2">
+  <diagram id="mqTpfIOsgikIlRVmDNBb" name="Side-2">
+    <mxGraphModel dx="1434" dy="746" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-1" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="10" y="10" width="760" height="760" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-2" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="175" y="175" width="430" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="283.75" y="283.75" width="212.5" height="212.5" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-4" value="&lt;b&gt;Chirp.Infrastructure&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="220" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-5" value="&lt;b&gt;Chirp.Core&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="300" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-6" value="&lt;b&gt;Chirp.Web&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="30" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-8" value="DTOs" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="410" y="375" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-12" value="IRepositories" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="320" y="370" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-14" value="DataModel" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="223.75" y="283.75" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-15" value="Repositories" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="370" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-18" value="UserNotFoundException" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="460" y="496.25" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-19" value="DbInitializer" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="496.25" y="283.75" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-20" value="Util" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="190" y="100" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-21" value="Program" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="120" y="575" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-22" value="RazorPages" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="650" y="510" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QaIsT2lpcO3sh-o588MZ-23" value="ChirpUser" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="510" y="400" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Side-1" id="wQ76va5EnhmpUvjwgCMB">
+    <mxGraphModel dx="1509" dy="785" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-2" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="10" y="10" width="760" height="760" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="175" y="175" width="430" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-4" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="283.75" y="283.75" width="212.5" height="212.5" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-5" value="&lt;b&gt;Chirp.Infrastructure&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="220" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-6" value="&lt;b&gt;Chirp.Core&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="300" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-7" value="&lt;b&gt;Chirp.Web&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="30" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-8" value="AuthorDTO" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="310" y="330" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-9" value="CheepDTO" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="370" y="320" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-10" value="CheepMentionDTO" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="310" y="375" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-11" value="IAuthorRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="384" y="440" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-12" value="ICheepRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="354" y="410" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-13" value="INotificationRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="400" y="390" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-14" value="NotificationDTO" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="370" y="350" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-15" value="DataModel" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="223.75" y="283.75" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-16" value="AuthorRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="370" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-17" value="CheepRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="223.75" y="460" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-18" value="NotificationRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="310" y="520" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-19" value="UserNotFoundException" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="460" y="496.25" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-20" value="DbInitializer" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="496.25" y="283.75" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-22" value="Util" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="190" y="100" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-23" value="Program" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="120" y="575" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-24" value="RazorPages" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="650" y="510" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H7J5PoCXvkD4SOix67Pg-25" value="ChirpUser" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="510" y="400" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

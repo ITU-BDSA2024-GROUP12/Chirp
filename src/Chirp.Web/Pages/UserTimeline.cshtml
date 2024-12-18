@@ -6,47 +6,116 @@
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
 }
-
 <div>
-    <h2> @routeName's Timeline </h2>
+    <h2>@routeName's Timeline</h2>
+    @if (Model.Notifications.Any())
+    {
+        <div class="notifications">
+            <h3>Notifications:</h3>
+            <ul>
+                @foreach (var notification in Model.Notifications)
+                {
+                    <li>
+                        <p>
+                            <strong>Notification:</strong> @notification.Content
+                            <a href="/Cheeps/Details/@notification.CheepId?notificationId=@notification.Id">View Cheep</a>
+                        </p>
+                    </li>
+                }
+            </ul>
+        </div>
+    } 
+    <div>
 
-    @if (User.Identity.IsAuthenticated)
-    {
-    <div class="cheepbox">
-        <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
-        <form method="post">
-            <input style="float: left" type="text" name="Cheep">
-            <input type="submit" value="Share">
-        </form>
-    </div>
-    }
-    @if (!ModelState.IsValid)
-    {
-    @foreach (var error in ModelState["Cheep"].Errors)
-    {
-    <p>@error.ErrorMessage</p>
-    }
-    }
-    @if (Model.Cheeps.Any())
-    {
-        <p>Showing @Model.Cheeps.Count() cheeps!</p>
-        <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+
+        @if (User.Identity is not null && User.Identity.IsAuthenticated)
+        {
+            <div class="cheepbox">
+                <h3>What's on your mind @(User.FindFirstValue(ClaimTypes.Name))?</h3>
+                <form method="post" asp-page-handler="Cheep">
+                    <input style="float: left" type="text" name="Cheep">
+                    <input type="submit" value="Share">
+                </form>
+            </div>
+        }
+        @if (!ModelState.IsValid)
+        {
+
+            var cheepErrors = ModelState["Cheep"]?.Errors;
+            if (cheepErrors != null)
             {
-                <li>
-                    <p>
-                        <strong>
-                            <a href="/@cheep.Author">@cheep.Author</a>
-                        </strong>
-                        @cheep.Text 
-                        <small>&mdash; @cheep.DateTime()</small>
-                    </p>
-                </li>
+                @foreach (var error in cheepErrors)
+                {
+                    <p>@error.ErrorMessage</p>
+                }
             }
-        </ul>
-    }
-    else
-    {
-        <em>There are no cheeps so far.</em>
-    }
+        }
+        @if (Model.Cheeps.Any())
+        {
+            <p>Showing @Model.Cheeps.Count() cheeps!</p>
+            <ul id="messagelist" class="cheeps">
+                @foreach (var cheep in Model.Cheeps)
+                {
+                    <li>
+                        <p>
+                            <strong>
+                                @if(cheep.Author.Equals("DeletedUser"))
+                                {
+                                    <a disabled="true">Deleted user</a>
+                                }
+                                else
+                                {
+                                    <a href="/@cheep.Author">@cheep.Author</a>
+                                }
+                                @if (User.Identity.IsAuthenticated && cheep.Author != User.FindFirstValue(ClaimTypes.Name))
+                                {
+                                    @if (Model.Follows != null && Model.Follows.Contains(cheep.AuthorId))
+                                    {
+                                        <form method="post" asp-page-handler="Unfollow">
+                                            <input type="hidden" id="author" name="author" value=@cheep.AuthorId runat="server">
+                                            <input type="submit" value="Unfollow">
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form method="post" asp-page-handler="Follow">
+                                            <input type="hidden" id="author" name="author" value=@cheep.AuthorId runat="server">
+                                            <input type="submit" value="Follow">
+                                        </form>
+                                    }
+                                }
+                            </strong>
+                            @foreach (var part in cheep.HighlightedParts) //Displaying text of cheeps
+                            {
+                                if (part.IsMention)
+                                {
+                                    <a href="/@part.Text.TrimStart('@')">@part.Text</a>
+                                }
+                                else
+                                {
+                                    @part.Text
+                                }
+                            } 
+                            <small>&mdash; @cheep.DateTime()</small>
+                        </p>
+                    </li>
+                }
+            </ul>
+            <div style="display: flex; justify-content: center;">
+
+                @if (Model.page > 1)
+                {
+                    <button style="margin-right: 17px"><a href="/@routeName?page=@(Model.page - 1)">Previous Page</a></button>
+                }
+                <button><a href="/@routeName?page=@(Model.page + 1)">Next Page</a></button>
+            </div>
+            <div><p>Page @Model.page of @Model.pagesOfCheeps</p></div>
+
+        }
+        else
+        {
+            <em>There are no cheeps so far.</em>
+        }
+    </div>
 </div>
+

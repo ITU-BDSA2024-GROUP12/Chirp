@@ -24,8 +24,14 @@ builder.Services.AddAuthentication(options =>
     .AddCookie()
     .AddGitHub(o =>
     {
-        o.ClientId = builder.Configuration["authentication_github_clientId"];
-        o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
+        var clientId = builder.Configuration["authentication_github_clientId"];
+        var clientSecret = builder.Configuration["authentication_github_clientSecret"];
+
+        if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
+        {
+            o.ClientId = clientId;
+            o.ClientSecret = clientSecret;
+        }
         o.CallbackPath = "/signin-github";
         o.Scope.Clear(); //clear default scope
         o.Scope.Add("user:email");
@@ -43,7 +49,9 @@ builder.Services.AddSession(options =>
 
 
 // Add services to the container.
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddRazorPages();
 
 
@@ -54,22 +62,26 @@ using (var scope = app.Services.CreateScope())
 {
     // From the scope, get an instance of our database context.
     // Through the `using` keyword, we make sure to dispose it after we are done.
-    using CheepDbContext context = scope.ServiceProvider.GetService<CheepDbContext>();
+    using CheepDbContext? context = scope.ServiceProvider.GetService<CheepDbContext>();
     // Execute the migration from code.
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseMigrationsEndPoint();
+        app.UseDeveloperExceptionPage();
     }
     else
     {
         app.UseExceptionHandler("/Error");
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
-        context.Database.Migrate();
+        context?.Database.Migrate();
     }
-    
-    DbInitializer.SeedDatabase(context);
+
+    if (context is not null)
+    {
+        DbInitializer.SeedDatabase(context);
+    }
 }
 
 app.UseHttpsRedirection();

@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Chirp.Infrastructure;
+using Chirp.Core;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
@@ -30,13 +32,16 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ChirpUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly IAuthorRepository _repository;
+
 
         public ExternalLoginModel(
             SignInManager<ChirpUser> signInManager,
             UserManager<ChirpUser> userManager,
             IUserStore<ChirpUser> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IAuthorRepository repository)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -44,6 +49,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            _repository = repository;
         }
 
         /// <summary>
@@ -131,7 +137,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             }
             else
             {
-                // If the user does not have an account, then ask the user to create an account.
+                // If the user does not have an account, then ask the user to create an account, and add to the author table.
                 ReturnUrl = returnUrl;
                 ProviderDisplayName = info.ProviderDisplayName;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
@@ -153,8 +159,13 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                     if (loginResult.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                            _repository.CreateAuthor(new AuthorDTO
+                            {
+                                Name = user.UserName,
+                                Email = user.Email
+                            });
 
-                        Console.WriteLine("Signing in and redirecting");
+                            Console.WriteLine("Signing in and redirecting");
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
                         return LocalRedirect(returnUrl);
                     }
