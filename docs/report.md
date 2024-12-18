@@ -61,6 +61,8 @@ Activity diagram over user activities
 
 ### Sequence of functionality/calls trough _Chirp!_¨
 
+Sequence diagrams describe the interactions in our application, brought about by the actions of users, by clearly displaying the transfer of messages between services.
+
 Sequence diagrams for authorized and non Authorized users, and private timeline.
 
 ![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
