@@ -36,15 +36,15 @@ public class AuthorRepositoryTests
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new AuthorRepository(dbContext);
-        var author = new Author {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
+        var author = new Author {AuthorId = 999, Name = "Jane-Test", Email = "jane@test.com" };
         await dbContext.Authors.AddAsync(author);
         await dbContext.SaveChangesAsync();
 
-        var authorDto = new AuthorDTO {AuthorId = 999, Name = "Jane Test", Email = "jane@test.com" };
+        var authorDto = new AuthorDTO {AuthorId = 999, Name = "Jane-Test", Email = "jane@test.com" };
 
         // Act & Assert
         var tsk = await Assert.ThrowsAsync<Exception>( async () => await repository.CreateAuthor(authorDto));
-        Assert.Equal("Author Jane Test already exists", tsk.Message);
+        Assert.Equal("Author Jane-Test already exists", tsk.Message);
     }
     
     [Fact]
@@ -53,14 +53,14 @@ public class AuthorRepositoryTests
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new AuthorRepository(dbContext);
-        var authorDto = new AuthorDTO {AuthorId = 999, Name = "John Testman", Email = "john@test.com" };
+        var authorDto = new AuthorDTO {AuthorId = 999, Name = "John-Testman", Email = "john@test.com" };
 
         // Act
         var result = await repository.CreateAuthor(authorDto);
 
         // Assert
         Assert.Equal(1,result);
-        var authorInDb = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == "John Testman");
+        var authorInDb = await dbContext.Authors.FirstOrDefaultAsync(a => a.Name == "John-Testman");
         Assert.NotNull(authorInDb);
         Assert.Equal("john@test.com", authorInDb.Email);
     }
@@ -120,7 +120,7 @@ public class AuthorRepositoryTests
         // Arrange
         var dbContext = GetInMemoryDbContext();
         var repository = new AuthorRepository(dbContext);
-        var author = new Author { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
+        var author = new Author { AuthorId = 1, Name = "Jane-Test", Email = "jane@test.com" };
         dbContext.Authors.Add(author);
         await dbContext.SaveChangesAsync();
 
@@ -129,7 +129,7 @@ public class AuthorRepositoryTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("Jane Test", result.Name);
+        Assert.Equal("Jane-Test", result.Name);
     }
     
     //GetAuthor
@@ -159,8 +159,8 @@ public class AuthorRepositoryTests
         IAuthorRepository repository = new AuthorRepository(dbContext);
         
         //Act
-        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
-        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane-Test", Email = "jane@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John-Test", Email = "john@test.com" };
         await repository.CreateAuthor(author1);
         await repository.CreateAuthor(author2);
         
@@ -180,8 +180,8 @@ public class AuthorRepositoryTests
         IAuthorRepository repository = new AuthorRepository(dbContext);
         
         //Act
-        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane Test", Email = "jane@test.com" };
-        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John Test", Email = "john@test.com" };
+        AuthorDTO author1 = new AuthorDTO { AuthorId = 1, Name = "Jane-Test", Email = "jane@test.com" };
+        AuthorDTO author2 = new AuthorDTO { AuthorId = 2, Name = "John-Test", Email = "john@test.com" };
         await repository.CreateAuthor(author1);
         await repository.CreateAuthor(author2);
         
@@ -191,7 +191,7 @@ public class AuthorRepositoryTests
 
         //Assert
         var tsk = Assert.Throws<Exception>(() => repository.FollowUser(author2.AuthorId, author1.Name));
-        Assert.Equal("Author Jane Test is already being followed!", tsk.Message);
+        Assert.Equal("Author Jane-Test is already being followed!", tsk.Message);
     }
     
     [Fact]
