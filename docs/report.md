@@ -164,7 +164,7 @@ dotnet test
 # Ethics
 
 ## License
-The MIT License
+We chose the MIT License for our project since it is highly permissive, allowing users to modify and distribute it freely as long as proper attribution is done, thus making it easier for other to integrate our code into their own projects. It is also compatible with many other open-source licenses.
 
 ## LLMs, ChatGPT, CoPilot, and others
 During the development of _Chirp!_, we used LLMs for debugging code, warnings and making functional regex's.  
