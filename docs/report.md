@@ -70,12 +70,15 @@ Sequence diagrams describe the interactions in our application, brought about by
 Sequence diagrams for authorized and non Authorized users, and private timeline.
 
 Sequence diagram of a non-authorized user:
+
 ![Sequence Diagram NonAuthorized](./Images/sequenceDiagramNonAuthorized.png)
 
 Sequence diagram of a authorized user:
+
 ![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
 
-Sequence diagram of navigating the private timeline, dependent on if the user is authorized or not.
+Sequence diagram of navigating the private timeline, dependent on if the user is authorized or not:
+
 ![Sequence Diagram Private Timeline](./Images/sequenceDiagramPrivateTimeline.png)
 
 ## Process
