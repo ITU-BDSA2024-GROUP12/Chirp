@@ -70,12 +70,15 @@ Sequence diagrams describe the interactions in our application, brought about by
 Sequence diagrams for authorized and non Authorized users, and private timeline.
 
 Sequence diagram of a non-authorized user:
+
 ![Sequence Diagram NonAuthorized](./Images/sequenceDiagramNonAuthorized.png)
 
 Sequence diagram of a authorized user:
+
 ![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
 
-Sequence diagram of navigating the private timeline, dependent on if the user is authorized or not.
+Sequence diagram of navigating the private timeline, dependent on if the user is authorized or not:
+
 ![Sequence Diagram Private Timeline](./Images/sequenceDiagramPrivateTimeline.png)
 
 ## Process
@@ -109,7 +112,7 @@ Whenever this issue was solved in the branch, a pull request would be sent to ma
 The pull request would need to pass a build test, and pass all of our own written tests and finally get recommended code changes through Code Factor, and merge conflicts would have to be solved by the group member that sent the pull request.
 Once all of this has been sorted, the branch would be merged with main and would no longer be in use, if another issue were to be made that revolved around the same feature a separate branch would be created from main to solve the new issue.
 
-![Issue to Production](Images/Issue%20to%20production%20Workflow.png)
+![Issue to Production](Images/IssueToProductionWorkflow.png)
 
 ### How to make _Chirp!_ work locally
 
