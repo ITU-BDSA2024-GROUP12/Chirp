@@ -101,24 +101,24 @@ dotnet user-secrets set "authentication_github_clientId" "Ov23liDE0T7SBaQRUByB"
 dotnet user-secrets set "authentication_github_clientSecret" "0c6877a3701918d0def7b409dac6efd53b5b15f3"
 ```
 
-**Trust https certificate**
+(These secrets have been generated specifically for use in the exam)
+
 .NET Core SDK includes an HTTPS development certificate,
 to install the ASP.NET Core HTTPS development certificate to the local user certificate store, use the following command:
+
 ```bash
 dotnet dev-certs https --trust
 ```
 
+Start the application with `dotnet run`
 
-(These secrets have been generated specifically for use in the exam)
-
-GitHub OAuth has been configured to the Chirp! application running on <https://localhost:7102/>
-
-Start the application with `dotnet run` 
 ```bash
 dotnet run
 ```
 
 Your application should start listening on two ports, you should open the `https` one. which, if not changed directly should be localhost port 7102 `https://localhost:7102`
+
+GitHub OAuth has been configured to the Chirp! application running on <https://localhost:7102/>
 
 ## How to run test suite locally
 
