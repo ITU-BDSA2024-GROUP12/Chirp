@@ -139,6 +139,9 @@ GitHub OAuth has been configured to the Chirp! application running on <https://l
 
 ### How to run test suite locally
 
+**Description of test**
+
+
 To test the application locally, first change director back to root
 
 ```bash
