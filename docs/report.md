@@ -14,6 +14,8 @@ numbersections: true
 
 ### Domain model
 
+The domain model of _Chirp!_ describes the conceptual design of the application, and visualize how the different entities interacts in the application.
+
 A UML Class diagram of our Domain model.
 
 ![Illustration of the _Chirp!_ data model as UML class diagram.](./Images/DomainModel.png)
