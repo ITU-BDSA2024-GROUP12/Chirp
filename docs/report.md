@@ -14,24 +14,46 @@ numbersections: true
 
 ## Domain model
 
-Here comes a description of our domain model.
+A UML Class diagran of our Domain model. 
 
 ![Illustration of the _Chirp!_ data model as UML class diagram.](./Images/DomainModel.png)
 
 ## Architecture — In the small
 
-![Onion Diagram](./Images/Onion.drawio.svg)
+_Chirp!_ has been developed using the Onion architecture, which splits the project into 3 distinct layers:
+
+* Domain layer
+* Repository layer
+* UI layer
+
+Organizing the project this way, helps to control the flow of dependencies using Inversion of Control (or dependency injection).[^1]
+
+This leads to better testability and maintainability.[^2]
+
+Onion architecture of _Chirp!_
+
+![Onion Diagram](./Images/OnionDiagram.png)
+
+[^1]: <https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_07/Slides.md>
+[^2]: <https://www.codeguru.com/csharp/understanding-onion-architecture/>
 
 ## Architecture of deployed application
 
+Client and server components in a client-server diagram
+
 ![Deployed Application](./Images/DeployedApplication.png)
-![CSharp Middleware](./Images/cSharp_middleware_pipeline.svg)
 
 ## User activities
+
+Activity diagram over user activities
+
 ![User activities](./Images/ActivityDiagram.png)
 
 
-## Sequence of functionality/calls trough _Chirp!_
+## Sequence of functionality/calls trough _Chirp!_¨
+
+Sequence diagrams for authorized and non Authorized users, and private timeline 
+
 ![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
 ![Sequence Diagram NonAuthorized](./Images/sequenceDiagramNonAuthorized.png)
 ![Sequence Diagram Private Timeline](./Images/sequenceDiagramPrivateTimeline.png)
@@ -39,6 +61,11 @@ Here comes a description of our domain model.
 # Process
 
 ## Build, test, release, and deployment
+
+**måske bedre billede**
+
+Flowchart over workflow
+
 ![Build, test, release, and deployment](./Images/BDT.jpg)
 
 ## Team work
@@ -50,7 +77,7 @@ There is also some refactoring we would like to get done to remove unnecessary r
 we thought we needed these at a point in development and didn't get to put in the time to go back and clean it up. 
 Below is a picture of our current project board that shows all of the issues we didnt finish at the current time.  
 
-![Screenshot of our project board on github.](docs/images/ProjectBoardChirp.png)
+![Screenshot of our project board on github.](Images/ProjectBoardChirp.png)
 
 Whenever a new issue was created in our project, we would assign it to one of multiple people. 
 These people would be tasked with handling and solving this issue, to do this we would create a new branch from main for them to work on said issue.
@@ -58,11 +85,13 @@ Whenever this issue was solved in the branch, a pull request would be sent to ma
 The pull request would need to pass a build test, and pass all of our own written tests and finally get recommended code changes through Code Factor, and merge conflicts would have to be solved by the group member that sent the pull request.
 Once all of this has been sorted, the branch would be merged with main and would no longer be in use, if another issue were to be made that revolved around the same feature a seperate branch would be created from main to solve the new issue.
 
+**new diagram from mathias**
+
 
 ## How to make _Chirp!_ work locally
 To make _Chirp!_ work locally, you have to first have to install prerequisites
 
-- dotnet 7 sdk
+- .NET 7 SDK
 - git
 - pwsh
 
@@ -84,16 +113,25 @@ dotnet user-secrets init
 dotnet user-secrets set "authentication_github_clientId" "Ov23liDE0T7SBaQRUByB"
 dotnet user-secrets set "authentication_github_clientSecret" "0c6877a3701918d0def7b409dac6efd53b5b15f3"
 ```
+
 (These secrets have been generated specifically for use in the exam)
 
-GitHub OAuth has been configured to the Chirp! application running on <https://localhost:7102/>
+.NET Core SDK includes an HTTPS development certificate,
+to install the ASP.NET Core HTTPS development certificate to the local user certificate store, use the following command:
 
-Start the application with `dotnet run` 
+```bash
+dotnet dev-certs https --trust
+```
+
+Start the application with `dotnet run`
+
 ```bash
 dotnet run
 ```
 
 Your application should start listening on two ports, you should open the `https` one. which, if not changed directly should be localhost port 7102 `https://localhost:7102`
+
+GitHub OAuth has been configured to the Chirp! application running on <https://localhost:7102/>
 
 ## How to run test suite locally
 
