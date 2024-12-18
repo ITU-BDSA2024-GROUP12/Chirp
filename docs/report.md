@@ -1,7 +1,7 @@
 ---
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group 12
-authors:
+author:
 - "Johannes johje@itu.dk"
 - "Christian cmol@itu.dk"
 - "Mathias bamj@itu.dk"
@@ -69,6 +69,7 @@ Sequence diagrams for authorized and non Authorized users, and private timeline
 2. The test job  installs playwright dependencies: For UI testing, browser dependencies are also installed. Unit and integration tests are executed using dotnet test with Playwright setup. Test results determine if the pipeline proceeds to the next steps.
 3. A GitHub Release is created when a new tag is pushed.  The application is built for multiple platforms (Linux, Windows, macOS) using `dotnet publish`. Each build is packaged into `.zip` archives. A versioned release entry is created on github and the packaged binaries are attached to the GitHub Release, making them available for download.
 4. Deployment to Azure Web App occurs after a successful build. The previously uploaded build artifacts are retrieved and secure login to Azure is established. The application is then deployed to the production environment.
+
 
 ## Team work
 At the current time in our development of _Chirp!_, all the wanted features are implemented in the application, 
@@ -157,17 +158,33 @@ dotnet test
 
 
 # Ethics
+The _Chirp!_ application makes it possible for users to login using a third-party OAuth provider (Github OAuth), or register with a C# Identity account. [^3]
+
+By signing up for an account, the user is providing their email and a username, therefore _Chirp!_ has to comply with General Data Protection Regulation (GDPR) [^4]
+
+_Chirp!_ in its current state does not meet all requirements, fx. the user accounts is stored in a non-encrypted sqlite database file (passwords is obfuscated by hashing).
+
+It is possible for the user to delete their account by using the **Forget me!** button
+
+
+![Screenshot of "about me" page with "Forget Me!" button](Images/forgetMe_button.png)
+
+This will delete all information about the user from the _Chirp!_ system including any mentions and cheeps written by the user.
+
+
+[^3]: <https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-7.0&tabs=visual-studio>
+[^4]: <https://gdpr-info.eu/>
 
 ## License
 The MIT License
 
 ## LLMs, ChatGPT, CoPilot, and others
 During the development of _Chirp!_, we used LLMs for debugging code, warnings and making functional regex's.  
-Some of the reponses were quite helpful, and worked. While others did not work continued to not work, for example, if a promt was in a wrong direction, correctness wise, the LLMs would not catch that, and try to solve an if not already unsolvable, then just a wrong answer to a problem.
+Some of the responses were quite helpful, and worked. While others did not work continued to not work, for example, if a promt was in a wrong direction, correctness wise, the LLMs would not catch that, and try to solve an if not already unsolvable, then just a wrong answer to a problem.
 
 
-Even though some of the promts did not yield the correct response/result, some of the reasonings the LLMs gave, would make the development better in the lager stages.
+Even though some of the prompts did not yield the correct response/result, some of the reasonings the LLMs gave, would make the development better in the lager stages.
 
-Other LLMs like build in intellisense, with codecompletions has also been used, to speed up typing. This did also come with downsides, such as it opscuring the intended completion with other, and sometimes wrong code.
+Other LLMs like build in intellisense, with code completions has also been used, to speed up typing. This did also come with downsides, such as it obscuring the intended completion with other, and sometimes wrong code.
 
 The LLMs summed up, sped up our work, by a small factor.
