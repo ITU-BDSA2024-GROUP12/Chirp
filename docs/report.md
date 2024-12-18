@@ -101,10 +101,11 @@ dotnet user-secrets set "authentication_github_clientId" "Ov23liDE0T7SBaQRUByB"
 dotnet user-secrets set "authentication_github_clientSecret" "0c6877a3701918d0def7b409dac6efd53b5b15f3"
 ```
 
-**Trust https certifikate**
-
+**Trust https certificate**
+.NET Core SDK includes an HTTPS development certificate,
+to install the ASP.NET Core HTTPS development certificate to the local user certificate store, use the following command:
 ```bash
-**dotnet trust https**
+dotnet dev-certs https --trust
 ```
 
 
