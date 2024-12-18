@@ -4,7 +4,7 @@ subtitle: ITU BDSA 2024 Group 12
 author:
 - "Johannes Jensen johje@itu.dk"
 - "Christian Klingenberg Molusson cmol@itu.dk"
-- "Mathias bamj@itu.dk"
+- "Mathias Badram Jonbeck bamj@itu.dk"
 - "Rasmus Streubel Nielsen rsni@itu.dk"
 - "Peter Christen Bloch pblo@itu.dk"
 numbersections: true
