@@ -57,6 +57,8 @@ Client and server components in a UML Deployment diagram
 
 ### User activities
 
+An activity diagram helps to display the flow of execution when a user navigates the application. In this case showcasing differences between authorized and non authorized users. 
+
 Activity diagram over user activities
 
 ![User activities](./Images/ActivityDiagram.png)
