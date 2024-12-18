@@ -1,7 +1,7 @@
 ---
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group 12
-author:
+authors:
 - "Johannes johje@itu.dk"
 - "Christian cmol@itu.dk"
 - "Mathias bamj@itu.dk"
