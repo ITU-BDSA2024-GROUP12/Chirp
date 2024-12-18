@@ -32,7 +32,7 @@ Client and server components in a client-server diagram
 
 ## User activities
 
-Activ**tuhszdfvuh** diagram over user activities
+Activity diagram over user activities
 
 ![User activities](./Images/ActivityDiagram.png)
 
