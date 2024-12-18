@@ -157,13 +157,14 @@ dotnet test
 # Ethics
 The _Chirp!_ application makes it possible for users to login using a third-party OAuth provider (Github OAuth), or register with a C# Identity account. [^3]
 
-By signing up for an account, the user is providing their name, email and a username, therefore _Chirp!_ has to comply with General Data Protection Regulation (GDPR) [^4]
+By signing up for an account, the user is providing their email and a username, therefore _Chirp!_ has to comply with General Data Protection Regulation (GDPR) [^4]
 
 _Chirp!_ in its current state does not meet all requirements, fx. the user accounts is stored in a non-encrypted sqlite database file (passwords is obfuscated by hashing).
 
 It is possible for the user to delete their account by using the **Forget me!** button
 
-**image of button here**
+
+![Screenshot of "about me" page with "Forget Me!" button](Images/forgetMe_button.png)
 
 This will delete all information about the user from the _Chirp!_ system including any mentions and cheeps written by the user.
 
