@@ -2,11 +2,11 @@
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group 12
 author:
-- "Johannes johje@itu.dk"
-- "Christian cmol@itu.dk"
+- "Johannes Jensen johje@itu.dk"
+- "Christian Klingenberg Molusson cmol@itu.dk"
 - "Mathias bamj@itu.dk"
 - "Rasmus Streubel Nielsen rsni@itu.dk"
-- "Peter pblo@itu.dk"
+- "Peter Christen Bloch pblo@itu.dk"
 numbersections: true
 ---
 
