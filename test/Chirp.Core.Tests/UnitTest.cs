@@ -37,7 +37,6 @@ public class UnitTest
         Assert.IsType<int>(authorDto.AuthorId);
         Assert.IsType<string>(authorDto.Email);
         Assert.IsType<string>(authorDto.Name);
-        
     }
     
     //CheepDTO
@@ -62,7 +61,6 @@ public class UnitTest
     [Fact]
     public void CheepDTOtypes()
     {
-        
         //Arrange
         CheepDTO cheepDto = new CheepDTO()
         {
@@ -75,6 +73,5 @@ public class UnitTest
         Assert.IsType<long>(cheepDto.TimeStamp);
         Assert.IsType<string>(cheepDto.Author);
         Assert.IsType<string>(cheepDto.Text);
-        
     }
 }
