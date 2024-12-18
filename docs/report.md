@@ -41,9 +41,17 @@ Onion architecture of _Chirp!_
 
 ### Architecture of deployed application
 
-Client and server components in a client-server diagram
+_Chirp!_ application is designed to work as a ASP.NET Core Razor Pages web app, which utilizes an SQLite database in the backend.
+
+Clients interacts with _Chirp!_ through an web browser of the users choice.
+
+_Chirp!_ is meant to be deployed to an Platform-as-a-Service (PaaS) like Azure App Service, which will run and host the _Chirp!_ application. [^5]
+
+Client and server components in a UML Deployment diagram
 
 ![Deployed Application](./Images/DeployedApplication.png)
+
+[^5]: <https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_04/Slides.md>
 
 ### User activities
 
