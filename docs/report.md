@@ -20,9 +20,22 @@ A UML Class diagran of our Domain model.
 
 ## Architecture — In the small
 
-Onion diagram of Project architecture 
+_Chirp!_ has been developed using the Onion architecture, which splits the project into 3 distinct layers:
+
+* Domain layer
+* Repository layer
+* UI layer
+
+Organizing the project this way, helps to control the flow of dependencies using Inversion of Control (or dependency injection).[^1]
+
+This leads to better testability and maintainability.[^2]
+
+Onion architecture of _Chirp!_
 
 ![Onion Diagram](./Images/OnionDiagram.png)
+
+[^1]: <https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_07/Slides.md>
+[^2]: <https://www.codeguru.com/csharp/understanding-onion-architecture/>
 
 ## Architecture of deployed application
 
