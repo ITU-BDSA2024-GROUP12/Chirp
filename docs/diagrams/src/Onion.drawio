@@ -70,6 +70,33 @@
             <mxPoint x="720" y="490" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="s1uH-p3hf46T8q9RlVIG-14" value="&lt;b&gt;Chirp.Test&lt;/b&gt;" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=160;" vertex="1" parent="1">
+          <mxGeometry x="650" y="512" width="120" height="72.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s1uH-p3hf46T8q9RlVIG-18" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.667;entryY=0.998;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.271;exitY=0.005;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="s1uH-p3hf46T8q9RlVIG-14" target="s1uH-p3hf46T8q9RlVIG-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="460" y="590" as="sourcePoint" />
+            <mxPoint x="510" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s1uH-p3hf46T8q9RlVIG-19" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.208;entryY=0.99;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.993;exitY=0.499;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="s1uH-p3hf46T8q9RlVIG-14" target="s1uH-p3hf46T8q9RlVIG-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="610" as="sourcePoint" />
+            <mxPoint x="420" y="560" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="820" y="548" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s1uH-p3hf46T8q9RlVIG-20" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.463;entryY=1.007;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1.021;exitY=0.499;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="s1uH-p3hf46T8q9RlVIG-14" target="s1uH-p3hf46T8q9RlVIG-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="440" y="610" as="sourcePoint" />
+            <mxPoint x="490" y="560" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1085" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
