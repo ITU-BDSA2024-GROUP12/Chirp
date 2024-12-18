@@ -16,24 +16,30 @@ numbersections: true
 
 Here comes a description of our domain model.
 
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/DomainModel.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](./Images/DomainModel.png)
 
 ## Architecture — In the small
 
-![Onion Diagram](images/Onion.drawio.svg)
+![Onion Diagram](./Images/Onion.drawio.svg)
 
 ## Architecture of deployed application
 
-![Deployed Application](images/DeployedApplicationDiagram.png)
-![CSharp Middleware](images/cSharp_middleware_pipeline.svg)
+![Deployed Application](./Images/DeployedApplication.png)
+![CSharp Middleware](./Images/cSharp_middleware_pipeline.svg)
 
 ## User activities
+![User activities](./Images/ActivityDiagram.png)
+
 
 ## Sequence of functionality/calls trough _Chirp!_
+![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
+![Sequence Diagram NonAuthorized](./Images/sequenceDiagramNonAuthorized.png)
+![Sequence Diagram Private Timeline](./Images/sequenceDiagramPrivateTimeline.png)
 
 # Process
 
 ## Build, test, release, and deployment
+![Build, test, release, and deployment](./Images/BDT.jpg)
 
 ## Team work
 At the current time in our development of _Chirp!_, all the wanted features are implemented in the application, 
@@ -58,7 +64,7 @@ To make _Chirp!_ work locally, you have to first have to install prerequisites
 
 - dotnet 7 sdk
 - git
-- **other?** **is this even nessesary**
+- pwsh
 
 
  clone the repository
@@ -124,4 +130,4 @@ Even though some of the promts did not yield the correct response/result, some o
 
 Other LLMs like build in intellisense, with codecompletions has also been used, to speed up typing. This did also come with downsides, such as it opscuring the intended completion with other, and sometimes wrong code.
 
-The LLMs summed up, sped up our work, by **some** factor.
+The LLMs summed up, sped up our work, by a small factor.
