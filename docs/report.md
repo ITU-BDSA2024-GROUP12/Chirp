@@ -39,7 +39,7 @@ Here comes a description of our domain model.
 # Process
 
 ## Build, test, release, and deployment
-![Build, test, release, and deployment](./Images/BDT_shorter.drawio.png)
+![Build, test, release, and deployment](./Images/BDTshorter2.png)
 
  The workflow for the Chirp! application follows a structured pipeline that includes building, testing, releasing, and deploying the application. the individual steps are as follows:
 
