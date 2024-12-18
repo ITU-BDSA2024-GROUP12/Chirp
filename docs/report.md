@@ -14,6 +14,10 @@ numbersections: true
 
 ### Domain model
 
+The domain model of _Chirp!_ describes the conceptual design of the application, and visualize how the different entities interacts in the application.
+
+An author can write and read cheeps, and follow/unfollow other authors. Authors can mention other authors in their cheep by using `@authorName` tag, the author that has been mentioned then receive an notification.
+
 A UML Class diagram of our Domain model.
 
 ![Illustration of the _Chirp!_ data model as UML class diagram.](./Images/DomainModel.png)
@@ -39,11 +43,21 @@ Onion architecture of _Chirp!_
 
 ### Architecture of deployed application
 
-Client and server components in a client-server diagram
+_Chirp!_ application is designed to work as a ASP.NET Core Razor Pages web app, which utilizes an SQLite database in the backend.
+
+Clients interacts with _Chirp!_ through an web browser of the users choice.
+
+_Chirp!_ is meant to be deployed to an Platform-as-a-Service (PaaS) like Azure App Service, which will run and host the _Chirp!_ application. [^5]
+
+Client and server components in a UML Deployment diagram
 
 ![Deployed Application](./Images/DeployedApplication.png)
 
+[^5]: <https://github.com/itu-bdsa/lecture_notes/blob/main/sessions/session_04/Slides.md>
+
 ### User activities
+
+An activity diagram helps to display the flow of execution when a user navigates the application. In this case showcasing differences between authorized and non authorized users. 
 
 Activity diagram over user activities
 
@@ -51,10 +65,17 @@ Activity diagram over user activities
 
 ### Sequence of functionality/calls trough _Chirp!_¨
 
+Sequence diagrams describe the interactions in our application, brought about by the actions of users, by clearly displaying the transfer of messages between services.
+
 Sequence diagrams for authorized and non Authorized users, and private timeline.
 
-![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
+Sequence diagram of a non-authorized user:
 ![Sequence Diagram NonAuthorized](./Images/sequenceDiagramNonAuthorized.png)
+
+Sequence diagram of a authorized user:
+![Sequence Diagram Authorized](./Images/sequenceDiagramAuthorized.png)
+
+Sequence diagram of navigating the private timeline, dependent on if the user is authorized or not.
 ![Sequence Diagram Private Timeline](./Images/sequenceDiagramPrivateTimeline.png)
 
 ## Process
@@ -139,6 +160,9 @@ GitHub OAuth has been configured to the Chirp! application running on <https://l
 
 ### How to run test suite locally
 
+**Description of test**
+
+
 To test the application locally, first change director back to root
 
 ```bash
@@ -161,9 +185,11 @@ You can now test the whole project with `dotnet test`
 dotnet test
 ```
 
+#### Test descriptions
+
 The project includes a number of tests which cover functionality at different levels, ensuring the application is reliable from backend logic to user interactions. Where applicable these tests use in-memory database setups to simulate actual database behavior as well as an in-memory test server for front-end testing. The test suites are as follows:
 
-**Author Repository Tests**. Tests the functionality of repository methods for managing authors. Examåples:
+**Author Repository Tests**. Tests the functionality of repository methods for managing authors. Examples:
 * CreateAuthor: Ensures authors can be added to the database or throws exceptions for duplicates. 
 * GetAuthorByEmail: Retrieves an author by email. 
 * FollowUser/UnfollowUser: Verifies that users can follow and unfollow authors, handling edge cases (e.g., already following).  
@@ -176,7 +202,6 @@ The project includes a number of tests which cover functionality at different le
 **Integration Tests**. Tests end-to-end interactions within the application. Examples:
 * Public Timeline Access: Ensures users can view the public timeline.
 * Private Timeline Access: Verifies restricted timelines for specific users.
-
 
 **UI Tests**. Testing the front-end of the application via playwright. Examples:
 * RegisterTest: Verifies user registration works.
