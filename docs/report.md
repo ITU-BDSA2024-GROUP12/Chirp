@@ -41,6 +41,13 @@ Here comes a description of our domain model.
 ## Build, test, release, and deployment
 ![Build, test, release, and deployment](./Images/BDT.jpg)
 
+ The workflow for the Chirp! application follows a structured pipeline that includes building, testing, releasing, and deploying the application. the individual steps are as follows:
+
+1. The build process is triggered by events such as pushes and pull_requests. First the code is fetched from the repository using actions/checkout. The required .NET environment (version 7.0) is configured. Dependencies are restored to ensure all packages are available. The application is compiled using dotnet build or dotnet publish. The compiled output (e.g., binaries) is stored as an artifact for further use.
+2. The test job  installs playwright dependencies: For UI testing, browser dependencies are also installed. Unit and integration tests are executed using dotnet test with Playwright setup. Test results determine if the pipeline proceeds to the next steps.
+3. A GitHub Release is created when a new tag is pushed.  The application is built for multiple platforms (Linux, Windows, macOS) using `dotnet publish`. Each build is packaged into `.zip` archives. A versioned release entry is created on github and the packaged binaries are attached to the GitHub Release, making them available for download.
+4. Deployment to Azure Web App occurs after a successful build. The previously uploaded build artifacts are retrieved and secure login to Azure is established. The application is then deployed to the production environment.
+
 ## Team work
 At the current time in our development of _Chirp!_, all the wanted features are implemented in the application, 
 but not all of them are working completely as intended and we have run into some bugs and issues that currently remain unfixed. 
