@@ -22,7 +22,7 @@ A UML Class diagran of our Domain model.
 
 Onion diagram of Project architecture 
 
-![Onion Diagram](./Images/Onion.drawio.svg)
+![Onion Diagram](./Images/OnionDiagram.png)
 
 ## Architecture of deployed application
 
