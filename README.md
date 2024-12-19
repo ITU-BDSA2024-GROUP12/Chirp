@@ -3,6 +3,10 @@
 # Chirp
 Chirp is a website where authors can post messages in form of cheeps, and read other authors' messages.
 
+# Running application from release files
+
+If you want to run the _Chirp!_ application from the executable published in the release.
+You will need to set the secrets for Github OAuth as environment variables, on your system, before running the executable. 
 
 # Dependency
 
